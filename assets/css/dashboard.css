@@ -1,0 +1,757 @@
+/*---=== Account-Overview Page ===---*/
+h1.account-page-title {
+    font-size: 64px;
+    color: black;
+    margin-bottom: 12px;
+}
+p.account-page-title-desc {
+    font-size: 20px;
+    color: #606161;
+}
+p.account-page-title-desc a {
+    color: #606161;
+}
+.account-items-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 26px;
+    margin: 50px 0;
+}
+.account-item-block {
+    padding: 20px 30px 25px;
+    box-shadow: 0px 10px 36px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+.aib-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: black;
+    margin: 26px 0 10px;
+}
+.aib-desc {
+    color: #9D9D9D;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+@media(max-width: 992px) {
+    .account-items-wrapper {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media(max-width: 600px) {
+    .account-items-wrapper {
+        grid-template-columns: 100%;
+    }
+    .account-overview-content.container {
+        width: 100%;
+    }
+}
+/*---=== end of Account-Overview Page ===---*/
+
+/*---=== Profile-Info Page ===---*/
+.dashboard-page-title {
+    font-size: 32px;
+    font-family: var(--font-smbold);
+    color: #141414;
+    margin: 12px auto;
+}
+h2.dashboard-page-title-desc {
+    font-size: 14px;
+}
+.dashboard-page-header .breadcrumb-item a {
+    font-size: 13px;
+}
+hr.dashboard-page-divider {
+    border: none;
+    height: 1px;
+    background: rgba(119, 119, 119, 0.5);
+    margin: 60px 0;
+}
+.profile-items-wrapper {
+    width: 100%;
+    max-width: 635px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+fieldset.profile-item-block {
+    width: 100%;
+    border-bottom: 1px solid rgba(119, 119, 119, 0.5);
+    padding-bottom: 20px;
+}
+.profile-block-header {
+    font-size: 14px;
+}
+button.profile-button {
+    background: none !important;
+    text-decoration: underline;
+}
+.profile-block-value {
+    font-size: 12px;
+    margin: 5px 0;
+}
+input.profile-inp-field {
+    height: 57px !important;
+    border: 1px solid rgba(119, 119, 119, 0.5) !important;
+    border-radius: 10px !important;
+    padding: 0 20px !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    box-shadow: none !important;
+    display: block;
+    width: 100%;
+    font-size: 14px !important;
+}
+.input-field-div.profile-inp-field-block label {
+    position: relative;
+    left: 15px;
+    bottom: -4px;
+}
+.input-field-div.profile-inp-field-block {
+    margin: 30px 0 25px;
+}
+button.profile-save-btn {
+    background: var(--pry-color);
+    color: white;
+    font-size: 16px;
+    font-family: var(--font-smbold);
+    width: 130px;
+    height: 48px;
+    border-radius: 10px;
+}
+input#upload-file.profile-inp-field {
+    cursor: pointer;
+    padding-top: 15px !important;
+}
+
+@media(max-width: 992px) {}
+
+@media(max-width: 600px) {}
+/*---=== end of Profile-Info Page ===---*/
+
+/*---=== Payments Page ===---*/
+button.add-payment-btn.flex-div {
+    background: var(--pry-color);
+    color: white;
+    gap: 8px;
+    width: 200px;
+    height: 42px;
+    font-size: 15px;
+    justify-content: center;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+}
+.payments-wrapper {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    font-size: 14px;
+}
+.payments-block {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(119, 119, 119, 0.5);
+}
+.payment-block-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.delete-btn {
+    background: none !important;
+    text-decoration: underline;
+    color: #D44333;
+}
+
+@media(max-width: 992px) {}
+
+@media(max-width: 600px) {
+    .payments-wrapper {
+        width: 100%;
+    }
+}
+/*---=== end of Payments Page ===---*/
+
+/*---=== Hotel-And-Tours Page ===---*/
+.htw-tab-wrapper {
+    border-bottom: 1px solid rgba(32, 45, 63, 0.5);
+}
+ul.htw-tabs {
+    font-size: 14px;
+}
+ul.htw-tabs > li {
+    padding: 10px 25px 10px;
+    color: #8C8C8C;
+    cursor: pointer;
+}
+ul.htw-tabs > li.active {
+    color: #202D3F;
+    border-bottom: 2px solid var(--pry-color);
+}
+.hotel-block-img {
+    height: 250px;
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+}
+.hotel-block-img > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.hotel-block-content {
+    padding: 12px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.hotel-block-title {
+    color: #232323;
+    font-size: 24px;
+}
+.hotel-block-txt {
+    font-size: 14px;
+    color: #606161;
+}
+.hotel-block-price {
+    font-size: 18px;
+    font-family: var(--font-smbold);
+    color: var(--pry-color);
+}
+.recent-hotel-block-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+.recent-hotel-block > img {
+    width: 180px;
+    border-radius: 10px;
+}
+.recent-hotel-block.flex-div h4 {
+    color: #232323;
+    font-size: 24px;
+    letter-spacing: -1px;
+    font-family: var(--font);
+    margin: 0;
+}
+.tour-block-item {
+    background-color: #F9F9F9;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.tbc-top-title {
+    color: #9D9D9D;
+    font-size: 12px;
+}
+.tour-block-content {
+    padding: 10px 15px;
+} 
+.tbc-row-1 {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 15px;
+    padding-top: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgb(237 237 237);
+    margin-bottom: 5px;
+}
+.tbc-row-1 > div:nth-child(1) {
+    border-right: 1px solid var(--pry-color);
+}
+.tbc-row-3 {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 15px;
+    padding-top: 10px;
+    padding-bottom: 8px;
+    border-top: 1px solid rgb(237 237 237);
+    margin-top: 5px;
+}
+.tbc-row-3 > div:first-child {
+    border-right: 1px solid var(--pry-color);
+}
+.tour-block-title {
+    font-size: 22px;
+}
+.tour-block-img {
+    height: 150px;
+    overflow: hidden;
+}
+.tour-block-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+@media(max-width: 992px) {
+    .recent-hotel-block-wrapper {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media(max-width: 600px) {
+    .recent-hotel-block-wrapper {
+        grid-template-columns: 100%;
+    }
+    .tour-block-title {
+        font-size: 18px;
+    }
+}
+/*---=== end of Hotel-And-Tours Page ===---*/
+
+/*---=== Notifications Page ===---*/
+.notifications-wrapper {
+    max-width: 890px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+.notification-item {
+    width: 100%;
+    border: 1px solid #606161;
+    border-radius: 12px;
+    padding: 25px;
+}
+.notification-item img.noti-icon {
+    width: 64px;
+    border-radius: 50%;
+}
+.notifications-action-icons img {
+    width: 25px;
+}
+button.mark-read-btn {
+    width: 184px;
+    height: 48px;
+    background: var(--pry-color);
+    color: white;
+    font-size: 15px;
+    font-family: var(--font-smbold);
+    border-radius: 6px;
+}
+.empty-notification-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.empty-notification-block {
+    max-width: 375px;
+    padding: 36px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+@media(max-width: 992px) {}
+
+@media(max-width: 600px) {}
+/*---=== end of Notifications Page ===---*/
+
+/*---=== Flights Page ===---*/
+.search-now-btn {
+    background-color: var(--pry-color);
+    font-size: 16px;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 10px;
+}
+.flightsSwiper {
+    background-color: #F3F3F3;
+    padding: 20px 30px;
+    border: 1px solid #C9C9C9;
+    border-radius: 20px;
+}
+.ofd-detail {
+    font-family: var(--font-smbold);
+}
+#flights-history-page .ticket-overview-block .left-side,
+.preview-block-wrapper .ticket-overview-block .left-side {
+    border-right: 1px dashed #9D9D9D;
+}
+#flights-history-page .ticket-overview-block .right-side,
+.preview-block-wrapper .ticket-overview-block .right-side {
+    background-color: white;
+}
+#flights-history-page .ticket-labels,
+.preview-block-wrapper .ticket-labels {
+    background-color: #F3F3F3;
+    font-size: 8px;
+}
+#flights-history-page .ticket-labels.pending,
+.preview-block-wrapper .ticket-labels.pending {
+    background-color: #EB7567;
+    color: white;
+}
+#flights-history-page .ticket-labels.confirmed,
+.preview-block-wrapper .ticket-labels.confirmed {
+    background-color: var(--pry-color);
+    color: white;
+}
+#flights-history-page .ticket-state-code,
+.preview-block-wrapper .ticket-state-code {
+    font-size: 18px;
+}
+#flights-history-page .ticket-time,
+.preview-block-wrapper .ticket-time {
+    font-size: 12px;
+}
+#flights-history-page .ticket-state,
+.preview-block-wrapper .ticket-state {
+    font-size: 8px;
+}
+#flights-history-page .ticket-airline img,
+.preview-block-wrapper .ticket-airline img {
+    width: 36.5px;
+}
+#flights-history-page .ticket-airline,
+.preview-block-wrapper .ticket-airline {
+    font-size: 8px;
+}
+#flights-history-page .from-to-divider svg.flight-icon,
+.preview-block-wrapper .from-to-divider svg.flight-icon {
+    width: 29px;
+    height: 15px;
+}
+.barcode-wrapper.center {
+    transform: rotate(-90deg) translate(-40%, 10px);
+}
+.preview-block-wrapper .barcode-wrapper.center {
+    transform: rotate(-90deg) translate(-35%, 10px);
+}
+#history-table {
+    border: 1px solid #C9C9C9;
+    border-radius: 20px;
+    padding: 20px 30px;
+    margin-top: 30px;
+}
+.table-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+.history-search-bar-wrapper img.search-icon {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    width: 20px;
+}
+#history-table input.search-bar {
+    border: 1px solid #C9C9C9;
+    outline: none;
+    box-shadow: none;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 0 10px 0 40px;
+    font-size: 16px;
+}
+.filter-checkboxes {
+    display: flex;
+    gap: 25px;
+}
+.filter-checkboxes label span {
+    color: #545454;
+    font-size: 14px !important;
+    font-family: var(--font-smbold);
+}
+.history-table-wrapper table th {
+    color: #9D9D9D;
+    font-size: 14px;
+    font-weight: normal;
+}
+.history-table-wrapper table tbody td {
+    color: #606161;
+    font-size: 14px;
+    font-weight: normal;
+}
+#flights-history-page section.results-section .container.c2,
+#create-package-page section.results-section .container.c2 {
+    width: 100% !important;
+}
+#flights-history-page .search-flight-wrapper .top-section.black-bg,
+#create-package-page .packages-content-wrapper .top-section.black-bg {
+    background-color: transparent;
+}
+#flights-history-page .search-flight-wrapper .top-section.black-bg .container,
+#create-package-page .packages-content-wrapper .top-section.black-bg .container {
+    width: 100% !important;
+    padding: 0 !important;
+}
+#flights-history-page .search-flight-wrapper .search-tab-wrapper,
+#create-package-page .packages-content-wrapper .search-tab-wrapper {
+    background-color: black;
+}
+
+@media(max-width: 992px) {}
+
+@media(max-width: 600px) {}
+
+/*---=== end of Flights Page ===---*/
+
+/*---=== Security Page ===---*/
+.settings-content-wrapper {
+    display: grid;
+    grid-template-columns: 50% 1fr;
+    gap: 60px;
+}
+.settings-content-block {
+    padding: 33px;
+    border: 1px solid rgba(120, 120, 120, 20%);
+    border-radius: 12px;
+}
+.settings-content-wrapper .block-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-bottom: 25px;
+}
+.settings-content-wrapper .block-header h4 {
+    font-size: 16px;
+    color: #232323;
+    margin: 0;
+    font-family: var(--font-bold);
+    letter-spacing: normal;
+}
+.settings-content-wrapper .block-header span {
+    color: #8C8C8C;
+    font-size: 12px;
+    letter-spacing: normal;
+}
+.settings-content-wrapper form#change-password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+p.error-message {
+    font-size: 12px;
+    margin: 2px 0;
+    color: red;
+}
+._2fa-n-deactivate-blocks {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+._2fa-options, .deactivate-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+}
+
+@media(max-width: 992px) {
+    .settings-content-wrapper {
+        grid-template-columns: 100%;
+        gap: 30px;
+    }
+    ._2fa-n-deactivate-blocks {
+        gap: 30px;
+    }
+}
+
+@media(max-width: 600px) {}
+
+/*---=== end of Security Page ===---*/
+
+/*---=== Packages Page ===---*/
+.packages-block-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+.packages-block-wrapper .tbc-row-3 {
+    display: flex;
+    gap: 20px;
+}
+.packages-block-wrapper .tbc-row-3 > div:not(:last-child) {
+    border-right: 1px solid var(--pry-color);
+    padding-right: 30px;
+}
+.packages-block-wrapper .tour-block-img {
+    height: 170px;
+    overflow: hidden;
+}
+.package-action-btn-wrapper > * {
+    padding: 10px 24px;
+    font-size: 14px;
+    border-radius: 10px;
+    font-family: var(--font-smbold);
+    border: 1px solid #66CAC4;
+    line-height: normal;
+}
+.package-action-btn-wrapper .cancel-btn {
+    color: #000;
+    background-color: #F3F3F3;
+}
+.package-action-btn-wrapper .continue-btn {
+    color: #fff;
+    background-color: var(--pry-color);
+}
+.package-action-btn-wrapper .back-btn {
+    color: #fff;
+    background-color: black;
+}
+.create-package-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.create-package-wrapper input, .create-package-wrapper textarea {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    font-size: 14px !important;
+}
+.create-package-wrapper textarea {
+    min-height: 200px !important;
+}
+.create-package-wrapper .form-group {
+    border: 1px solid #B2E5E2;
+    padding: 5px 20px;
+    border-radius: 10px;
+}
+.step-indicators {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(119, 119, 119, 0.3);
+}
+.step-indicator-container {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    width: 16.66%;
+    /* 100% / 6 stages */
+    position: relative;
+}
+.step-indicator-container .step-indicator {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #9E9E9E;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 16px;
+}
+.stage-name {
+    font-size: 16px;
+    color: #333333;
+    word-wrap: break-word;
+    margin-top: 25px;
+}
+.stage-progress {
+    margin-top: 8px;
+    border-radius: 4px;
+    width: fit-content;
+    font-size: 10px;
+    padding: 4px 6px;
+    color: #BDBDBD;
+    border: 1px solid #BDBDBD;
+    opacity: 0.8;
+}
+.active .stage-progress {
+    background-color: #F6F4FD;
+    color: var(--pry-color);
+    border: none;
+    opacity: 1;
+}
+.completed .stage-progress {
+    background-color: #E6FBF1;
+    color: #20C374;
+}
+.step-indicator-container.active .step-indicator {
+    background-color: var(--pry-color);
+}
+.step-indicator-container.completed .step-indicator {
+    background-color: #20C374;
+}
+.step-indicator-container.active::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 25%;
+    width: 60%;
+    height: 2px;
+    background-color: #BDBDBD;
+}
+.step-indicator-container.active::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 25%;
+    width: 30%;
+    height: 2px;
+    background-color: var(--pry-color);
+}
+.step-indicator-container.completed::after {
+    width: 60%;
+    background-color: #20C374;
+}
+/* .step-indicator-container:last-child:before,
+.step-indicator-container:last-child::after {
+    display: none !important;
+} */
+
+.preview-block-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 50px;
+    margin-top: 50px;
+}
+.preview-item-block {
+    background-color: #F3F3F3;
+    padding: 30px 20px;
+    border-radius: 20px;
+    border: 1px solid #EDEDED;
+}
+.preview-item-block.closed-preview {
+    border: 1px solid #00A79D;
+}
+.preview-item-block img.caret-icon {
+    transition: transform 1s;
+    transform: rotate(180deg);
+}
+.preview-item-block.closed-preview img.caret-icon  {
+    transform: rotate(0deg);
+}
+.preview-item-price {
+    color: #141414;
+    font-size: 34px;
+    font-family: var(--font-smbold);
+    letter-spacing: -1px;
+}
+.preview-block-wrapper .ticket-name {
+    font-size: 20px;
+}
+button.view-preview-info {
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    background-color: white;
+    color: #606161;
+    font-size: 14px;
+    font-family: var(--font-smbold);
+    border: 1px solid #D0D5DD;
+    padding: 10px 20px;
+    border-radius: 50px;
+}
+
+@media(max-width: 992px) {}
+
+@media(max-width: 600px) {}
+/*---=== end of Packages Page ===---*/

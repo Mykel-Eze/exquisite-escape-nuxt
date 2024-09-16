@@ -1,0 +1,101 @@
+/*---=== Filter Section ===---*/
+.search-tab-wrapper {
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.10);
+    padding: 20px;
+}
+.search-tab-wrapper .tfbw-div {
+    display: none;
+}
+.search-tab-wrapper .tab-form-btn-wrapper {
+    padding-bottom: 0;
+}
+.result-main-wrapper {
+    display: grid;
+    grid-template-columns: 265px 1fr;
+    gap: 30px;
+}
+.result-contents-side {
+    background-color: #F3F3F3;
+    width: 100%;
+    min-height: 100%;
+    border: 1px solid #CCEDEB;
+    border-radius: 10px;
+    overflow: auto;
+}
+
+.result-filter-side > div.rfs {
+    padding: 30px 15px;
+    border: 1px solid #CCEDEB;
+    border-radius: 10px;
+    box-shadow: 0px 18px 20px 0px rgba(16, 24, 40, 0.08);
+}
+.filter-blocks-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+.noUi-target.noUi-horizontal {
+    height: 8px;
+    border-radius: 4px;
+}
+.noUi-target.noUi-horizontal .noUi-handle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--pry-color);
+    background-color: white;
+    top: -9px;
+    right: -14px;
+}
+.noUi-handle:before,
+.noUi-handle:after {
+    display: none !important;
+}
+.filter-block-header {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+.clear-btn {
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.slider-values {
+    color: #848484;
+    font-size: 14px;
+    margin-top: 15px;
+}
+.filter-list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.filter-block [type="checkbox"].filled-in:not(:checked)+span:not(.lever):after,
+.filter-block [type="checkbox"].filled-in:checked+span:not(.lever):after {
+    border: 1px solid #EDEDED;
+    border-radius: 6px;
+    top: 2px;
+}
+.filter-block [type="checkbox"].filled-in:checked+span:not(.lever):before {
+    top: 2px;
+}
+span.filter-block-item {
+    color: #545454;
+}
+span.filter-block-item-value {
+    color: #848484;
+}
+.show-more-btn-wrapper button {
+    background-color: transparent !important;
+}
+input#search-hotel, input#search-tours {
+    border: 1px solid #EDEDED;
+    padding: 10px 14px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    outline: none;
+    box-shadow: none;
+}
+/*---=== end of Filter Section ===---*/

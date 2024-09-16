@@ -1,0 +1,33 @@
+<svg width="151" height="151" viewBox="0 0 151 151" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 626362">
+<rect id="Rectangle 1226" x="0.5" y="0.28125" width="150" height="150" fill="#F8F9FE"/>
+<g id="Send">
+<g id="Group">
+<g id="Group 1204">
+<path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M78.0774 62.9536L70.9305 80.3572L55.1609 34.3086L78.0774 62.9536Z" fill="#141414"/>
+<mask id="mask0_5589_27099" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="55" y="34" width="24" height="47">
+<path id="Vector_2" fill-rule="evenodd" clip-rule="evenodd" d="M78.0774 62.9536L70.9305 80.3572L55.1609 34.3086L78.0774 62.9536Z" fill="#CCCCCC"/>
+</mask>
+<g mask="url(#mask0_5589_27099)">
+</g>
+</g>
+<g id="Group 1205">
+<path id="Vector_3" fill-rule="evenodd" clip-rule="evenodd" d="M55.1609 34.3086L64.8014 62.4405L70.9305 80.3572L68.8568 62.3056L55.1609 34.3086Z" fill="#3B3B3B"/>
+<mask id="mask1_5589_27099" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="55" y="34" width="16" height="47">
+<path id="Vector_4" fill-rule="evenodd" clip-rule="evenodd" d="M55.1609 34.3086L64.8014 62.4405L70.9305 80.3572L68.8568 62.3056L55.1609 34.3086Z" fill="#999999"/>
+</mask>
+<g mask="url(#mask1_5589_27099)">
+</g>
+</g>
+<g id="Group 1207">
+<path id="Union" fill-rule="evenodd" clip-rule="evenodd" d="M78.0774 62.9521L55.1609 34.3071L111.386 67.4697L78.0774 62.9521ZM33.8076 63.6361L55.1592 34.3064L68.8551 62.3034L33.8076 63.6361Z" fill="#00A79D"/>
+<mask id="mask2_5589_27099" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="33" y="34" width="79" height="34">
+<path id="Union_2" fill-rule="evenodd" clip-rule="evenodd" d="M78.0774 62.9521L55.1609 34.3071L111.386 67.4697L78.0774 62.9521ZM33.8076 63.6361L55.1592 34.3064L68.8551 62.3034L33.8076 63.6361Z" fill="white"/>
+</mask>
+<g mask="url(#mask2_5589_27099)">
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>

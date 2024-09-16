@@ -1,0 +1,242 @@
+html {
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none;
+}
+body {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  line-height: 1.3;
+  font-size: 16px;
+  height: auto;
+  min-height: 100vh;
+  color: $grey;
+  font-family: "LotaGrostesqueRegular", sans-serif !important;
+  @media only screen and (min-width: 1280px) {
+    font-size: 18px;
+  }
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--pry-color);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 168, 157, 0.5);
+}
+a {
+  cursor: pointer;
+  text-decoration: none;
+}
+ul {
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+// GAP
+.gap {
+  &-10 {
+    gap: 10px;
+  }
+  &-20 {
+    gap: 20px;
+  }
+}
+// FONT
+.font {
+  // WEIGHT
+  &-bold {
+    // font-weight: bold,
+    font-family: "LotaGrostesqueBold", sans-serif;
+  }
+  &-medium {
+    font-family: "LotaGrostesqueSemiBold", sans-serif;
+  }
+  &-light {
+    font-family: "LotaGrostesqueLight", sans-serif;
+  }
+}
+
+// PADDING {
+.px {
+  &-98 {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+    @media only screen and (min-width: 768px) {
+      padding-left: 36px !important;
+      padding-right: 36px !important;
+    }
+    @media (min-width: 1024px) {
+      padding-left: 52px !important;
+      padding-right: 52px !important;
+    }
+    @media (min-width: 1280px) {
+      padding-left: 98px !important;
+      padding-right: 98px !important;
+    }
+  }
+  &-162 {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    @media only screen and (min-width: 768px) {
+      padding-left: 40px !important;
+      padding-right: 40px !important;
+    }
+    @media (min-width: 1024px) {
+      padding-left: 52px !important;
+      padding-right: 52px !important;
+    }
+    @media (min-width: 1280px) {
+      padding-right: 113px !important;
+      padding-left: 162px !important;
+    }
+  }
+  &-194 {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    @media only screen and (min-width: 768px) {
+      padding-left: 40px !important;
+      padding-right: 40px !important;
+    }
+    @media (min-width: 1024px) {
+      padding-left: 52px !important;
+      padding-right: 52px !important;
+    }
+    @media (min-width: 1280px) {
+      padding-right: 145px !important;
+      padding-left: 194px !important;
+    }
+  }
+}
+
+// LETTER SPACING
+.ls {
+  &--036 {
+    letter-spacing: -0.36px;
+  }
+  &--048 {
+    letter-spacing: -0.48px;
+  }
+  &--064 {
+    letter-spacing: -0.64px;
+  }
+  &--08 {
+    letter-spacing: -0.8px;
+  }
+  &--072 {
+    letter-spacing: -0.72px;
+  }
+  &--096 {
+    letter-spacing: -0.96px;
+  }
+  &--128 {
+    letter-spacing: -1.28px;
+  }
+}
+
+// LINE HEIGHT
+.lh {
+  &-77 {
+    @media (min-width: 1280px) {
+      line-height: 77px;
+    }
+  }
+  &-31 {
+    @media (min-width: 1280px) {
+      line-height: 31px;
+    }
+  }
+  &-26 {
+    @media (min-width: 1280px) {
+      line-height: 26px;
+    }
+  }
+  &-42 {
+    @media (min-width: 1280px) {
+      line-height: 42px;
+    }
+  }
+  &-52 {
+    @media (min-width: 1280px) {
+      line-height: 52px;
+    }
+  }
+}
+// TEXT
+.text {
+  &-primary {
+    color: $primary;
+  }
+  &-white {
+    color: $white;
+  }
+  &-darkgray2 {
+    color: $dark-gray2;
+  }
+  &-dark-gray {
+    color: $dark-gray;
+  }
+  &-dark-blue {
+    color: $dark-blue;
+  }
+  &-medium-gray {
+    color: $medium-gray;
+  }
+  &-medium-gray2 {
+    color: $medium-gray2;
+  }
+  // size
+  &-32 {
+    font-size: 32px;
+  }
+  &-64 {
+    font-size: 64px;
+  }
+}
+
+// BACKGOUND
+.bg {
+  &-light-gray {
+    background: $light-gray;
+  }
+  &-primary {
+    background: $primary;
+  }
+  &-cyan {
+    background: $cyan;
+  }
+  &-cyan-light2 {
+    background: $cyan-light2;
+  }
+}
+.border {
+  &-cyan {
+    border: 1px solid $cyan;
+  }
+  &-primary {
+    border: 1px solid $primary;
+  }
+}

@@ -1,0 +1,48 @@
+@font-face {
+  font-family: "LotaGrostesqueRegular";
+  src: local("LotaGrostesqueRegular"),
+    url(~/assets/fonts/LotaGrostesque/Lota-Grostesque-Regular.otf)
+      format("opentype");
+}
+@font-face {
+  font-family: "LotaGrostesqueExtraLight";
+  src: local("LotaGrostesqueExtraLight"),
+    url(~/assets/fonts/LotaGrostesque/Lota-Grostesque-Extra-Light.otf)
+      format("opentype");
+}
+
+@font-face {
+  font-family: "LotaGrostesqueBold";
+  src: local("LotaGrostesqueBold"),
+    url(~/assets/fonts/LotaGrostesque/Lota-Grostesque-Bold.otf)
+      format("opentype");
+}
+@font-face {
+  font-family: "LotaGrostesqueSemiBold";
+  src: local("LotaGrostesqueSemiBold"),
+    url(~/assets/fonts/LotaGrostesque/Lota-Grostesque-SemiBold.otf)
+      format("opentype");
+}
+@font-face {
+  font-family: "LotaGrostesqueLight";
+  src: local("LotaGrostesqueLight"),
+    url(~/assets/fonts/LotaGrostesque/Lota-Grostesque-Light.otf)
+      format("opentype");
+}
+@font-face {
+  font-family: "LotaGrostesqueThin";
+  src: local("LotaGrostesqueThin"),
+    url(~/assets/fonts/LotaGrostesque/Lota-Grostesque-Thin.otf)
+      format("opentype");
+}
+@font-face {
+  font-family: "SpaceGrosteskMedium";
+  src: local("SpaceGrosteskMedium"),
+    url(~/assets/fonts/SpaceGrostesk/SpaceGrostesk-Medium.ttf) format("truetype");
+}
+@font-face {
+  font-family: "SpaceGrosteskRegular";
+  src: local("SpaceGrosteskRegular"),
+    url(~/assets/fonts/SpaceGrostesk/SpaceGrostesk-Regular.ttf)
+      format("truetype");
+}

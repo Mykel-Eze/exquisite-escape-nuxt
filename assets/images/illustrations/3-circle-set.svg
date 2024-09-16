@@ -1,0 +1,42 @@
+<svg width="151" height="150" viewBox="0 0 151 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 626362">
+<rect id="Rectangle 1226" x="0.5" y="0.28125" width="150" height="150" fill="#F8F9FE"/>
+<g id="Transparency ">
+<circle id="Ellipse 1260" cx="27.8822" cy="27.8822" r="27.8822" transform="matrix(0.866025 0.5 0.5 -0.866025 26.8978 76.9707)" fill="#1AB0A7"/>
+<g id="Group 1269">
+<circle id="Ellipse 1258" cx="27.8822" cy="27.8822" r="27.8822" transform="matrix(0.866025 0.5 0.5 -0.866025 52.498 91.752)" fill="#3B3B3B"/>
+<mask id="mask0_5589_27031" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="62" y="53" width="57" height="57">
+<circle id="Ellipse 1259" cx="27.8822" cy="27.8822" r="27.8822" transform="matrix(0.866025 0.5 0.5 -0.866025 52.498 91.752)" fill="#0D2C65"/>
+</mask>
+<g mask="url(#mask0_5589_27031)">
+</g>
+</g>
+<g id="Group 1265">
+<g id="Group 1263">
+<circle id="Ellipse 1260_2" cx="27.8822" cy="27.8822" r="27.8822" transform="matrix(0.866025 0.5 0.5 -0.866025 22.3264 79.2227)" fill="#00A79D"/>
+<mask id="mask1_5589_27031" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="32" y="41" width="57" height="56">
+<circle id="Ellipse 1259_2" cx="27.8822" cy="27.8822" r="27.8822" transform="matrix(0.866025 0.5 0.5 -0.866025 22.3264 79.2227)" fill="#23CE6B"/>
+</mask>
+<g mask="url(#mask1_5589_27031)">
+</g>
+</g>
+<g id="Group 1267">
+<circle id="Ellipse 1258_2" cx="27.8822" cy="27.8822" r="27.8822" transform="matrix(0.866025 0.5 0.5 -0.866025 47.9261 94.002)" fill="#141414"/>
+<mask id="mask2_5589_27031" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="58" y="55" width="56" height="57">
+<circle id="Ellipse 1260_3" cx="27.8822" cy="27.8822" r="27.8822" transform="matrix(0.866025 0.5 0.5 -0.866025 47.9261 94.002)" fill="#0A0A0A"/>
+</mask>
+<g mask="url(#mask2_5589_27031)">
+</g>
+</g>
+<g id="Group 1264">
+<path id="Intersect" fill-rule="evenodd" clip-rule="evenodd" d="M85.0377 55.9275C89.3881 64.1306 89.546 74.323 84.561 82.9573C79.5759 91.5917 70.6701 96.5511 61.3908 96.885C57.0404 88.6819 56.8824 78.4896 61.8675 69.8552C66.8525 61.2209 75.7583 56.2615 85.0377 55.9275Z" fill="#CCEDEB"/>
+<mask id="mask3_5589_27031" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="58" y="55" width="31" height="42">
+<path id="Intersect_2" fill-rule="evenodd" clip-rule="evenodd" d="M85.0377 55.9275C89.3881 64.1306 89.546 74.323 84.561 82.9573C79.5759 91.5917 70.6701 96.5511 61.3908 96.885C57.0404 88.6819 56.8824 78.4896 61.8675 69.8552C66.8525 61.2209 75.7583 56.2615 85.0377 55.9275Z" fill="#0D2C65"/>
+</mask>
+<g mask="url(#mask3_5589_27031)">
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>
