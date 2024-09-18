@@ -76,7 +76,7 @@
                     <div class="footer-block-title">Account</div>
                     <ul class="footer-block-links">
                         <li>
-                            <nuxt-link to="/auth" class="footer-link" @click="scrollToTop()">My account</nuxt-link>
+                            <nuxt-link to="/signin" class="footer-link" @click="scrollToTop()">My account</nuxt-link>
                         </li>
                         <li>
                             <nuxt-link to="/#" class="footer-link" @click="scrollToTop()">Become an affliiate</nuxt-link>

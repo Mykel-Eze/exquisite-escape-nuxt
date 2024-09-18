@@ -2,7 +2,7 @@
   <section>
     <div class="auth-methods flex-div">
       <div class="auth-method">
-        <button @click="showEmailForm = true" type="button" class="auth-method-btn flex-div hover-scale">
+        <button data-target="email-signin-modal" type="button" class="auth-method-btn flex-div hover-scale modal-trigger">
           <img src="~/assets/images/mail-icon.svg" alt="mail" class="auth-method-icon">
           <span class="auth-method-text">Sign in with Email</span>
         </button>
@@ -37,23 +37,24 @@
       </div>
     </div>
 
-    <div v-if="showEmailForm" class="email-form">
-      <input v-model="email" type="email" placeholder="Email" />
-      <input v-model="password" type="password" placeholder="Password" />
-      <button @click="signInWithEmail">Sign In</button>
-      <button @click="signUpWithEmail">Sign Up</button>
+    <div class="my-5 text-[16px] text-center">
+      Don't have an account? <NuxtLink to="/signup" class="pry-color underline bold-txt">Signup here</NuxtLink>.
     </div>
   </section>
+
+  <EmailSigninModal />
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { useAuth } from '~/composables/auth/useAuth';
+// import { useAuth } from '~/composables/auth/useAuth';
 
-const auth = useAuth();
-const showEmailForm = ref(false);
-const email = ref('');
-const password = ref('');
+// const auth = useAuth();
+
+onMounted(() => {
+    const elemsModal = document.querySelectorAll('.modal');
+    M.Modal.init(elemsModal);
+});
 
 const signInWithGoogle = () => {
   // Implement Google OAuth flow
@@ -79,21 +80,21 @@ const signInWithTwitter = () => {
 };
 
 const signInWithEmail = async () => {
-  try {
-    await auth.login(email.value, password.value);
-    // Handle successful login (e.g., redirect to dashboard)
-  } catch (error) {
-    console.error('Login failed:', error);
-  }
+  // try {
+  //   await auth.login(email.value, password.value);
+  //   // Handle successful login (e.g., redirect to dashboard)
+  // } catch (error) {
+  //   console.error('Login failed:', error);
+  // }
 };
 
 const signUpWithEmail = async () => {
-  try {
-    await auth.signup({ email: email.value, password: password.value });
-    // Handle successful signup (e.g., show verification message)
-  } catch (error) {
-    console.error('Signup failed:', error);
-  }
+  // try {
+  //   await auth.signup({ email: email.value, password: password.value });
+  //   // Handle successful signup (e.g., show verification message)
+  // } catch (error) {
+  //   console.error('Signup failed:', error);
+  // }
 };
 </script>
 

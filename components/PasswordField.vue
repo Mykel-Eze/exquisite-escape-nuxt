@@ -1,5 +1,8 @@
 <template>
   <div class="input-field-div password-field rel" :class="divClass">
+    <label :for="id">
+        {{ label }}
+    </label>
     <input
       :type="showPassword ? 'text' : 'password'"
       :name="id" 
@@ -39,6 +42,10 @@ export default {
         divClass: {
             type: String,
             default: ""
+        },
+        label: {
+            type: String,
+            required: false
         },
     },
     data() {

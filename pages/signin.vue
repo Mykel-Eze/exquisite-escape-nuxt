@@ -3,9 +3,9 @@
     <div class="row">
       <div class="container">
         <div class="page-title-header center">
-          <h1 class="page-title-2">Sign in or create an account</h1>
+          <h1 class="page-title-2">Sign in</h1>
           <p class="page-title-desc-2 text-[18px]">
-            Please enter your details to sign in or create a new account
+            Please enter your details to sign in
           </p>
         </div>
         <!--=== Auth-Methods Section ===-->
@@ -19,7 +19,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useAuth } from '~/composables/auth/useAuth';
+// import { useAuth } from '~/composables/auth/useAuth';
 
 definePageMeta({
   layout: "auth-layout"
@@ -27,7 +27,7 @@ definePageMeta({
 
 const router = useRouter();
 const route = useRoute();
-const auth = useAuth();
+// const auth = useAuth();
 
 const handleLoginSuccess = () => {
   // Redirect to dashboard or home page after successful login

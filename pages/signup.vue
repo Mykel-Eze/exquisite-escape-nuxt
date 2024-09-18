@@ -19,7 +19,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useAuth } from '~/composables/auth/useAuth';
+// import { useAuth } from '~/composables/auth/useAuth';
 
 definePageMeta({
   layout: "auth-layout"
@@ -27,7 +27,7 @@ definePageMeta({
 
 const router = useRouter();
 const route = useRoute();
-const auth = useAuth();
+// const auth = useAuth();
 
 const handleSignupSuccess = () => {
   // Show a success message or redirect to email verification page

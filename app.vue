@@ -7,6 +7,7 @@
 
 <style src="@/assets/css/filter-block.css"></style>
 <style src="@/assets/css/search-results.css"></style>
+<style src="@/assets/css/modal.css"></style>
 
 <style>
 div#wrapper {
