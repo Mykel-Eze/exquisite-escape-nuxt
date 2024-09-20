@@ -42,6 +42,7 @@ export function useAuth() {
   const logout = () => {
     authStore.logout();
     toast.info("You have been logged out");
+    navigateTo('/signin');
   };
 
   return {
