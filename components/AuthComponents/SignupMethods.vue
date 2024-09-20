@@ -55,30 +55,6 @@ onMounted(() => {
     const elemsModal = document.querySelectorAll('.modal');
     M.Modal.init(elemsModal);
 });
-
-
-const signUpWithGoogle = () => {
-  // Implement Google OAuth flow
-  // This usually involves redirecting to Google's OAuth page
-  // After successful authentication, Google will redirect back with a code
-  // You'll need to handle this redirect in your Nuxt app
-  window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?...'; // Add your Google OAuth URL here
-};
-
-const signUpWithFacebook = () => {
-  // Implement Facebook signup
-  console.log('Facebook signup not implemented');
-};
-
-const signUpWithApple = () => {
-  // Implement Apple signup
-  console.log('Apple signup not implemented');
-};
-
-const signUpWithTwitter = () => {
-  // Implement Twitter signup
-  console.log('Twitter signup not implemented');
-};
 </script>
 
 <style scoped>

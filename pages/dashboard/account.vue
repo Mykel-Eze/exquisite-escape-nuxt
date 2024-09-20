@@ -5,13 +5,13 @@
                 <div class="account-overview-content container">
                     <div class="account-page-header">
                         <h1 class="account-page-title">Account</h1>
-                        <p v-if="user" class="account-page-title-desc">
-                            Welcome {{ user.name }}, {{ user.email }} · <NuxtLink to="#" class="underline">Go to profile
+                        <p class="account-page-title-desc">
+                            Welcome {{ user.firstName }}, {{ user.email }} · <NuxtLink to="#" class="underline">Go to profile
                             </NuxtLink>
                         </p>
-                        <p v-else class="account-page-title-desc">
+                        <!-- <p v-else class="account-page-title-desc">
                             Loading user information...
-                        </p>
+                        </p> -->
                     </div>
 
                     <div class="account-items-wrapper">
@@ -99,21 +99,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useAuth } from '~/composables/auth/useAuth'
+// import { ref, onMounted } from 'vue'
+// import { useAuth } from '~/composables/auth/useAuth'
+import { useAuthStore } from '~/store/auth';
 
-const auth = useAuth()
-const user = ref(null)
+const authStore = useAuthStore();
+const user = computed(() => authStore.user);
 
-onMounted(async () => {
-    try {
-        // Assuming your useAuth composable has a method to get the current user
-        // If it doesn't, you might need to implement one or use an existing API call
-        user.value = await auth.getCurrentUser()
-    } catch (error) {
-        console.error('Failed to fetch user data:', error)
-    }
-})
+// Redirect if not authenticated
+if (!authStore.isAuthenticated) {
+  navigateTo('/signin');
+}
+
+console.log(user)
 
 definePageMeta({
     layout: "auth-layout"

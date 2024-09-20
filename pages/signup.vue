@@ -9,7 +9,7 @@
           </p>
         </div>
         <!--=== Auth-Methods Section ===-->
-        <SignupMethods @signup-success="handleSignupSuccess" />
+        <SignupMethods />
         <!--=== end of Auth-Methods Section ===-->
       </div>
     </div>

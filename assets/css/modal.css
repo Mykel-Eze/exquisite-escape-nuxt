@@ -36,3 +36,7 @@ input.profile-inp-field {
 .form-modal .password-field button.show-password-btn {
     top: 62%;
 }
+.error-message {
+    font-size: 12px;
+    color: red;
+}

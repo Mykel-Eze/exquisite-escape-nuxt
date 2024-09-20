@@ -34,15 +34,16 @@ export default defineNuxtConfig({
     dirs: ["constants/**", "composables/**"],
   },
 
+  build: {
+    transpile: ['vue-toastification'],
+  },
+
   modules: ["nuxt-swiper", "@pinia/nuxt"],
 
   plugins: [
-    // "~/plugins/vue-plugins/dotenv.js",
-    // "@/plugins/configuration/axios.js",
     "@/plugins/vue-plugins/antd-ui.js",
     "@/plugins/components/global-components",
-    // "@/plugins/vue-plugins/pinia.js",
-    // "@/plugins/vue-plugins/dayjs.js",
+    "@/plugins/toast.client.ts"
   ],
 
   css: [
@@ -51,6 +52,7 @@ export default defineNuxtConfig({
     "@/assets/css/fonts.css",
     "@/assets/scss/main.scss",
     "@/assets/css/styles.css",
+    "vue-toastification/dist/index.css",
   ],
 
   components: [
@@ -63,6 +65,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       BASE_URL: process.env.BASE_URL,
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.exquisiteescape.com'
     },
   },
 

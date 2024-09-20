@@ -100,7 +100,7 @@
 import { defineComponent, ref, computed, onMounted, watch } from "vue";
 import { useApiGet, useApiPost } from "../../composables/services/useApi";
 import { useRouter } from 'vue-router';
-import { useToursStore } from '../../stores/tours';
+import { useToursStore } from '../../store/tours';
 
 interface Country {
   code: string;

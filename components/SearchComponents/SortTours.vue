@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { useToursStore } from '@/stores/tours';
+import { useToursStore } from '~/store/tours';
 
 export default {
   name: "SortTours",
