@@ -13,7 +13,7 @@
       @input="updateValue"
       :required="required"
     />
-    <!-- <span v-if="error" class="error-message">{{ error }}</span> -->
+    <p v-if="error" class="error-message">{{ error }}</p>
   </div>
 </template>
 
@@ -73,8 +73,8 @@ export default {
 
 <style scoped>
 .error-message {
-  color: red;
-  font-size: 0.8em;
-  margin-top: 0.2em;
+    color: red;
+    font-size: 12px;
+    margin-top: -2px;
 }
 </style>
