@@ -100,7 +100,8 @@ export default {
         };
     },
     mounted() {
-        M.AutoInit();
+        const elemsTabs = document.querySelector('.tabs');
+        M.Tabs.init(elemsTabs);
     },
     methods: {}
 }

@@ -26,7 +26,7 @@
                         <nuxt-link to="/affiliate" class="" @click="scrollToTop()">Become an Affiliate</nuxt-link>
                     </li>
                     <li>
-                        <a href="#" class="dropdown-trigger" data-target="company-dropdown" @click="scrollToTop()">
+                        <a href="#" class="dropdown-trigger company-dropdown-trigger" data-target="company-dropdown" @click="scrollToTop()">
                           <div class="flex-div">
                             <span>Company</span>
                             <img src="~/assets/images/caret-down-green.svg" alt="caret" class="nav-caret-icon">
@@ -35,9 +35,30 @@
 
                         <!-- Dropdown Structure -->
                         <ul id="company-dropdown" class="dropdown-content">
-                          <li><a href="#!">Item 1</a></li>
-                          <li><a href="#!">Ittem 2</a></li>
-                          <li><a href="#!">Ittem 3</a></li>
+                          <li>
+                            <NuxtLink to="#!">
+                              <div>Our Story</div>
+                              <small>Know more about the Exquisite Escape</small>
+                            </NuxtLink>
+                          </li>
+                          <li>
+                            <NuxtLink to="#!">
+                              <div>Customer stories</div>
+                              <small>What the customers say about us</small>
+                            </NuxtLink>
+                          </li>
+                          <li>
+                            <NuxtLink to="#!">
+                              <div>Careers</div>
+                              <small>Join the exceptional Exquisite Escape</small>
+                            </NuxtLink>
+                          </li>
+                          <li>
+                            <NuxtLink to="#!">
+                              <div>Press</div>
+                              <small>Giant strides from the Exquisite Escape</small>
+                            </NuxtLink>
+                          </li>
                         </ul>
                     </li>
                     <li>
@@ -47,11 +68,59 @@
 
                 <ul id="nav-mobile-2" class="right hide-on-med-and-down flex-div gap-2">
                     <li class="rel">
-                      <button class="menu-user-btn flex-div">
-                          <img src="~/assets/images/menu.svg" alt="menu" class="top-nav-menu">
-                          <img src="~/assets/images/no-user-pix.svg" alt="user" class="user-icon">
+                      <button class="menu-user-btn flex-div dropdown-trigger menu-dropdown-trigger" data-target="menu-dropdown-1">
+                        <img src="~/assets/images/menu.svg" alt="menu" class="top-nav-menu">
+                        <img src="~/assets/images/no-user-pix.svg" alt="user" class="user-icon">
                       </button>
+
+                       <!-- Dropdown for logged-out users -->
+                      <ul v-if="!isLoggedIn" id="menu-dropdown-1" class="dropdown-content menu-dropdown">
+                        <li>
+                          <NuxtLink to="/signup">Sign Up</NuxtLink>
+                        </li>
+                        <li>
+                          <NuxtLink to="/signin">Login</NuxtLink>
+                        </li>
+                        <hr class="divider"/>
+                        <li>
+                          <NuxtLink to="#!">Help</NuxtLink>
+                        </li>
+                        <li>
+                          <NuxtLink to="#!">Invite friends</NuxtLink>
+                        </li>
+                      </ul>
+
+                      <!-- Dropdown for logged-in users -->
+                      <ul v-else id="menu-dropdown-1" class="dropdown-content menu-dropdown">
+                        <li>
+                          <NuxtLink to="/dashboard/account">Account</NuxtLink>
+                        </li>
+                        <li>
+                          <NuxtLink to="/dashboard/notifications">Notifications</NuxtLink>
+                        </li>
+                        <li>
+                          <NuxtLink to="/dashboard/flights-history">Bookings</NuxtLink>
+                        </li>
+                        <hr class="divider"/>
+                        <li>
+                          <NuxtLink to="/dashboard/profile-info">Profile</NuxtLink>
+                        </li>
+                        <li>
+                          <NuxtLink to="#!">Invite friends</NuxtLink>
+                        </li>
+                        <hr class="divider"/>
+                        <li>
+                          <NuxtLink to="/dashboard/payments">Payments</NuxtLink>
+                        </li>
+                        <li>
+                          <NuxtLink to="#!">Customer support</NuxtLink>
+                        </li>
+                        <li>
+                          <a href="#" @click.prevent="logout">Logout</a>
+                        </li>
+                      </ul>
                     </li>
+                    
                     <li class="rel">
                       <div class="flex-div language-div sec-color text-[10px] gap-1">
                         <img src="~/assets/images/globe.svg" alt="globe" class="globe-icon">
@@ -89,10 +158,59 @@
         </li>
         <li class="hire-us-li hul-2">
             <div class="flex-div gap-2 justify-center">
-              <button class="menu-user-btn flex-div">
+              <div>
+                <button class="menu-user-btn flex-div dropdown-trigger menu-dropdown-trigger" data-target="menu-dropdown-2">
                   <img src="~/assets/images/menu.svg" alt="menu" class="top-nav-menu">
                   <img src="~/assets/images/no-user-pix.svg" alt="user" class="user-icon">
-              </button>
+                </button>
+
+                <!-- Dropdown for logged-out users -->
+                <ul v-if="!isLoggedIn" id="menu-dropdown-2" class="dropdown-content menu-dropdown">
+                  <li>
+                    <NuxtLink to="/signup">Sign Up</NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink to="/signin">Login</NuxtLink>
+                  </li>
+                  <hr class="divider"/>
+                  <li>
+                    <NuxtLink to="#!">Help</NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink to="#!">Invite friends</NuxtLink>
+                  </li>
+                </ul>
+
+                <!-- Dropdown for logged-in users -->
+                <ul v-else id="menu-dropdown-2" class="dropdown-content menu-dropdown">
+                  <li>
+                    <NuxtLink to="/dashboard/account">Account</NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink to="/dashboard/notifications">Notifications</NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink to="/dashboard/flights-history">Bookings</NuxtLink>
+                  </li>
+                  <hr class="divider"/>
+                  <li>
+                    <NuxtLink to="/dashboard/profile-info">Profile</NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink to="#!">Invite friends</NuxtLink>
+                  </li>
+                  <hr class="divider"/>
+                  <li>
+                    <NuxtLink to="/dashboard/payments">Payments</NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink to="#!">Customer support</NuxtLink>
+                  </li>
+                  <li>
+                    <a href="#" @click.prevent="logout">Logout</a>
+                  </li>
+                </ul>
+              </div>
 
               <div class="flex-div language-div sec-color text-[10px] gap-1">
                 <img src="~/assets/images/globe.svg" alt="globe" class="globe-icon">
@@ -106,27 +224,69 @@
 
 <script>
 import M from "materialize-css";
+import { useAuth } from '~/composables/auth/useAuth';
+import { useAuthStore } from '~/store/auth';
+import { useRouter } from 'vue-router';
+import { ref, onMounted, watch } from 'vue';
 
 export default {
   name: "NavbarComponent",
 
-  mounted() {
-    document.addEventListener('DOMContentLoaded', function() {
-      var elemsSidenav = document.querySelectorAll(".sidenav");
-      M.Sidenav.init(elemsSidenav);
+  setup() {
+    const auth = useAuth();
+    const authStore = useAuthStore();
+    const router = useRouter();
+    const isLoggedIn = ref(authStore.isAuthenticated);
 
-      var elemsDropdown = document.querySelectorAll('.dropdown-trigger');
-      M.Dropdown.init(elemsDropdown, {
+    const initDropdowns = () => {
+      const elemsDropdown1 = document.querySelector('.company-dropdown-trigger');
+      M.Dropdown.init(elemsDropdown1, {
         coverTrigger: false,
+        constrainWidth: false
       });
+      const elemsDropdown2 = document.querySelectorAll('.menu-dropdown-trigger');
+      M.Dropdown.init(elemsDropdown2, {
+        coverTrigger: false,
+        constrainWidth: false
+      });
+    };
+
+    const logout = async () => {
+      try {
+        await auth.logout();
+        router.push('/');
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    };
+
+    onMounted(() => {
+      const elemsSidenav = document.querySelectorAll(".sidenav");
+      M.Sidenav.init(elemsSidenav);
+      initDropdowns();
     });
-  },
-  methods:{
-    scrollToTop() {
+
+    watch(() => authStore.isAuthenticated, (newValue) => {
+      isLoggedIn.value = newValue;
+      // Re-initialize dropdowns when auth state changes
+      initDropdowns();
+    });
+
+    return {
+      isLoggedIn,
+      logout,
+      scrollToTop: () => {
         window.scrollTo(0, 0);
-    }
+      }
+    };
   }
 };
 </script>
 
 <style scoped src="~/assets/css/navbar.css"></style>
+
+<style scoped>
+.dropdown-content {
+  top: 66px !important;
+}
+</style>
