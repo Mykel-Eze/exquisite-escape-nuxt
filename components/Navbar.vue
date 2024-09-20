@@ -83,7 +83,7 @@
                         </li>
                         <hr class="divider"/>
                         <li>
-                          <NuxtLink to="#!">Help</NuxtLink>
+                          <NuxtLink to="/help">Help</NuxtLink>
                         </li>
                         <li>
                           <NuxtLink to="#!">Invite friends</NuxtLink>
@@ -113,7 +113,7 @@
                           <NuxtLink to="/dashboard/payments">Payments</NuxtLink>
                         </li>
                         <li>
-                          <NuxtLink to="#!">Customer support</NuxtLink>
+                          <NuxtLink to="/help">Help</NuxtLink>
                         </li>
                         <li>
                           <a href="#" @click.prevent="logout">Logout</a>
@@ -167,44 +167,44 @@
                 <!-- Dropdown for logged-out users -->
                 <ul v-if="!isLoggedIn" id="menu-dropdown-2" class="dropdown-content menu-dropdown">
                   <li>
-                    <NuxtLink to="/signup">Sign Up</NuxtLink>
+                    <NuxtLink to="/signup" class="sidenav-close">Sign Up</NuxtLink>
                   </li>
                   <li>
-                    <NuxtLink to="/signin">Login</NuxtLink>
+                    <NuxtLink to="/signin" class="sidenav-close">Login</NuxtLink>
                   </li>
                   <hr class="divider"/>
                   <li>
-                    <NuxtLink to="#!">Help</NuxtLink>
+                    <NuxtLink to="/help" class="sidenav-close">Help</NuxtLink>
                   </li>
                   <li>
-                    <NuxtLink to="#!">Invite friends</NuxtLink>
+                    <NuxtLink to="#!" class="sidenav-close">Invite friends</NuxtLink>
                   </li>
                 </ul>
 
                 <!-- Dropdown for logged-in users -->
                 <ul v-else id="menu-dropdown-2" class="dropdown-content menu-dropdown">
                   <li>
-                    <NuxtLink to="/dashboard/account">Account</NuxtLink>
+                    <NuxtLink to="/dashboard/account" class="sidenav-close">Account</NuxtLink>
                   </li>
                   <li>
-                    <NuxtLink to="/dashboard/notifications">Notifications</NuxtLink>
+                    <NuxtLink to="/dashboard/notifications" class="sidenav-close">Notifications</NuxtLink>
                   </li>
                   <li>
-                    <NuxtLink to="/dashboard/flights-history">Bookings</NuxtLink>
-                  </li>
-                  <hr class="divider"/>
-                  <li>
-                    <NuxtLink to="/dashboard/profile-info">Profile</NuxtLink>
-                  </li>
-                  <li>
-                    <NuxtLink to="#!">Invite friends</NuxtLink>
+                    <NuxtLink to="/dashboard/flights-history" class="sidenav-close">Bookings</NuxtLink>
                   </li>
                   <hr class="divider"/>
                   <li>
-                    <NuxtLink to="/dashboard/payments">Payments</NuxtLink>
+                    <NuxtLink to="/dashboard/profile-info" class="sidenav-close">Profile</NuxtLink>
                   </li>
                   <li>
-                    <NuxtLink to="#!">Customer support</NuxtLink>
+                    <NuxtLink to="#!" class="sidenav-close">Invite friends</NuxtLink>
+                  </li>
+                  <hr class="divider"/>
+                  <li>
+                    <NuxtLink to="/dashboard/payments" class="sidena-close">Payments</NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink to="/help" class="sidena-close">Help</NuxtLink>
                   </li>
                   <li>
                     <a href="#" @click.prevent="logout">Logout</a>
