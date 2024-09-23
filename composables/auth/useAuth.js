@@ -30,7 +30,7 @@ export function useAuth() {
       });
 
       // Log the response to ensure it contains the expected structure
-      console.log('Login Response:', response);
+      // console.log('Login Response:', response);
 
       const token = response.jwt;  // Extract the JWT
       authStore.setToken(token);  // Save the token
@@ -45,7 +45,6 @@ export function useAuth() {
       navigateTo('/dashboard/account');
       return response;
     } catch (error) {
-      console.log(error);
       throw error;
     } finally {
       authStore.setIsLoggingIn(false);
@@ -54,16 +53,9 @@ export function useAuth() {
 
   const getCurrentUser = async () => {
     if (!authStore.token) {
-      console.error('Token is missing!');
+      // console.error('Token is missing!');
       throw new Error('Token is missing!');
     }
-
-    console.log({
-      url: `${config.public.apiBase}/api/users/currentuser`,
-      headers: {
-        Authorization: `Bearer ${authStore.token}`,
-      },
-    });
 
     try {
       const response = await $fetch(`${config.public.apiBase}/api/users/currentuser`, {
@@ -75,12 +67,12 @@ export function useAuth() {
         },
       });
       
-      console.log('Current User Response:', response);
+      // console.log('Current User Response:', response);
       
       authStore.setUser(response);  // Set the user in authStore
       return response;
     } catch (error) {
-      console.error('Error fetching current user:', error);
+      // console.error('Error fetching current user:', error);
       throw error;
     }
   };
@@ -92,7 +84,7 @@ export function useAuth() {
       });
       return response;
     } catch (error) {
-      console.error('Error activating account:', error);
+      // console.error('Error activating account:', error);
       throw error;
     }
   };
@@ -109,7 +101,7 @@ export function useAuth() {
       try {
         await getCurrentUser();
       } catch (error) {
-        console.error('Error initializing auth:', error);
+        // console.error('Error initializing auth:', error);
         authStore.logout();
       }
     }
