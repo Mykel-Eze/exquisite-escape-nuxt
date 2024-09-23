@@ -26,7 +26,7 @@ body {
   height: auto;
   min-height: 100vh;
   color: $grey;
-  font-family: "LotaGrostesqueRegular", sans-serif !important;
+  font-family: "LotaGrotesque", sans-serif !important;
   @media only screen and (min-width: 1280px) {
     font-size: 18px;
   }
@@ -70,13 +70,13 @@ ul {
   // WEIGHT
   &-bold {
     // font-weight: bold,
-    font-family: "LotaGrostesqueBold", sans-serif;
+    font-family: "LotaGrotesque-bold", sans-serif;
   }
   &-medium {
-    font-family: "LotaGrostesqueSemiBold", sans-serif;
+    font-family: "LotaGrotesque-smbold", sans-serif;
   }
   &-light {
-    font-family: "LotaGrostesqueLight", sans-serif;
+    font-family: "LotaGrotesque-light", sans-serif;
   }
 }
 
