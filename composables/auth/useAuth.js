@@ -69,7 +69,9 @@ export function useAuth() {
       
       // console.log('Current User Response:', response);
       
-      authStore.setUser(response);  // Set the user in authStore
+      if (response.firstName && response.email) {
+        authStore.setUser(response);  // Set user details in the store
+      }
       return response;
     } catch (error) {
       // console.error('Error fetching current user:', error);
@@ -106,6 +108,10 @@ export function useAuth() {
       }
     }
   };
+  
+  onMounted(async () => {
+    await initializeAuth();  // Initialize the auth when the app loads
+  });
 
   return {
     register,
