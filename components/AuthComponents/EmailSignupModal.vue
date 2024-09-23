@@ -156,7 +156,7 @@ const signUpWithEmail = async () => {
     };
 
     await auth.register(userData);
-    $toast.success('Registration successful! You can now log in.');
+    $toast.success('Signup successful! Check your email to activate your account.');
     closeModal('email-signup-modal');
     router.push('/signin');
   } catch (error) {

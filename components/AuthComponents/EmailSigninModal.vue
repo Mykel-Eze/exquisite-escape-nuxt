@@ -56,13 +56,23 @@ const signInWithEmail = async () => {
       password: password.value,
     };
 
-    console.log('Credentials being sent:', credentials);
-
     await auth.login(credentials);
+    $toast.success('Login successful');
     closeModal('email-signin-modal');
     router.push('/dashboard/account');
   } catch (error) {
-    // Error is handled in the composable
+    let errorMessage = 'An error occurred during sign in. Please try again.';
+    
+    if (error.response && error.response._data && error.response._data.error) {
+      if (Array.isArray(error.response._data.error) && error.response._data.error.length > 0) {
+        errorMessage = error.response._data.error[0].message;
+      } else if (typeof error.response._data.error === 'string') {
+        errorMessage = error.response._data.error;
+      }
+    }
+
+    // console.error('Signin error:', error.response._data.error[0].message);
+    $toast.error(errorMessage);
   }
 };
 

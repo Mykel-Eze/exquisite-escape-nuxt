@@ -18,37 +18,32 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-// import { useAuth } from '~/composables/auth/useAuth';
+import { useRoute, useRouter } from 'vue-router';
+import { useAuth } from '~/composables/auth/useAuth';
+import { useToast } from "vue-toastification";
 
 definePageMeta({
   layout: "auth-layout"
 });
 
-const router = useRouter();
 const route = useRoute();
-// const auth = useAuth();
+const router = useRouter();
+const auth = useAuth();
+const toast = useToast();
 
-const handleLoginSuccess = () => {
-  // Redirect to dashboard or home page after successful login
-  router.push('/dashboard');
-};
-
-onMounted(() => {
-  const code = route.query.code;
-  if (code) {
-    handleGoogleOAuth(code);
+onMounted(async () => {
+  const token = route.query.token;
+  if (token) {
+    try {
+      const response = await auth.activateAccount(token);
+      toast.success(response.msg);
+      // Remove the token from the URL
+      router.replace({ query: {} });
+    } catch (error) {
+      toast.error(error.message || 'Account activation failed. Please try again.');
+    }
   }
 });
-
-const handleGoogleOAuth = async (code) => {
-  try {
-    await auth.googleOAuth(code);
-    handleLoginSuccess();
-  } catch (error) {
-    console.error('Google OAuth failed:', error);
-  }
-};
 </script>
 
 <style src="~/assets/css/auth.css"></style>

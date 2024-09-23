@@ -5,13 +5,13 @@
                 <div class="account-overview-content container">
                     <div class="account-page-header">
                         <h1 class="account-page-title">Account</h1>
-                        <p class="account-page-title-desc">
-                            Welcome {{ user.firstName }}, {{ user.email }} · <NuxtLink to="#" class="underline">Go to profile
+                        <p v-if="authStore.user" class="account-page-title-desc">
+                            Welcome {{ authStore.user.firstName }}, {{ authStore.user.email }} · <NuxtLink to="#" class="underline">Go to profile
                             </NuxtLink>
                         </p>
-                        <!-- <p v-else class="account-page-title-desc">
+                        <p v-else class="account-page-title-desc">
                             Loading user information...
-                        </p> -->
+                        </p>
                     </div>
 
                     <div class="account-items-wrapper">
@@ -84,7 +84,7 @@
                             </p>
                         </NuxtLink>
 
-                        <NuxtLink to="/dashboard/booking-history" class="account-item-block hover-scale">
+                        <NuxtLink to="!#" class="account-item-block hover-scale">
                             <img src="@/assets/images/icons/booking-history-icon.svg" alt="help-icon" class="aib-icon">
                             <div class="aib-title">Booking history</div>
                             <p class="aib-desc">
@@ -99,23 +99,35 @@
 </template>
 
 <script setup>
-// import { ref, onMounted } from 'vue'
-// import { useAuth } from '~/composables/auth/useAuth'
+import { onMounted } from 'vue';
+import { useAuth } from '~/composables/auth/useAuth';
 import { useAuthStore } from '~/store/auth';
 
 const authStore = useAuthStore();
-const user = computed(() => authStore.user);
+const auth = useAuth();
 
-// Redirect if not authenticated
-if (!authStore.isAuthenticated) {
-  navigateTo('/signin');
-}
+onMounted(async () => {
+  if (authStore.isAuthenticated && !authStore.user) {
+    try {
+      await auth.getCurrentUser(); // This fetches and sets the user in authStore
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      if (error.response && error.response.status === 401) {
+        authStore.logout();
+        navigateTo('/signin');
+      }
+    }
+  } else if (!authStore.isAuthenticated) {
+    navigateTo('/signin');
+  }
+});
 
-console.log(user)
+console.log(authStore.user);
 
 definePageMeta({
-    layout: "auth-layout"
-})
+  layout: "auth-layout"
+});
 </script>
+
 
 <style src="~/assets/css/dashboard.css"></style>

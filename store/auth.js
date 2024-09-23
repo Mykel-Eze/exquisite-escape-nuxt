@@ -8,7 +8,6 @@ export const useAuthStore = defineStore('auth', {
     isLoading: false,
     isRegistering: false,
     isLoggingIn: false,
-    isVerifyingOTP: false,
   }),
   actions: {
     setUser(user) {
@@ -28,9 +27,6 @@ export const useAuthStore = defineStore('auth', {
     },
     setIsLoggingIn(value) {
       this.isLoggingIn = value;
-    },
-    setIsVerifyingOTP(value) {
-      this.isVerifyingOTP = value;
     },
     logout() {
       this.user = null;
