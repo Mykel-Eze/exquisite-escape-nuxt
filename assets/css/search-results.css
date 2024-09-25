@@ -6,6 +6,15 @@
     border-radius: 10px;
     width: fit-content;
 }
+.loading-spinner-wrapper .loading-spinner {
+    width: 100%;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+.loading-spinner-wrapper .loading-spinner svg {
+    width: 100px;
+    height: 100px;
+}
 
 section#cheap-flights {
     padding: 60px 0 40px;

@@ -23,7 +23,7 @@
               <div class="px-[30px]">
                 <div class="top-snack-bar flex-div gap-2 mb-[30px]">
                   <span class="text-white"
-                    >Choose flight from Lagos to London
+                    >Choose flight from {{ originCity }} to {{ destinationCity }}
                   </span>
                   <img
                     src="@/assets/images/chevron-right.svg"
@@ -41,19 +41,21 @@
               </div>
 
               <!--=== Note to Dev: When the search is empty, uncomment the below component👇🏽 ===-->
-              <!-- <div class="full-height rel">
+              <div v-if="isLoading" class="loading-spinner-wrapper">
+                <LoadingSpinner />
+              </div>
+              <div v-else-if="!flightList || flightList.length === 0" class="mt-[100px] mb-[40px]">
                 <EmptySearch
                   title="Sorry, we couldn't find any flights that match your criteria"
                   description="Try searching nearby airports or alternative dates"
                 />
-              </div> -->
+              </div>
+              <div v-else>
+                <CheapFlights :flights="cheapFlights" />
 
-              <div>
-                <CheapFlights />
+                <FlightStops :flights="flightList" />
 
-                <FlightStops />
-
-                <SortFlights @view-ticket-clicked="showPopup = true" />
+                <SortFlights :flights="flightList" @view-ticket-clicked="showPopup = true" />
               </div>
             </div>
           </div>
@@ -68,33 +70,150 @@
   </div>
 </template>
 
-<script></script>
-<script lang="ts">
-import { defineComponent } from "vue";
 
-export default defineComponent({
-  // setup() {
-  //   const showPopup = ref(false);
-  //   const searchObject = ref({});
-  //   const flightList = ref([]);
-  //   const router = useRouter();
-  //   onMounted(async () => {
-  //     searchObject.value = router.currentRoute.value.query;
-  //     searchObject.value = {
-  //       ...searchObject.value,
-  //       adults: Number(searchObject.value.adults),
-  //     };
-  //     const { data } = await useApiPost(
-  //       "/flight/get/search-offer",
-  //       searchObject.value
-  //     );
-  //     flightList.value = data.value.data;
-  //   });
-  //   return {
-  //     showPopup,
-  //   };
-  // },
-});
+<script>
+import { ref, onMounted, computed, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useApi } from '@/utils/api'
+
+export default {
+  setup() {
+    const showPopup = ref(false);
+    const searchObject = ref({});
+    const flightList = ref(null);
+    const isLoading = ref(true);
+    const router = useRouter();
+    const route = useRoute();
+    const api = useApi();
+
+    const originCity = ref('');
+    const destinationCity = ref('');
+
+    const cheapFlights = computed(() => {
+      if (!flightList.value) return [];
+      
+      // Group flights by date and find minimum price for each date
+      const flightsByDate = flightList.value.reduce((acc, flight) => {
+        const date = flight.itineraries[0].segments[0].departure.at.split('T')[0];
+        const price = parseFloat(flight.price.total);
+        if (!acc[date] || price < acc[date].minPrice) {
+          acc[date] = { date, minPrice: price };
+        }
+        return acc;
+      }, {});
+      return Object.values(flightsByDate);
+    });
+
+    const fetchFlightData = async () => {
+      isLoading.value = true;
+      const query = route.query;
+      
+      // Get today's date as a fallback
+      const today = new Date();
+      const fallbackDate = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+      // Determine if it's a round-trip or one-way based on the presence of a returnDate
+      const isRoundTrip = !!query.returnDate;
+      
+      searchObject.value = {
+        originLocationCode: query.originLocationCode || '',
+        destinationLocationCode: query.destinationLocationCode || '',
+        departureDate: query.departureDate || fallbackDate,
+        returnDate: isRoundTrip ? query.returnDate : undefined, // Only include returnDate if it's a round-trip
+        adults: Number(query.adults) || 1,
+        travelClass: query.travelClass || 'ECONOMY',
+        currencyCode: 'NGN'
+      };
+
+      // Only add returnDate if it exists in the query
+      if (query.returnDate) {
+        searchObject.value.returnDate = query.returnDate;
+      }
+
+      // Validate dates if it's a round trip
+      if (searchObject.value.returnDate) {
+        const departureDate = new Date(searchObject.value.departureDate);
+        const returnDate = new Date(searchObject.value.returnDate);
+        if (returnDate < departureDate) {
+          console.error('Invalid date range');
+          isLoading.value = false;
+          return;
+        }
+      }
+      
+      // Fetch city names
+      originCity.value = await getCityName(searchObject.value.originLocationCode);
+      destinationCity.value = await getCityName(searchObject.value.destinationLocationCode);
+
+      console.log("Search object:", searchObject.value);
+      try {
+        const apiResponse = await api.post(
+          "/api/flight/get/search-offer",
+          searchObject.value
+        );
+        console.log("API Response:", apiResponse); // This log should now show the full response
+
+        if (apiResponse && Array.isArray(apiResponse.data)) {
+          flightList.value = apiResponse.data;
+          console.log("Flight list updated:", flightList.value);
+        } else {
+          console.error("Unexpected API response structure:", apiResponse);
+          flightList.value = [];
+        }
+      } catch (error) {
+        console.error("Error fetching flight data:", error);
+        flightList.value = []; // Set to empty array in case of error
+      } finally {
+        isLoading.value = false;
+      }
+    };
+
+    onMounted(fetchFlightData);
+
+    // Watch for changes in the route query
+    watch(() => route.query, (newQuery, oldQuery) => {
+      if (JSON.stringify(newQuery) !== JSON.stringify(oldQuery)) {
+        fetchFlightData();
+      }
+    }, { deep: true });
+
+    const getCityName = async (locationCode) => {
+      try {
+        const response = await api.post('/api/flight/airport-nearby', {
+          keyword: locationCode,
+          subType: "CITY"
+        });
+        
+        if (response.data && response.data.length > 0) {
+          // Look for a city that matches the exact IATA code
+          const matchingCity = response.data.find(city => city.iataCode === locationCode);
+          
+          if (matchingCity) {
+            return matchingCity.address?.cityName || matchingCity.name;
+          }
+          
+          // Fallback to the first result if no exact match is found
+          return response.data[0].address?.cityName || response.data[0].name;
+        }
+        return locationCode; // Fallback to the code if no city name is found
+      } catch (error) {
+        console.error(`Error fetching city name for ${locationCode}:`, error);
+        return locationCode; // Fallback to the code in case of error
+      }
+    };
+
+
+    return {
+      showPopup,
+      flightList,
+      cheapFlights,
+      isLoading,
+      originCity,
+      destinationCity,
+    };
+  },
+};
 </script>
+
 
 <style></style>
