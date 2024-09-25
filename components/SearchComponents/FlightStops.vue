@@ -23,16 +23,18 @@
               </ul>
             </div>
           </swiper-slide>
-          <swiper-slide v-for="(airline, index) in flightsByAirline" :key="index">
+          <swiper-slide v-for="(carrier, index) in flightsByCarrier" :key="index">
             <div class="stop-block center">
               <div class="sb-top-side">
-                <img :src="getAirlineLogo(airline.code)" alt="airline logo">
-                <div>{{ airline.name }}</div>
+                <div class="carrier-logo-wrapper">
+                    <img :src="getCarrierLogo(carrier.code)" alt="carrier logo">
+                </div>
+                <div class="capitalize">{{ carrier.name }}</div>
               </div>
               <ul class="sb-contents">
-                <li>{{ formatNumber(airline.prices.nonStop) }}</li>
-                <li>{{ formatNumber(airline.prices.oneStop) }}</li>
-                <li>{{ formatNumber(airline.prices.multiStop) }}</li>
+                <li class="pointer">{{ formatNumber(carrier.prices.nonStop) }}</li>
+                <li class="pointer">{{ formatNumber(carrier.prices.oneStop) }}</li>
+                <li class="pointer">{{ formatNumber(carrier.prices.multiStop) }}</li>
               </ul>
             </div>
           </swiper-slide>
@@ -68,16 +70,20 @@ export default {
       type: Array,
       required: true,
     },
+    dictionaries: {
+      type: Object,
+      required: true,
+    },
   },
   setup(props) {
-    const flightsByAirline = computed(() => {
-      const airlines = {};
+    const flightsByCarrier = computed(() => {
+      const carriers = {};
       props.flights.forEach(flight => {
-        const airline = flight.validatingAirlineCodes[0];
-        if (!airlines[airline]) {
-          airlines[airline] = {
-            code: airline,
-            name: flight.itineraries[0].segments[0].carrierCode,
+        const carrierCode = flight.itineraries[0].segments[0].carrierCode;
+        if (!carriers[carrierCode]) {
+          carriers[carrierCode] = {
+            code: carrierCode,
+            name: props.dictionaries.carriers[carrierCode] || carrierCode,
             prices: {
               nonStop: Infinity,
               oneStop: Infinity,
@@ -87,32 +93,48 @@ export default {
         }
         const stops = flight.itineraries[0].segments.length - 1;
         const price = parseFloat(flight.price.total);
-        if (stops === 0 && price < airlines[airline].prices.nonStop) {
-          airlines[airline].prices.nonStop = price;
-        } else if (stops === 1 && price < airlines[airline].prices.oneStop) {
-          airlines[airline].prices.oneStop = price;
-        } else if (stops > 1 && price < airlines[airline].prices.multiStop) {
-          airlines[airline].prices.multiStop = price;
+        if (stops === 0 && price < carriers[carrierCode].prices.nonStop) {
+          carriers[carrierCode].prices.nonStop = price;
+        } else if (stops === 1 && price < carriers[carrierCode].prices.oneStop) {
+          carriers[carrierCode].prices.oneStop = price;
+        } else if (stops > 1 && price < carriers[carrierCode].prices.multiStop) {
+          carriers[carrierCode].prices.multiStop = price;
         }
       });
-      return Object.values(airlines);
+      return Object.values(carriers);
     });
 
     return {
       modules: [Navigation],
-      flightsByAirline,
+      flightsByCarrier,
     };
   },
   methods: {
     formatNumber(num) {
       if (num === Infinity) {
-        return '-'; // Return an empty string instead of 'N/A'
+        return '-';
       }
       return `₦${num.toLocaleString()}`;
     },
-    getAirlineLogo(airlineCode) {
-      return `/images/airlines/${airlineCode.toLowerCase()}.png`;
+    getCarrierLogo(carrierCode) {
+    //   return `/images/carriers/${carrierCode.toLowerCase()}.png`;
+    return `http://pics.avs.io/200/200/${carrierCode}.png.`
     },
   },
 };
 </script>
+
+<style scoped>
+.carrier-logo-wrapper {
+    width: 45px;
+    height: 45px;
+    position: relative;
+    margin: auto;
+}
+.carrier-logo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left;
+}
+</style>

@@ -53,7 +53,7 @@
               <div v-else>
                 <CheapFlights :flights="cheapFlights" />
 
-                <FlightStops :flights="flightList" />
+                <FlightStops :flights="flightList" :dictionaries="dictionaries" />
 
                 <SortFlights :flights="flightList" @view-ticket-clicked="showPopup = true" />
               </div>
@@ -82,6 +82,7 @@ export default {
     const searchObject = ref({});
     const flightList = ref(null);
     const isLoading = ref(true);
+    const dictionaries = ref(null);
     const router = useRouter();
     const route = useRoute();
     const api = useApi();
@@ -151,18 +152,22 @@ export default {
           "/api/flight/get/search-offer",
           searchObject.value
         );
-        console.log("API Response:", apiResponse); // This log should now show the full response
+        console.log("API Response:", apiResponse);
 
-        if (apiResponse && Array.isArray(apiResponse.data)) {
+        if (apiResponse && apiResponse.data && Array.isArray(apiResponse.data)) {
           flightList.value = apiResponse.data;
+          dictionaries.value = apiResponse.dictionaries;
           console.log("Flight list updated:", flightList.value);
+          console.log("Dictionaries:", dictionaries.value);
         } else {
           console.error("Unexpected API response structure:", apiResponse);
           flightList.value = [];
+          dictionaries.value = {};
         }
       } catch (error) {
         console.error("Error fetching flight data:", error);
-        flightList.value = []; // Set to empty array in case of error
+        flightList.value = [];
+        dictionaries.value = {};
       } finally {
         isLoading.value = false;
       }
@@ -210,6 +215,7 @@ export default {
       isLoading,
       originCity,
       destinationCity,
+      dictionaries,
     };
   },
 };

@@ -88,7 +88,9 @@
                     <small>{{ result.name }} ({{ result.iataCode }})</small>
                   </li>
                 </ul>
-                <div v-else-if="destinationSearch.length >= 3">Can't find location</div>
+                <ul v-else-if="destinationSearch.length >= 3">
+                  <li class="text-dark-gray py-2 px-4">Can't find location</li>
+                </ul>
               </div>
             </div>
           </div>
