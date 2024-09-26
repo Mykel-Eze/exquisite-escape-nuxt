@@ -269,7 +269,7 @@ button.view-ticket-btn {
     background: white;
     z-index: 100;
     padding: 20px 20px 20px 40px;
-    display: none;
+    /* display: none; */
     overflow-y: auto;
 }
 .side-popup[data-ticket-type="multiple"] {
@@ -301,6 +301,7 @@ img.close-popup-icon {
     font-size: 34px;
     color: #141414;
     margin: 0;
+    letter-spacing: -1px;
 }
 .ticket-amount-div span {
     font-size: 14px;
@@ -392,6 +393,9 @@ button.select-ticket-btn {
     padding-left: 0;
     margin: 10px 0;
     display: inline-block;
+}
+.hidden-details-block {
+    font-size: 13px;
 }
 /*---=== end of Side-Pop-Up ===---*/
 

@@ -55,7 +55,7 @@
 
                 <FlightStops :flights="flightList" :dictionaries="dictionaries" />
 
-                <SortFlights :flights="flightList" @view-ticket-clicked="showPopup = true" />
+                <SortFlights :flights="flightList" :dictionaries="dictionaries" />
               </div>
             </div>
           </div>
@@ -63,10 +63,10 @@
       </div>
     </section>
 
-    <FlightsSidePopup
+    <!-- <FlightsSidePopup
       :class="{ open: showPopup }"
       @close-popup="showPopup = false"
-    />
+    /> -->
   </div>
 </template>
 
