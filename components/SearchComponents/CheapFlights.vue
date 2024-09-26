@@ -14,7 +14,7 @@
           class="mySwiper"
         >
           <swiper-slide v-for="(flight, index) in flights" :key="index">
-            <div class="cheap-flight-block pointer">
+            <div class="cheap-flight-block">
               <div class="flex-div justify-between">
                 <span class="text-black">Date</span>
                 <span class="text-[#848484]">{{ formatDate(flight.date) }}</span>

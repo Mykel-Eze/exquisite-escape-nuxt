@@ -32,9 +32,9 @@
                 <div class="capitalize">{{ carrier.name }}</div>
               </div>
               <ul class="sb-contents">
-                <li class="pointer">{{ formatNumber(carrier.prices.nonStop) }}</li>
-                <li class="pointer">{{ formatNumber(carrier.prices.oneStop) }}</li>
-                <li class="pointer">{{ formatNumber(carrier.prices.multiStop) }}</li>
+                <li class="">{{ formatNumber(carrier.prices.nonStop) }}</li>
+                <li class="">{{ formatNumber(carrier.prices.oneStop) }}</li>
+                <li class="">{{ formatNumber(carrier.prices.multiStop) }}</li>
               </ul>
             </div>
           </swiper-slide>
