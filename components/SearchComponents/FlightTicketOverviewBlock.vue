@@ -3,8 +3,11 @@
     <div class="ticket-overview-block" v-for="flight in flights" :key="flight.id">
       <div class="left-side">
         <div class="ticket-labels-wrapper flex-div gap-[18px]">
-          <TicketLabels label="cheapest" v-if="flight.price.total === lowestPrice" />
-          <!-- Add more labels as needed -->
+          <FlightTags v-if="isCheapest(flight)" type="filter" label="Cheapest" />
+          <FlightTags v-if="isFastest(flight)" type="filter" label="Fastest" />
+          <FlightTags v-if="isMultiCity(flight)" type="trip" label="Mult-city per traveler" icon="double-arr.svg" />
+          <FlightTags type="days" label="Same day" />
+          <FlightTags v-if="flight.numberOfBookableSeats <= 1" type="trip" :label="`${flight.numberOfBookableSeats} ticket(s) left`" icon="ticket.svg" />
         </div>
 
         <div class="ticket-overview-content">
@@ -38,8 +41,10 @@
         </div>
 
         <div class="ticket-labels-wrapper flex-div gap-[10px]">
-          <TicketLabels label="carry-one-bag" v-if="hasCheckedBags(flight)" />
-          <!-- Add more labels as needed -->
+          <FlightTags v-if="hasCheckedBags(flight)" type="addon" label="Carry - one bag" icon="bag.svg" />
+          <FlightTags type="addon" label="No changes fee" icon="recycle.svg" />
+          <FlightTags type="addon" label="Seat choice included" icon="seat.svg" />
+          <FlightTags type="addon" label="Average CO2" icon="cloud.svg" />
         </div>
       </div>
       <div class="right-side rel min-h-[200px]">
@@ -180,4 +185,39 @@ const hasCheckedBags = (flight) => {
 const formatPrice = (price) => {
   return parseFloat(price).toLocaleString('en-US');
 };
+
+const sortedByPrice = computed(() => {
+  return [...props.flights].sort((a, b) => parseFloat(a.price.total) - parseFloat(b.price.total));
+});
+
+const cheapestFlights = computed(() => {
+  return sortedByPrice.value.slice(0, 3);
+});
+
+const isCheapest = (flight) => cheapestFlights.value.includes(flight);
+
+const sortedByDuration = computed(() => {
+  return [...props.flights].sort((a, b) => {
+    const durationA = getTotalDuration(a);
+    const durationB = getTotalDuration(b);
+    return durationA - durationB;
+  });
+});
+
+const fastestFlight = computed(() => sortedByDuration.value[0]);
+
+const isFastest = (flight) => flight === fastestFlight.value;
+
+const getTotalDuration = (flight) => {
+  return flight.itineraries[0].segments.reduce((total, segment) => {
+    return total + parseDuration(segment.duration);
+  }, 0);
+};
+
+const parseDuration = (duration) => {
+  const [hours, minutes] = duration.replace('PT', '').replace('H', ':').replace('M', '').split(':');
+  return parseInt(hours) * 60 + parseInt(minutes);
+};
+
+const isMultiCity = (flight) => flight.itineraries[0].segments.length > 1;
 </script>
