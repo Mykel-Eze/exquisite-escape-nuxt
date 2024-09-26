@@ -7,7 +7,7 @@
           <FlightTags v-if="isFastest(flight)" type="filter" label="Fastest" />
           <FlightTags v-if="isMultiCity(flight)" type="trip" label="Mult-city per traveler" icon="double-arr.svg" />
           <FlightTags type="days" label="Same day" />
-          <FlightTags v-if="flight.numberOfBookableSeats <= 1" type="trip" :label="`${flight.numberOfBookableSeats} ticket(s) left`" icon="ticket.svg" />
+          <!-- <FlightTags v-if="flight.numberOfBookableSeats <= 1" type="trip" :label="`${flight.numberOfBookableSeats} ticket(s) left`" icon="ticket.svg" /> -->
         </div>
 
         <div class="ticket-overview-content">
