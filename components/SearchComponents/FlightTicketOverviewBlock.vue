@@ -15,7 +15,7 @@
             <div class="toc-row flex-div gap-5 w-full" v-for="segment in flight.itineraries[0].segments" :key="segment.id">
               <div class="ticket-airline">
                 <img :src="getAirlineLogo(segment.carrierCode)" :alt="getAirlineName(segment.carrierCode)">
-                <span>{{ getAirlineName(segment.carrierCode) }}</span>
+                <span class="truncate w-full">{{ getAirlineName(segment.carrierCode) }}</span>
               </div>
 
               <div class="ticket-from-to flex-div">
