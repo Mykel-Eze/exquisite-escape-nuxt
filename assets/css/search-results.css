@@ -263,6 +263,12 @@ button.view-ticket-btn {
     right: 10%;
 }
 
+@media(min-width: 993px) {
+    .ticket-airline {
+        max-width: 140px;
+    }
+}
+
 /*---=== end of Ticket-Overview-Block ===---*/
 
 /*---=== Side-Pop-Up ===---*/
