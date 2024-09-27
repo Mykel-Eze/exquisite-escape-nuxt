@@ -223,7 +223,7 @@ const getCarrier = computed(() => {
 });
 
 const getAirlineLogo = (carrierCode) => {
-  return `http://pics.avs.io/200/200/${carrierCode}.png`;
+  return `https://pics.avs.io/200/200/${carrierCode}.png`;
 };
 
 const getAirlineName = (carrierCode) => {

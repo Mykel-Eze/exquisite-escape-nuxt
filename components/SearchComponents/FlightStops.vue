@@ -118,7 +118,7 @@ export default {
     },
     getCarrierLogo(carrierCode) {
     //   return `/images/carriers/${carrierCode.toLowerCase()}.png`;
-    return `http://pics.avs.io/200/200/${carrierCode}.png`
+    return `https://pics.avs.io/200/200/${carrierCode}.png`
     },
   },
 };
