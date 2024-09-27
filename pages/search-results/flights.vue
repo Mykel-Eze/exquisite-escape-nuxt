@@ -16,7 +16,11 @@
           <div class="result-main-wrapper">
             <div class="result-filter-side">
               <div class="rfs">
-                <FlightsFilter />
+                <FlightsFilter 
+                  :flights="flightList || []" 
+                  :dictionaries="dictionaries"
+                  @update:filteredFlights="updateFilteredFlights" 
+                />
               </div>
             </div>
             <div class="result-contents-side py-10">
@@ -55,7 +59,12 @@
 
                 <FlightStops :flights="flightList" :dictionaries="dictionaries" />
 
-                <SortFlights :flights="flightList" :dictionaries="dictionaries" />
+                <SortFlights 
+                  :flights="filteredFlightList" 
+                  :dictionaries="dictionaries" 
+                  :activeTab="activeTab"
+                  @update:activeTab="updateActiveTab"
+                />
               </div>
             </div>
           </div>
@@ -80,21 +89,23 @@ export default {
   setup() {
     const showPopup = ref(false);
     const searchObject = ref({});
-    const flightList = ref(null);
+    const flightList = ref([]);
+    const filteredFlightList = ref([]);
     const isLoading = ref(true);
     const dictionaries = ref(null);
     const router = useRouter();
     const route = useRoute();
     const api = useApi();
+    const activeTab = ref('all');
 
     const originCity = ref('');
     const destinationCity = ref('');
 
     const cheapFlights = computed(() => {
-      if (!flightList.value) return [];
+      if (!filteredFlightList.value || filteredFlightList.value.length === 0) return [];
       
       // Group flights by date and find minimum price for each date
-      const flightsByDate = flightList.value.reduce((acc, flight) => {
+      const flightsByDate = filteredFlightList.value.reduce((acc, flight) => {
         const date = flight.itineraries[0].segments[0].departure.at.split('T')[0];
         const price = parseFloat(flight.price.total);
         if (!acc[date] || price < acc[date].minPrice) {
@@ -104,6 +115,14 @@ export default {
       }, {});
       return Object.values(flightsByDate);
     });
+
+    const updateFilteredFlights = (newFilteredFlights) => {
+      filteredFlightList.value = newFilteredFlights;
+    };
+
+    const updateActiveTab = (newActiveTab) => {
+      activeTab.value = newActiveTab;
+    };
 
     const fetchFlightData = async () => {
       isLoading.value = true;
@@ -156,17 +175,20 @@ export default {
 
         if (apiResponse && apiResponse.data && Array.isArray(apiResponse.data)) {
           flightList.value = apiResponse.data;
+          filteredFlightList.value = apiResponse.data; // Initialize filtered list with all flights
           dictionaries.value = apiResponse.dictionaries;
           console.log("Flight list updated:", flightList.value);
           console.log("Dictionaries:", dictionaries.value);
         } else {
           console.error("Unexpected API response structure:", apiResponse);
           flightList.value = [];
+          filteredFlightList.value = [];
           dictionaries.value = {};
         }
       } catch (error) {
         console.error("Error fetching flight data:", error);
         flightList.value = [];
+        filteredFlightList.value = [];
         dictionaries.value = {};
       } finally {
         isLoading.value = false;
@@ -209,13 +231,18 @@ export default {
 
 
     return {
+      dictionaries,
       showPopup,
       flightList,
+      filteredFlightList,
       cheapFlights,
       isLoading,
       originCity,
       destinationCity,
       dictionaries,
+      activeTab,
+      updateFilteredFlights,
+      updateActiveTab
     };
   },
 };

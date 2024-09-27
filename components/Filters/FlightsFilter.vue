@@ -2,182 +2,372 @@
   <div class="filter-blocks-wrapper">
     <!-- Reset Filter -->
     <div class="filter-block">
-        <div class="filter-block-header mb-5">
-            <span>Filter</span>
-            <small class="pry-color clear-btn">Reset</small>
-        </div>
+      <div class="filter-block-header mb-5">
+        <span>Filter</span>
+        <small class="pry-color clear-btn" @click="resetAllFilters">Reset</small>
+      </div>
     </div>
     
     <!-- Price Filter -->
     <div class="filter-block">
-        <div class="filter-block-header">
-            <span>Price</span>
-            <small class="pry-color clear-btn">Clear</small>
-        </div>
-        <div id="slider"></div>
-        <div class="slider-values flex-div justify-between">
-            <span>₦{{formatNumber(minPrice)}}</span>
-            <span>₦{{formatNumber(maxPrice)}}</span>
-        </div>
+      <div class="filter-block-header">
+        <span>Price</span>
+        <small class="pry-color clear-btn" @click="resetPriceFilter">Clear</small>
+      </div>
+      <div id="slider" ref="slider"></div>
+      <div class="slider-values flex-div justify-between">
+        <span>₦{{formatNumber(currentMinPrice)}}</span>
+        <span>₦{{formatNumber(currentMaxPrice)}}</span>
+      </div>
     </div>
 
     <!-- Stops Filter -->
     <div class="filter-block">
-        <div class="filter-block-header">
-            <span>Stops</span>
-            <small class="pry-color clear-btn" @click="clear(selectedStops, stops)">Clear</small>
-        </div>
-        <div class="filter-list-items">
-            <label v-for="(stop, index) in stops" :key="index" :for="stop.item">
-                <input type="checkbox" :id="stop.item" v-model="selectedStops" :value="stop.item" class="filled-in">
-                <span class="w-full">
-                    <span class="flex-div justify-between">
-                        <span class="filter-block-item">{{ stop.item }}</span>
-                        <span class="filter-block-item-value">₦{{ formatNumber(stop.value) }}</span>
-                    </span>
-                </span>
-            </label>
-        </div>
+      <div class="filter-block-header">
+        <span>Stops</span>
+        <small class="pry-color clear-btn" @click="resetStopsFilter">Clear</small>
+      </div>
+      <div class="filter-list-items">
+        <label v-for="stop in stops" :key="stop.value">
+          <input type="checkbox" v-model="selectedStops" :value="stop.value" class="filled-in">
+          <span class="w-full">
+            <span class="flex-div justify-between">
+              <span class="filter-block-item">{{ stop.label }}</span>
+            </span>
+          </span>
+        </label>
+      </div>
     </div>
 
     <!-- Airline Filter -->
     <div class="filter-block">
-        <div class="filter-block-header">
-            <span>Airline</span>
-            <small class="pry-color clear-btn" @click="clear(selectedAirlines, airlines)">Clear</small>
-        </div>
-        <div class="filter-list-items">
-            <label v-for="(airline, index) in displayedAirlines" :key="index" :for="airline.name">
-                <input type="checkbox" :id="airline.name" v-model="selectedAirlines" :value="airline.name" class="filled-in">
-                <span class="w-full">
-                    <span class="flex-div justify-between">
-                        <span class="filter-block-item truncate">({{ airline.number }}) - {{ airline.name }}</span>
-                        <span class="filter-block-item-value">₦{{ formatNumber(airline.value) }}</span>
-                    </span>
-                </span>
-            </label>
-        </div>
-        
-        <div class="show-more-btn-wrapper mt-[15px]">
-            <button v-if="airlines.length > 10" @click="showMore = !showMore" class="flex-div gap-2 bold-txt pry-color text-[14px]">
-                {{ showMore ? 'Show Less' : 'Show More' }} 
-                <img src="@/assets/images/caret-down-green.svg" alt="caret">
-            </button>
-        </div>
+      <div class="filter-block-header">
+        <span>Airline</span>
+        <small class="pry-color clear-btn" @click="resetAirlineFilter">Clear</small>
+      </div>
+      <div class="filter-list-items">
+        <label v-for="airline in displayedAirlines" :key="airline.code">
+          <input type="checkbox" v-model="selectedAirlines" :value="airline.code" class="filled-in">
+          <span class="w-full">
+            <span class="flex-div justify-between gap-2">
+                <span class="filter-block-item truncate">{{ airline.name }} </span>
+                <span>({{ airline.count }})</span>
+            </span>
+          </span>
+        </label>
+      </div>
+      
+      <div class="show-more-btn-wrapper mt-[15px]" v-if="airlines.length > 10">
+        <button @click="toggleShowMore" class="flex-div gap-2 bold-txt pry-color text-[14px]">
+          {{ showMore ? 'Show Less' : 'Show More' }}
+          <img src="@/assets/images/caret-down-green.svg" alt="caret">
+        </button>
+      </div>
     </div>
 
     <!-- Travel & Baggage Filter -->
     <div class="filter-block">
-        <div class="filter-block-header">
-            <span>Travel & Baggage</span>
-            <small class="pry-color clear-btn" @click="clear(selectedBaggages, baggages)">Clear</small>
-        </div>
-        <div class="filter-list-items">
-            <label v-for="(baggage, index) in baggages" :key="index" :for="baggage.item">
-                <input type="checkbox" :id="baggage.item" v-model="selectedBaggages" :value="baggage.item" class="filled-in">
-                <span class="w-full">
-                    <span class="flex-div justify-between">
-                        <span class="filter-block-item">{{ baggage.item }}</span>
-                        <span class="filter-block-item-value">₦{{ formatNumber(baggage.value) }}</span>
-                    </span>
-                </span>
-            </label>
-        </div>
+      <div class="filter-block-header">
+        <span>Travel & Baggage</span>
+        <small class="pry-color clear-btn" @click="resetBaggageFilter">Clear</small>
+      </div>
+      <div class="filter-list-items">
+        <label v-for="baggage in baggages" :key="baggage.value">
+          <input type="checkbox" v-model="selectedBaggages" :value="baggage.value" class="filled-in">
+          <span class="w-full">
+            <span class="flex-div justify-between">
+              <span class="filter-block-item">{{ baggage.label }}</span>
+            </span>
+          </span>
+        </label>
+      </div>
     </div>
 
     <!-- Departure Time Filter -->
     <div class="filter-block">
-        <div class="filter-block-header">
-            <span>Departure Time</span>
-            <small class="pry-color clear-btn" @click="clear(selectedDepartures, departures)">Clear</small>
-        </div>
-        <div class="filter-list-items">
-            <label v-for="(departure, index) in departures" :key="index" :for="departure.time">
-                <input type="checkbox" :id="departure.time" v-model="selectedDepartures" :value="departure.time" class="filled-in">
-                <span class="w-full">
-                    <span class="flex-div justify-between">
-                        <span class="filter-block-item">{{ departure.time }}</span>
-                        <span class="filter-block-item-value">{{ departure.startTime }} - {{ departure.endTime }}</span>
-                    </span>
-                </span>
-            </label>
-        </div>
+      <div class="filter-block-header">
+        <span>Departure Time</span>
+        <small class="pry-color clear-btn" @click="resetDepartureTimeFilter">Clear</small>
+      </div>
+      <div class="filter-list-items">
+        <label v-for="time in departureTimes" :key="time.value">
+          <input type="checkbox" v-model="selectedDepartureTimes" :value="time.value" class="filled-in">
+          <span class="w-full">
+            <span class="flex-div justify-between">
+              <span class="filter-block-item truncate w-[80px]">{{ time.label }}</span>
+              <span class="filter-block-item-value">{{ time.range }}</span>
+            </span>
+          </span>
+        </label>
+      </div>
     </div>
 
     <!-- Arrival Time Filter -->
     <div class="filter-block">
-        <div class="filter-block-header">
-            <span>Arrival Time</span>
-            <small class="pry-color clear-btn" @click="clear(selectedArrivals, arrivals)">Clear</small>
-        </div>
-        <div class="filter-list-items">
-            <label v-for="(arrival, index) in arrivals" :key="index" :for="arrival.time+index">
-                <input type="checkbox" :id="arrival.time+index" v-model="selectedArrivals" :value="arrival.time" class="filled-in">
-                <span class="w-full">
-                    <span class="flex-div justify-between">
-                        <span class="filter-block-item">{{ arrival.time }}</span>
-                        <span class="filter-block-item-value">{{ arrival.startTime }} - {{ arrival.endTime }}</span>
-                    </span>
-                </span>
-            </label>
-        </div>
+      <div class="filter-block-header">
+        <span>Arrival Time</span>
+        <small class="pry-color clear-btn" @click="resetArrivalTimeFilter">Clear</small>
+      </div>
+      <div class="filter-list-items">
+        <label v-for="time in arrivalTimes" :key="time.value">
+          <input type="checkbox" v-model="selectedArrivalTimes" :value="time.value" class="filled-in">
+          <span class="w-full">
+            <span class="flex-div justify-between">
+              <span class="filter-block-item truncate w-[80px]">{{ time.label }}</span>
+              <span class="filter-block-item-value">{{ time.range }}</span>
+            </span>
+          </span>
+        </label>
+      </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { onMounted, ref, computed } from 'vue';
+<script>
+import { ref, computed, onMounted, watch } from 'vue';
 import noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 
-import { 
-    stops, airlines, baggages, departures, arrivals
-} from '~/data/FlightsFilterData.js';
-
-let slider = ref(null);
-const minPrice = ref(90000);
-const maxPrice = ref(10000000);
-
-const selectedStops = ref([]);
-
-const selectedAirlines = ref([]);
-const showMore = ref(false);
-
-const selectedBaggages = ref([]);
-const selectedDepartures = ref([]);
-const selectedArrivals = ref([]);
-
-const displayedAirlines = computed(() => {
-  return showMore.value ? airlines.value : airlines.value.slice(0, 10);
-});
-
-const clear = (selectedItem, items) => {
-  selectedItem.value = [];
-  items.value = items.value.map(item => ({ ...item, checked: false }));
-};
-
-onMounted(() => {
-    slider.value = document.querySelector("#slider");
-    let sliderInstance = noUiSlider.create(slider.value, {
-        start: [minPrice.value, maxPrice.value],
-        connect: true,
-        step: 1000,
-        range: {
-            'min': minPrice.value - 1000,
-            'max': maxPrice.value + 100000
+export default {
+    name: 'FlightsFilter',
+    props: {
+        flights: {
+            type: Array,
+            required: true,
+            default: () => []
+        },
+        dictionaries: {
+            type: Object,
+            required: true,
+            default: () => ({})
         }
-    });
+    },
+    emits: ['update:filteredFlights'],
+    setup(props, { emit }) {
+        const slider = ref(null);
+        const minPrice = ref(0);
+        const maxPrice = ref(0);
+        const currentMinPrice = ref(0);
+        const currentMaxPrice = ref(0);
+        const selectedStops = ref([]);
+        const selectedAirlines = ref([]);
+        const selectedBaggages = ref([]);
+        const selectedDepartureTimes = ref([]);
+        const selectedArrivalTimes = ref([]);
+        const showMore = ref(false);
 
-    sliderInstance.on('update', (values) => {
-      minPrice.value = Number(values[0]);
-      maxPrice.value = Number(values[1]);
-    });
-});
+        const stops = computed(() => {
+            if (!props.flights || props.flights.length === 0) return [];
+            const stopCounts = new Set(props.flights.map(flight => flight.itineraries[0].segments.length - 1));
+            return [
+                { value: 0, label: 'Non-stop' },
+                { value: 1, label: '1 Stop' },
+                { value: 2, label: '2+ Stops' }
+            ].filter(stop => stopCounts.has(stop.value) || (stop.value === 2 && Array.from(stopCounts).some(count => count >= 2)));
+        });
 
-function formatNumber(num) {
-  return num.toLocaleString();
-}
+        const airlines = computed(() => {
+            if (!props.flights || props.flights.length === 0 || !props.dictionaries || !props.dictionaries.carriers) return [];
+            const airlineMap = new Map();
+            props.flights.forEach(flight => {
+                const airlineCode = flight.itineraries[0].segments[0].carrierCode;
+                const airlineName = props.dictionaries.carriers[airlineCode] || airlineCode;
+                if (!airlineMap.has(airlineCode)) {
+                airlineMap.set(airlineCode, { 
+                    code: airlineCode, 
+                    name: airlineName,
+                    count: 1
+                });
+                } else {
+                airlineMap.get(airlineCode).count++;
+                }
+            });
+            return Array.from(airlineMap.values());
+        });
+
+        const displayedAirlines = computed(() => {
+            return showMore.value ? airlines.value : airlines.value.slice(0, 10);
+        });
+
+        const baggages = [
+            { value: 'carry_on', label: 'Carry-on bag' },
+            { value: 'checked', label: 'Checked bag' }
+        ];
+
+        const departureTimes = [
+            { value: 'early_morning', label: 'Early Morning', range: '12:00am - 5:59am' },
+            { value: 'morning', label: 'Morning', range: '6:00am - 11:59am' },
+            { value: 'afternoon', label: 'Afternoon', range: '12:00pm - 5:59pm' },
+            { value: 'evening', label: 'Evening', range: '6:00pm - 11:59pm' }
+        ];
+
+        const arrivalTimes = [
+            { value: 'early_morning', label: 'Early Morning', range: '12:00am - 5:59am' },
+            { value: 'morning', label: 'Morning', range: '6:00am - 11:59am' },
+            { value: 'afternoon', label: 'Afternoon', range: '12:00pm - 5:59pm' },
+            { value: 'evening', label: 'Evening', range: '6:00pm - 11:59pm' }
+        ];
+
+        const initPriceSlider = () => {
+            if (!props.flights || props.flights.length === 0) return;
+
+            const prices = props.flights.map(flight => parseFloat(flight.price.total));
+            minPrice.value = Math.min(...prices);
+            maxPrice.value = Math.max(...prices);
+            currentMinPrice.value = minPrice.value;
+            currentMaxPrice.value = maxPrice.value;
+
+            if (slider.value) {
+                if (slider.value.noUiSlider) {
+                    slider.value.noUiSlider.destroy();
+                }
+                noUiSlider.create(slider.value, {
+                    start: [minPrice.value, maxPrice.value],
+                    connect: true,
+                    range: {
+                        'min': minPrice.value,
+                        'max': maxPrice.value
+                    }
+                });
+
+                slider.value.noUiSlider.on('update', (values) => {
+                    currentMinPrice.value = Math.round(values[0]);
+                    currentMaxPrice.value = Math.round(values[1]);
+                    applyFilters();
+                });
+            }
+        };
+
+        const applyFilters = () => {
+            if (!props.flights || props.flights.length === 0) {
+                emit('update:filteredFlights', []);
+                return;
+            }
+            
+            const filteredFlights = props.flights.filter(flight => {
+                const price = parseFloat(flight.price.total);
+                const stops = flight.itineraries[0].segments.length - 1;
+                const airline = flight.itineraries[0].segments[0].carrierCode;
+                const departureTime = new Date(flight.itineraries[0].segments[0].departure.at).getHours();
+                const arrivalTime = new Date(flight.itineraries[0].segments[flight.itineraries[0].segments.length - 1].arrival.at).getHours();
+
+                return (
+                    price >= currentMinPrice.value &&
+                    price <= currentMaxPrice.value &&
+                    (selectedStops.value.length === 0 || selectedStops.value.includes(stops >= 2 ? 2 : stops)) &&
+                    (selectedAirlines.value.length === 0 || selectedAirlines.value.includes(airline)) &&
+                    (selectedDepartureTimes.value.length === 0 || selectedDepartureTimes.value.includes(getTimeCategory(departureTime))) &&
+                    (selectedArrivalTimes.value.length === 0 || selectedArrivalTimes.value.includes(getTimeCategory(arrivalTime)))
+                );
+            });
+
+            emit('update:filteredFlights', filteredFlights);
+        };
+
+        const getTimeCategory = (hour) => {
+            if (hour >= 0 && hour < 6) return 'early_morning';
+            if (hour >= 6 && hour < 12) return 'morning';
+            if (hour >= 12 && hour < 18) return 'afternoon';
+            return 'evening';
+        };
+
+        const resetAllFilters = () => {
+            selectedStops.value = [];
+            selectedAirlines.value = [];
+            selectedBaggages.value = [];
+            selectedDepartureTimes.value = [];
+            selectedArrivalTimes.value = [];
+            const slider = document.getElementById('slider');
+            if (slider && slider.noUiSlider) {
+                slider.noUiSlider.set([minPrice.value, maxPrice.value]);
+            }
+            applyFilters();
+        };
+
+        const resetPriceFilter = () => {
+            const slider = document.getElementById('slider');
+            if (slider && slider.noUiSlider) {
+                slider.noUiSlider.set([minPrice.value, maxPrice.value]);
+            }
+            applyFilters();
+        };
+
+        const resetStopsFilter = () => {
+            selectedStops.value = [];
+            applyFilters();
+        };
+
+        const resetAirlineFilter = () => {
+            selectedAirlines.value = [];
+            applyFilters();
+        };
+
+        const resetBaggageFilter = () => {
+            selectedBaggages.value = [];
+            applyFilters();
+        };
+
+        const resetDepartureTimeFilter = () => {
+            selectedDepartureTimes.value = [];
+            applyFilters();
+        };
+
+        const resetArrivalTimeFilter = () => {
+            selectedArrivalTimes.value = [];
+            applyFilters();
+        };
+
+        const toggleShowMore = () => {
+            showMore.value = !showMore.value;
+        };
+
+        const formatNumber = (num) => {
+            return num.toLocaleString('en-US');
+        };
+
+        onMounted(() => {
+            slider.value = document.getElementById('slider');
+            if (props.flights && props.flights.length > 0) {
+                initPriceSlider();
+            }
+        });
+
+        watch(() => props.flights, (newFlights) => {
+            if (newFlights && newFlights.length > 0) {
+                initPriceSlider();
+                applyFilters();
+            }
+        });
+
+        watch([selectedStops, selectedAirlines, selectedBaggages, selectedDepartureTimes, selectedArrivalTimes], () => {
+            applyFilters();
+        });
+
+        return {
+            currentMinPrice,
+            currentMaxPrice,
+            selectedStops,
+            selectedAirlines,
+            selectedBaggages,
+            selectedDepartureTimes,
+            selectedArrivalTimes,
+            stops,
+            airlines,
+            displayedAirlines,
+            baggages,
+            departureTimes,
+            arrivalTimes,
+            showMore,
+            resetAllFilters,
+            resetPriceFilter,
+            resetStopsFilter,
+            resetAirlineFilter,
+            resetBaggageFilter,
+            resetDepartureTimeFilter,
+            resetArrivalTimeFilter,
+            toggleShowMore,
+            formatNumber
+        };
+  }
+};
 </script>
-
-
-<style></style> 

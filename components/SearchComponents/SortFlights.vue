@@ -71,6 +71,11 @@ export default {
     const selectedFlight = ref(null);
     const visibleFlights = ref(5);
     const activeTab = ref('all');
+    const filteredFlights = ref([...props.flights]);
+
+    const updateFilteredFlights = (newFilteredFlights) => {
+      filteredFlights.value = newFilteredFlights;
+    };
 
     const sortedFlights = computed(() => {
       let filteredFlights = [...props.flights];
@@ -109,7 +114,7 @@ export default {
     };
 
     const hasMoreFlights = computed(() => {
-      return activeTab.value === 'all' && visibleFlights.value < props.flights.length;
+      return activeTab.value === 'all' && visibleFlights.value < filteredFlights.value.length;
     });
 
     const viewTicketDetails = (flight) => {
@@ -132,6 +137,10 @@ export default {
       visibleFlights.value = 5; // Reset visible flights when changing tabs
     };
 
+    watch(() => props.flights, (newFlights) => {
+      filteredFlights.value = newFlights;
+    });
+
     return {
       sortedFlights,
       hasMoreFlights,
@@ -141,7 +150,8 @@ export default {
       closePopup,
       showMoreFlights,
       activeTab,
-      setActiveTab
+      setActiveTab,
+      updateFilteredFlights
     };
   }
 }

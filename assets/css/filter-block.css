@@ -12,7 +12,7 @@
 }
 .result-main-wrapper {
     display: grid;
-    grid-template-columns: 265px 1fr;
+    grid-template-columns: 275px 1fr;
     gap: 30px;
 }
 .result-contents-side {
