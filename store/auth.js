@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia';
+import { useStorage } from '@vueuse/core'; // Optional: For more control over local storage
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    user: null,
-    token: null,
-    isAuthenticated: false,
+    user: useStorage('user', null),  // Persist user state
+    token: useStorage('token', null), // Persist token state
+    isAuthenticated: useStorage('isAuthenticated', false), // Persist authentication state
     isLoading: false,
     isRegistering: false,
     isLoggingIn: false,
@@ -33,6 +34,14 @@ export const useAuthStore = defineStore('auth', {
       this.token = null;
       this.isAuthenticated = false;
     },
+
+    initializeAuth() {
+      if (this.token) {
+        this.setIsAuthenticated(true);
+      } else {
+        this.setIsAuthenticated(false);
+      }
+    }
   },
-  persist: true,
+  persist: true,  // Ensure this is enabled
 });

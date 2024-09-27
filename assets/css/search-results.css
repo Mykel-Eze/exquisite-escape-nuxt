@@ -6,6 +6,15 @@
     border-radius: 10px;
     width: fit-content;
 }
+.loading-spinner-wrapper .loading-spinner {
+    width: 100%;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+.loading-spinner-wrapper .loading-spinner svg {
+    width: 100px;
+    height: 100px;
+}
 
 section#cheap-flights {
     padding: 60px 0 40px;
@@ -19,6 +28,9 @@ section#cheap-flights {
     gap: 10px;
     /* cursor: pointer; */
     font-size: 15px;
+}
+.cheap-flight-block.active {
+    border: 3px solid #9D9D9D;
 }
 .results-section .custom-nav-icon {
     position: absolute;
@@ -69,6 +81,10 @@ ul.sb-contents {
 ul.sb-contents li {
     border-top: 1px solid #848484;
     padding: 8px 15px;
+}
+ul.sb-contents li.active {
+    border: 1px solid;
+    font-weight: bold;
 }
 
 
@@ -260,7 +276,7 @@ button.view-ticket-btn {
     background: white;
     z-index: 100;
     padding: 20px 20px 20px 40px;
-    display: none;
+    /* display: none; */
     overflow-y: auto;
 }
 .side-popup[data-ticket-type="multiple"] {
@@ -292,6 +308,7 @@ img.close-popup-icon {
     font-size: 34px;
     color: #141414;
     margin: 0;
+    letter-spacing: -1px;
 }
 .ticket-amount-div span {
     font-size: 14px;
@@ -383,6 +400,9 @@ button.select-ticket-btn {
     padding-left: 0;
     margin: 10px 0;
     display: inline-block;
+}
+.hidden-details-block {
+    font-size: 13px;
 }
 /*---=== end of Side-Pop-Up ===---*/
 

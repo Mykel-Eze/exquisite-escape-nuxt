@@ -84,7 +84,7 @@
                             </p>
                         </NuxtLink>
 
-                        <NuxtLink to="!#" class="account-item-block hover-scale">
+                        <NuxtLink to="#!" class="account-item-block hover-scale">
                             <img src="@/assets/images/icons/booking-history-icon.svg" alt="help-icon" class="aib-icon">
                             <div class="aib-title">Booking history</div>
                             <p class="aib-desc">
@@ -107,20 +107,24 @@ const authStore = useAuthStore();
 const auth = useAuth();
 
 onMounted(async () => {
+  // Check if user is authenticated but user details are missing
   if (authStore.isAuthenticated && !authStore.user) {
     try {
-      await auth.getCurrentUser(); // This fetches and sets the user in authStore
+      // Fetch current user details from the API
+      await auth.getCurrentUser(); 
     } catch (error) {
-      console.error('Error fetching user data:', error);
+    //   console.error('Error fetching user data:', error);
       if (error.response && error.response.status === 401) {
-        authStore.logout();
+        authStore.logout();  // Logout if token is invalid
         navigateTo('/signin');
       }
     }
   } else if (!authStore.isAuthenticated) {
+    // Redirect to signin if not authenticated
     navigateTo('/signin');
   }
 });
+
 
 console.log(authStore.user);
 

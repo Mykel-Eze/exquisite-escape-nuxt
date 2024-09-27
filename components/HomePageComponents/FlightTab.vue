@@ -15,10 +15,10 @@
           label=""
           selectKey="value"
           selectName="name"
-          v-model:value="flightObj.tripType"
-          @select="flightObjSelectHandler($event, 'tripType')"
+          v-model="flightObj.tripType"
           altClass="d1"
         />
+
         <PassengerSelector v-model="flightObj.passengersNumber" />
       </div>
       <div class="flex flex-col gap-7">
@@ -28,25 +28,29 @@
               <InputField
                 label="From where"
                 placeholder="City or Airport"
-                id="depature"
+                id="departure"
                 type="text"
                 inputClass="ls-inp-field"
                 divClass="input-white-wrapper relative"
-                :value="flightObj.originLocationName"
+                v-model="departureSearch"
+                @input="handleDepartureInput"
+                @focus="showDepartureDropdown = true"
+                @blur="handleBlur('departure')"
               />
-              <div
-                v-if="showDropdown.showFromDropdown"
-                class="absolute bg-white mt-1 search-dropdown-wrapper"
-              >
-                <ul>
-                  <li
-                    v-for="(flight, index) in fromFlightList"
-                    :key="index"
-                    class="text-dark-gray py-2 px-4"
-                    @click="selectFlightHandler(flight, 'from')"
-                  >
-                    <!-- {{ flight.name }} -->
+              <div v-if="showDepartureDropdown" class="absolute bg-white mt-1 search-dropdown-wrapper">
+                <ul v-if="departureSearch.length < 3 && recentSearches.length > 0">
+                  <li v-for="search in recentSearches" :key="search.iataCode" @click="selectLocation(search, 'departure')" class="text-dark-gray py-2 px-4">
+                    {{ search.name }} ({{ search.iataCode }})
                   </li>
+                </ul>
+                <ul v-else-if="departureResults.length > 0">
+                  <li v-for="result in departureResults" :key="result.iataCode" @click="selectLocation(result, 'departure')" class="text-dark-gray py-2 px-4">
+                    <div class="bold-txt">{{ result.address.cityName }}, {{ result.address.countryName }}</div>
+                    <small>{{ result.name }} ({{ result.iataCode }})</small>
+                  </li>
+                </ul>
+                <ul v-else-if="departureSearch.length >= 3">
+                  <li class="text-dark-gray py-2 px-4">Can't find location</li>
                 </ul>
               </div>
             </div>
@@ -58,6 +62,7 @@
               alt="transfer-arrow"
               class="transfer-arrow"
             />
+
             <div class="relative">
               <InputField
                 label="To where"
@@ -65,22 +70,26 @@
                 id="destination"
                 type="text"
                 inputClass="ls-inp-field"
-                divClass="input-white-wrapper"
-                :value="flightObj.destinationLocationName"
+                divClass="input-white-wrapper relative"
+                v-model="destinationSearch"
+                @input="handleDestinationInput"
+                @focus="showDestinationDropdown = true"
+                @blur="handleBlur('destination')"
               />
-              <div
-                v-if="showDropdown.showToDropdown"
-                class="absolute bg-white mt-1 search-dropdown-wrapper"
-              >
-                <ul>
-                  <li
-                    v-for="(flight, index) in toFlightList"
-                    :key="index"
-                    class="text-dark-gray py-2 px-4"
-                    @click="selectFlightHandler(flight, 'to')"
-                  >
-                    <!-- {{ flight.name }} -->
+              <div v-if="showDestinationDropdown" class="absolute bg-white mt-1 search-dropdown-wrapper">
+                <ul v-if="destinationSearch.length < 3 && recentSearches.length > 0">
+                  <li v-for="search in recentSearches" :key="search.iataCode" @click="selectLocation(search, 'destination')" class="text-dark-gray py-2 px-4">
+                    {{ search.name }} ({{ search.iataCode }})
                   </li>
+                </ul>
+                <ul v-else-if="destinationResults.length > 0">
+                  <li v-for="result in destinationResults" :key="result.iataCode" @click="selectLocation(result, 'destination')" class="text-dark-gray py-2 px-4">
+                    <div class="bold-txt">{{ result.address.cityName }}, {{ result.address.countryName }}</div>
+                    <small>{{ result.name }} ({{ result.iataCode }})</small>
+                  </li>
+                </ul>
+                <ul v-else-if="destinationSearch.length >= 3">
+                  <li class="text-dark-gray py-2 px-4">Can't find location</li>
                 </ul>
               </div>
             </div>
@@ -88,12 +97,8 @@
           <div class="input-white-wrapper flex-div flex-row">
             <DatePicker
               label="Leaving on"
-              :defaultValue="currentDate"
               id="departure-date"
-              type="text"
-              inputClass="ls-inp-field datepicker"
               v-model="flightObj.departureDate"
-              @input="flightObjSelectHandler($event, 'departureDate')"
             />
             <span v-if="flightObj.tripType !== 'one-way'" class="range-divider"
               >-</span
@@ -101,12 +106,8 @@
             <DatePicker
               v-if="flightObj.tripType !== 'one-way'"
               label="Returning on"
-              :defaultValue="currentDate"
               id="return-date"
-              type="text"
-              inputClass="ls-inp-field datepicker"
               v-model="flightObj.returnDate"
-              @input="flightObjSelectHandler($event, 'returnDate')"
             />
           </div>
 
@@ -115,7 +116,7 @@
             id="cabin-type"
             type="text"
             inputClass="ls-inp-field remove-border"
-            divClass="input-white-wrapper remove-border "
+            divClass="input-white-wrapper remove-border"
             :options="[
               { value: 'ECONOMY', name: 'Economy' },
               { value: 'PREMIUM_ECONOMY', name: 'Premium Economy' },
@@ -124,8 +125,7 @@
             ]"
             selectKey="value"
             selectName="name"
-            v-model:value="flightObj.travelClass"
-            @select="flightObjSelectHandler($event, 'travelClass')"
+            v-model="flightObj.travelClass"
             altClass="d1"
           />
         </div>
@@ -154,7 +154,7 @@
       </button>
       <button
         class="tab-form-btn flex-div gap-3"
-        @click.prevent="searchFlight()"
+        @click.prevent="searchFlight"
       >
         <span>Search Flights</span>
         <img src="~/assets/images/plane-icon.svg" alt="plane-icon" />
@@ -163,154 +163,198 @@
   </form>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
-// import M from "materialize-css";
-import { useRouter } from "vue-router";
-// import { useApiPost } from "../../composables/services/useApi";
-export default defineComponent({
-  name: "FlightTab",
+<script>
+import { ref, onMounted, watch } from 'vue'
+import { useApi } from '@/utils/api'
+import { useRouter } from 'vue-router'
 
+export default {
   setup() {
+    const api = useApi()
+    const router = useRouter()
+
+    const departureSearch = ref('')
+    const destinationSearch = ref('')
+    const showDepartureDropdown = ref(false)
+    const showDestinationDropdown = ref(false)
+    const departureResults = ref([])
+    const destinationResults = ref([])
+    const recentSearches = ref([])
+
     const flightObj = ref({
       tripType: "one-way",
       passengersNumber: 1,
-      departure: "",
-      destination: "",
       departureDate: "",
       returnDate: "",
-      travelClass: "",
+      travelClass: "ECONOMY",
       originLocationName: "",
       originLocationCode: "",
       destinationLocationName: "",
       destinationLocationCode: "",
     });
-    const duplicatedRows = ref([]);
-    const toFlightList = ref([]);
-    const fromFlightList = ref([]);
-    const showDropdown = ref({
-      showToDropdown: false,
-      showFromDropdown: false,
-    });
-    const router = useRouter();
-
-    onMounted(() => {
-      const elemsDatepicker = document.querySelectorAll(".datepicker");
-      M.Datepicker.init(elemsDatepicker, {
-        autoClose: true,
-        format: "mmm dd",
-        minDate: new Date(),
-      });
-
-      // const elemsDropdown2 = document.querySelector("select#tripType");
-      // M.FormSelect.init(elemsDropdown2);
-    });
-
-    const getCurrentDate = () => {
-      const date = new Date();
-      const month = date.toLocaleString("default", { month: "short" });
-      const day = date.getDate().toString().padStart(2, "0");
-      return `${month} ${day}`;
-    };
-    const currentDate = getCurrentDate();
-
-    const duplicateGridSmBreak = () => {
-      const gridSmBreak: any = document.querySelector(".grid-sm-break");
-      if (gridSmBreak) {
-        const clonedGridSmBreak = gridSmBreak.cloneNode(true);
-
-        // Set default values for duplicated inputs
-        const inputs = clonedGridSmBreak.querySelectorAll(".arrival-depature-inputs input");
-        inputs.forEach((input: HTMLInputElement) => {
-          input.value = input.defaultValue;
-        });
-
-        gridSmBreak.parentNode?.appendChild(clonedGridSmBreak);
+    
+    const handleDepartureInput = async () => {
+      if (departureSearch.value.length >= 3) {
+        try {
+          const response = await api.post('/api/flight/airport-nearby', { 
+            keyword: departureSearch.value,
+            subType: "AIRPORT",
+          })
+          departureResults.value = response.data
+          showDepartureDropdown.value = true
+        } catch (error) {
+          console.error('Error fetching airport data:', error)
+        }
+      } else {
+        departureResults.value = []
+        showDepartureDropdown.value = false
       }
-    };
+    }
 
-    const removeRow = (index: number) => {
-      duplicatedRows.value.splice(index, 1);
-    };
-    const datePicker = () => {
-      const elemsDatepicker = document.querySelectorAll(".datepicker");
-      M.Datepicker.init(elemsDatepicker, {
-        autoClose: true,
-        format: "mmm dd",
-        minDate: new Date(),
-      });
-    };
+    const handleDestinationInput = async () => {
+      if (destinationSearch.value.length >= 3) {
+        try {
+          const response = await api.post('/api/flight/airport-nearby', { 
+            keyword: destinationSearch.value,
+            subType: "AIRPORT",
+          })
+          destinationResults.value = response.data
+          showDestinationDropdown.value = true
+        } catch (error) {
+          console.error('Error fetching airport data:', error)
+        }
+      } else {
+        destinationResults.value = []
+        showDestinationDropdown.value = false
+      }
+    }
 
-    const inputHandler = async (e: any, inputKey: string) => {
-      if (e.target.value.length >= 3) {
-        const { data }: any = await useApiPost("/flight/airport-nearby", {
-          keyword: e.target.value,
-          subType: "CITY",
-        });
-        if (inputKey === "to") {
-          toFlightList.value = data.value.data;
-          showDropdown.value.showToDropdown = true;
+    const selectLocation = (location, type) => {
+      if (type === 'departure') {
+        departureSearch.value = `${location.name} (${location.iataCode})`
+        flightObj.value.originLocationName = location.name
+        flightObj.value.originLocationCode = location.iataCode
+        showDepartureDropdown.value = false
+      } else {
+        destinationSearch.value = `${location.name} (${location.iataCode})`
+        flightObj.value.destinationLocationName = location.name
+        flightObj.value.destinationLocationCode = location.iataCode
+        showDestinationDropdown.value = false
+      }
+      addToRecentSearches(location)
+    }
+
+    const handleBlur = (type) => {
+      setTimeout(() => {
+        if (type === 'departure') {
+          showDepartureDropdown.value = false
         } else {
-          fromFlightList.value = data.value.data;
-          showDropdown.value.showFromDropdown = true;
+          showDestinationDropdown.value = false
+        }
+      }, 200)
+    }
+
+    const addToRecentSearches = (location) => {
+      const index = recentSearches.value.findIndex(search => search.iataCode === location.iataCode)
+      if (index !== -1) {
+        recentSearches.value.splice(index, 1)
+      }
+      recentSearches.value.unshift(location)
+      if (recentSearches.value.length > 5) {
+        recentSearches.value.pop()
+      }
+      localStorage.setItem('recentSearches', JSON.stringify(recentSearches.value))
+    }
+
+    // Load saved search data from localStorage on component mount
+    onMounted(() => {
+      const savedSearch = localStorage.getItem('lastFlightSearch')
+      if (savedSearch) {
+        const parsedSearch = JSON.parse(savedSearch)
+        flightObj.value = { ...flightObj.value, ...parsedSearch }
+        departureSearch.value = parsedSearch.originLocationName
+        destinationSearch.value = parsedSearch.destinationLocationName
+      }
+    })
+
+    // Watch for changes in flightObj and save to localStorage
+    watch(flightObj, (newVal) => {
+      localStorage.setItem('lastFlightSearch', JSON.stringify(newVal))
+    }, { deep: true })
+
+    watch(() => flightObj.value.tripType, (newType) => {
+      if (newType === 'one-way') {
+        flightObj.value.returnDate = '';
+      }
+    });
+
+
+    const searchFlight = async () => {
+      // Validate dates for round-trip
+      if (flightObj.value.tripType === 'round-trip') {
+        const departureDate = new Date(flightObj.value.departureDate);
+        const returnDate = new Date(flightObj.value.returnDate);
+
+        if (returnDate < departureDate) {
+          alert('Return date must be after departure date');
+          return;
         }
       }
-    };
-    const searchFlight = async () => {
-      const payload = {
+
+      // Prepare the search payload
+      const searchPayload = {
         originLocationCode: flightObj.value.originLocationCode,
         destinationLocationCode: flightObj.value.destinationLocationCode,
         departureDate: flightObj.value.departureDate,
-        returnDate: flightObj.value.returnDate,
         adults: flightObj.value.passengersNumber,
-        // includedAirlineCodes: "TG",
         travelClass: flightObj.value.travelClass,
-        max: "10",
         currencyCode: "NGN",
-      };
-      router.push({ path: "/search-results/flights", query: { ...payload } });
-    };
-    const selectFlightHandler = async (flight: any, inputKey: string) => {
-      if (inputKey === "from") {
-        flightObj.value = {
-          ...flightObj.value,
-          originLocationName: flight.name,
-          originLocationCode: flight.iataCode,
-        };
-        showDropdown.value.showFromDropdown = false;
-      } else {
-        flightObj.value = {
-          ...flightObj.value,
-          destinationLocationName: flight.name,
-          destinationLocationCode: flight.iataCode,
-        };
-        showDropdown.value.showToDropdown = false;
       }
-    };
-    const flightObjSelectHandler = (e: string, inputKey: string) => {
-      flightObj.value = {
-        ...flightObj.value,
-        [inputKey]: e,
-      };
-    };
+
+      // Only add returnDate for round-trip
+      if (flightObj.value.tripType === 'round-trip' && flightObj.value.returnDate) {
+        searchPayload.returnDate = flightObj.value.returnDate
+      }
+
+      // Additional validation
+      if (!searchPayload.originLocationCode || !searchPayload.destinationLocationCode || !searchPayload.departureDate) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      try {
+        // Save the current search to localStorage
+        localStorage.setItem('lastFlightSearch', JSON.stringify(flightObj.value))
+
+        // Redirect to the search results page with query parameters
+        router.push({
+          path: '/search-results/flights',
+          query: searchPayload
+        })
+      } catch (error) {
+        console.error('Error searching flights:', error)
+        alert('An error occurred while searching for flights. Please try again.')
+      }
+    }
+
+
     return {
-      duplicatedRows,
-      currentDate,
-      flightObj,
-      toFlightList,
-      fromFlightList,
-      getCurrentDate,
-      showDropdown,
-      duplicateGridSmBreak,
-      removeRow,
-      datePicker,
-      // inputHandler,
+      departureSearch,
+      destinationSearch,
+      showDepartureDropdown,
+      showDestinationDropdown,
+      departureResults,
+      destinationResults,
+      recentSearches,
+      handleDepartureInput,
+      handleDestinationInput,
+      selectLocation,
+      handleBlur,
       searchFlight,
-      selectFlightHandler,
-      flightObjSelectHandler,
-    };
-  },
-});
+      flightObj
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

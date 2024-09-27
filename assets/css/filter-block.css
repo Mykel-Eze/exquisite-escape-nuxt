@@ -12,7 +12,7 @@
 }
 .result-main-wrapper {
     display: grid;
-    grid-template-columns: 265px 1fr;
+    grid-template-columns: 275px 1fr;
     gap: 30px;
 }
 .result-contents-side {
@@ -97,5 +97,14 @@ input#search-hotel, input#search-tours {
     border-radius: 8px;
     outline: none;
     box-shadow: none;
+}
+
+@media(max-width: 992px) {
+    .result-main-wrapper {
+        grid-template-columns: 100%;
+    }
+    .result-filter-side {
+        display: none;
+    }
 }
 /*---=== end of Filter Section ===---*/

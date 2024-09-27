@@ -3,7 +3,7 @@
     <label>
       {{ label }} <sup v-if="requiredSign" class="required-sign">*</sup>
     </label>
-    <select class="select-inp" :class="altClass" :value="value" @change="changeHandler">
+    <select class="select-inp" :class="altClass" :value="modelValue" @change="changeHandler">
       <option v-for="option in options" :value="option[selectKey]" :key="option[selectKey]">
         {{ option[selectName] }}
       </option>
@@ -30,7 +30,7 @@ export default {
       type: String,
       required: false,
     },
-    value: {
+    modelValue: {  // Changed from 'value' to 'modelValue'
       type: String,
       default: "",
       required: false,
@@ -41,7 +41,7 @@ export default {
     },
     selectName: {
       type: String,
-      default: "label",  // Updated default to "label" to match typical usage
+      default: "label",
     },
     requiredSign: {
       type: Boolean,
@@ -62,10 +62,8 @@ export default {
   },
   methods: {
     changeHandler(e) {
-      this.$emit("update:modelValue", e.target.value); // Use "update:modelValue" for v-model compatibility
+      this.$emit("update:modelValue", e.target.value);
     },
   },
 };
 </script>
-
-<style></style>

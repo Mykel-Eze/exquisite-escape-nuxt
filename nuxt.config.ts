@@ -16,6 +16,9 @@ export default defineNuxtConfig({
         { name: "Keywords", content: "Exquisite Escape, Explore, Journey, Discover, Adventure" },
         { name: "theme-color", content: "#00A79D" },
       ],
+      // script: [
+      //   { src: 'https://js.paystack.co/v1/inline.js', defer: true }
+      // ],
     },
   },
 
