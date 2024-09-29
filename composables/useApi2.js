@@ -1,7 +1,7 @@
 // composables/useApi.js
 import { useRuntimeConfig } from '#app'
 
-export const useApi = () => {
+export const useApi2 = () => {
   const config = useRuntimeConfig()
   const apiBase = config.public.apiBase
 

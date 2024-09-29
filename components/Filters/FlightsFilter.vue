@@ -31,8 +31,9 @@
         <label v-for="stop in stops" :key="stop.value">
           <input type="checkbox" v-model="selectedStops" :value="stop.value" class="filled-in">
           <span class="w-full">
-            <span class="flex-div justify-between">
+            <span class="flex-div justify-between gap-2">
               <span class="filter-block-item">{{ stop.label }}</span>
+              <span>({{ stop.count }})</span>
             </span>
           </span>
         </label>
@@ -75,8 +76,9 @@
         <label v-for="baggage in baggages" :key="baggage.value">
           <input type="checkbox" v-model="selectedBaggages" :value="baggage.value" class="filled-in">
           <span class="w-full">
-            <span class="flex-div justify-between">
+            <span class="flex-div justify-between gap-2">
               <span class="filter-block-item">{{ baggage.label }}</span>
+              <span>({{ baggage.count }})</span>
             </span>
           </span>
         </label>
@@ -157,13 +159,17 @@ export default {
         const showMore = ref(false);
 
         const stops = computed(() => {
-            if (!props.flights || props.flights.length === 0) return [];
-            const stopCounts = new Set(props.flights.map(flight => flight.itineraries[0].segments.length - 1));
-            return [
-                { value: 0, label: 'Non-stop' },
-                { value: 1, label: '1 Stop' },
-                { value: 2, label: '2+ Stops' }
-            ].filter(stop => stopCounts.has(stop.value) || (stop.value === 2 && Array.from(stopCounts).some(count => count >= 2)));
+          if (!props.flights || props.flights.length === 0) return [];
+          const stopCounts = props.flights.reduce((acc, flight) => {
+            const stopCount = flight.itineraries[0].segments.length - 1;
+            acc[stopCount] = (acc[stopCount] || 0) + 1;
+            return acc;
+          }, {});
+          return [
+            { value: 0, label: 'Non-stop', count: stopCounts[0] || 0 },
+            { value: 1, label: '1 Stop', count: stopCounts[1] || 0 },
+            { value: 2, label: '2+ Stops', count: Object.entries(stopCounts).reduce((sum, [stops, count]) => stops >= 2 ? sum + count : sum, 0) }
+          ].filter(stop => stop.count > 0);
         });
 
         const airlines = computed(() => {
@@ -189,10 +195,21 @@ export default {
             return showMore.value ? airlines.value : airlines.value.slice(0, 10);
         });
 
-        const baggages = [
-            { value: 'carry_on', label: 'Carry-on bag' },
-            { value: 'checked', label: 'Checked bag' }
-        ];
+        const baggages = computed(() => {
+          if (!props.flights || props.flights.length === 0) return [];
+          const baggageCounts = props.flights.reduce((acc, flight) => {
+            const hasCheckedBags = flight.travelerPricings.some(traveler => 
+              traveler.fareDetailsBySegment.some(segment => segment.includedCheckedBags?.quantity > 0)
+            );
+            acc.checked = (acc.checked || 0) + (hasCheckedBags ? 1 : 0);
+            acc.carry_on = (acc.carry_on || 0) + 1; // Assuming all flights allow carry-on
+            return acc;
+          }, {});
+          return [
+            { value: 'carry_on', label: 'Carry-on bag', count: baggageCounts.carry_on || 0 },
+            { value: 'checked', label: 'Checked bag', count: baggageCounts.checked || 0 }
+          ];
+        });
 
         const departureTimes = [
             { value: 'early_morning', label: 'Early Morning', range: '12:00am - 5:59am' },

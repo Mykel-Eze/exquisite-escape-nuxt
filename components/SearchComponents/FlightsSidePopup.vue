@@ -109,17 +109,17 @@
                 <div class="ticket-item-content flex-div gap-[10px]" v-if="hasCheckedBags(pricing)">
                     <img src="@/assets/images/arrow-right-green.svg" alt="arrow" class="ticket-item-icon w-[24px]">
                     <div class="flex-div gap-[10px] text-[#9D9D9D]">
-                        <span class="text-[#606161]">Checked bag included</span>
+                        <span class="text-[#606161]">Checked bag(s) included</span>
                     </div>
                 </div>
                 
-                <div class="ticket-item-content">
+                <!-- <div class="ticket-item-content">
                   <div class="text-[#606161] text-[14px]">
                     <div class="my-[5px]" v-for="(segment, segIndex) in pricing.fareDetailsBySegment" :key="segIndex">
                       <sup>*</sup>{{ getBaggageInfo(segment) }}
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
               <div class="ticket-item">
                 <div class="ticket-item-title">Flexibility</div>
@@ -156,9 +156,7 @@
             </div>
 
             <div class="select-ticket-btn-wrapper mt-5">
-              <NuxtLink to="/flight-ticket-review">
-                <button class="select-ticket-btn">Select ticket</button>
-              </NuxtLink>
+                <button class="select-ticket-btn" @click="selectTicket">Select ticket</button>
             </div>
 
             <div class="cup-curves left-curve"></div>
@@ -192,7 +190,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useApi } from '@/utils/api';
+import { useFlightStore } from '~/store/flightStore';
 
 const props = defineProps({
   flight: {
@@ -208,6 +208,9 @@ const props = defineProps({
 const showHiddenDetails = ref(false);
 const api = useApi();
 const cityData = ref({});
+
+const router = useRouter();
+const flightStore = useFlightStore();
 
 const emit = defineEmits(['close-popup']);
 
@@ -358,10 +361,14 @@ const hasCheckedBags = (pricing) => {
   );
 };
 
-
 const getAirlineWebsite = computed(() => {
   return getCarrier.value ? `https://www.${getCarrier.value.toLowerCase()}.com` : '#';
 });
+
+const selectTicket = () => {
+  flightStore.setSelectedFlight(props.flight);
+  router.push(`/flight-ticket-review/${props.flight.id}`);
+};
 </script>
 
 <style scoped>
