@@ -1,16 +1,9 @@
 <template>
     <section id="sort-transfers">
         <div class="container">
+          SortTours
             <div class="other-tickets-overview-wrapper">
-                <div v-for="tour in tours" :key="tour.id">
-                    <ToursTicketOverviewBlock :tour="tour" @view-ticket-clicked="viewTicketDetails(tour)" />
-                </div>
-
-                <SidePopup 
-                    :tour="selectedTour" 
-                    :isVisible="isPopupVisible" 
-                    @close-popup="isPopupVisible = false" 
-                />
+                <ToursTicketOverviewBlock @view-ticket-clicked="$emit('view-ticket-clicked')" />
 
                 <div class="show-more-wrapper mt-[50px]">
                     <button class="show-more-btn flex-div gap-2">
@@ -24,32 +17,10 @@
 </template>
 
 <script>
-import { useToursStore } from '~/store/tours';
 
 export default {
-  name: "SortTours",
-  setup() {
-    const store = useToursStore();
-    const tours = computed(() => store.filteredTours); // Assuming 'filteredTours' holds the filtered results
-
-    const selectedTour = ref(null);
-    const isPopupVisible = ref(false);
-
-    const viewTicketDetails = (tour) => {
-      selectedTour.value = tour;
-      isPopupVisible.value = true;
-    };
-
-
-    return {
-      tours,
-      selectedTour,
-      isPopupVisible,
-      viewTicketDetails,
-    };
-  }
+    name: "SortTours"
 }
-
 </script>
 
 <style></style>

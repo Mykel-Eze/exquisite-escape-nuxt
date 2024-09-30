@@ -112,14 +112,14 @@
                 <small class="pry-color clear-btn" @click="clear(selectedReviews, reviews)">Clear</small>
             </div>
             <div class="filter-list-items">
-                <label for="all-points">
+                <!-- <label for="all-points">
                     <input type="checkbox" id="all-points" v-model="selectedReviews" class="filled-in">
                     <span class="w-full">
                         <span class="flex-div">
                             <span class="filter-block-item">All reviews</span>
                         </span>
                     </span>
-                </label>
+                </label> -->
                 <label for="5-point">
                     <input type="checkbox" id="5-point" v-model="selectedReviews" class="filled-in">
                     <span class="w-full">
