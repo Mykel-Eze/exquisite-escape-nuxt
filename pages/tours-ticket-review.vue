@@ -123,14 +123,14 @@
                                     </li>
                                     <li class="flex-div justify-between">
                                         <span>Taxes and fees</span>
-                                        <span>₦10,000.00</span>
+                                        <span>₦10,500.00</span>
                                     </li>
                                 </ul>
                             </div>
                             <div class="px-[20px] py-[10px]">
                                 <div class="flex-div justify-between text-[20px] mb-1">
                                     <span>Traveler 1: Adult</span>
-                                    <span>₦75,000.000</span>
+                                    <span>₦75,500.000</span>
                                 </div>
                                 <div class="text-[14px] text-[#848484]">Rates are quoted in NG Naira</div>
                             </div>

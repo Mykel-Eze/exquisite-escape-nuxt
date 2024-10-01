@@ -160,53 +160,29 @@
                     <div class="ticket-price-summary-side">
                         <div class="tpsss-block">
                             <div class="tpss-block-header">
-                                <div class="tpss-title">Roundtrip flight</div>
-                                <span>1 Ticket ∙ 1 Adult</span>
+                                <div class="tpss-title truncate">Palace and Gardens of Versailles</div>
+                                <span>1 Rue de la legion d’Honneur Paris</span>
                             </div>
 
                             <div class="tpss-block-body">
                                 <div class="tpss-body-item">
-                                    <div class="tpss-title">Lagos (LOS) to Toronto (YYZ)</div>
-                                    <div class="flex-div justify-between">
-                                        <div>Fri, Oct 20</div>
-                                        <div>
-                                            1:00pm - 10:23am <span class="text-[#EB7567]">+1</span> (26h 23m)
-                                        </div>
+                                    <div class="tpss-title">Traveller: 2 Adults, 1 Infant</div>
+                                    <div class="flex-div">
+                                        <div>Sun, Mar 10, 2024 </div>
                                     </div>
-                                    <div class="text-[#EB7567] mt-2">Arrives Sat, Oct 21</div>
-                                    <div class="mt-1">11h 22m Stop in ATL</div>
 
                                     <div class="flex flex-col gap-1 mt-2">
                                         <div class="flex-div gap-[10px]">
-                                            <img src="/icons/delta.svg" alt="delta" />
-                                            <span>Delta 55</span>
+                                            <img src="@/assets/images/arrow-right-green.svg" alt="arrow-right-green" />
+                                            <span>
+                                                <span class="pry-color">2</span> Adults
+                                            </span>
                                         </div>
                                         <div class="flex-div gap-[10px]">
-                                            <img src="/icons/delta.svg" alt="delta" />
-                                            <span>Delta 10</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tpss-body-item">
-                                    <div class="tpss-title">Toronto (YTZ) to Lagos (LOS)</div>
-                                    <div class="flex-div justify-between">
-                                        <div>Fri, Oct 20</div>
-                                        <div>
-                                            1:00pm - 10:23am <span class="text-[#EB7567]">+2</span> (26h 23m)
-                                        </div>
-                                    </div>
-                                    <div class="text-[#EB7567] mt-2">Arrives Sat, Oct 21</div>
-                                    <div class="mt-1">11h 22m Stop in ATL</div>
-
-                                    <div class="flex flex-col gap-1 mt-2">
-                                        <div class="flex-div gap-[10px]">
-                                            <img src="/icons/qatar.svg" alt="qatar" />
-                                            <span>Qatar Airways</span>
-                                        </div>
-                                        <div class="flex-div gap-[10px]">
-                                            <img src="/icons/british.svg" alt="british" />
-                                            <span>British Airways</span>
+                                            <img src="@/assets/images/arrow-right-green.svg" alt="arrow-right-green" />
+                                            <span>
+                                                <span class="pry-color">1</span> Infant
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -214,14 +190,14 @@
 
                             <div class="tpss-block-footer">
                                 <div class="tpss-title">Your price summary</div>
-                                <div class="text-right">Total: $1,234.70</div>
+                                <div class="text-right">Total: $150</div>
 
                                 <div class="tpss-footer-total flex-div justify-between">
                                     <div class="flex-div gap-[10px]">
-                                        <span>Traveler 1: Adult</span>
+                                        <span>Traveler: 3 People</span>
                                         <img src="@/assets/images/direction-down.svg" alt="icon">
                                     </div>
-                                    <b>₦1,000,006.90</b>
+                                    <b>₦75,500</b>
                                 </div>
                             </div>
                         </div>
