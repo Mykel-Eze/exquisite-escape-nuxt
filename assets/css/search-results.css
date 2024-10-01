@@ -296,7 +296,7 @@ button.view-ticket-btn {
     width: 100%;
     height: 100%;
     z-index: 99;
-    display: none;
+    /* display: none; */
 }
 .open .side-popup, .open .side-popup-overlay {
     display: block;
@@ -375,6 +375,11 @@ button.select-ticket-btn {
     background: var(--pry-color);
     font-size: 18px;
     border-radius: 10px;
+}
+button.select-ticket-btn.stb-2 {
+    background-color: #E5F6F5;
+    color: var(--pry-color);
+    border: 1px solid var(--pry-color);
 }
 .tickets-block .cup-curves {
     background: white;
@@ -773,5 +778,25 @@ button.ticket-details-btn.flex-div {
     bottom: 10%;
 }
 /*---=== end of Transfers-Ticket-Overview Page ===---*/
+
+/*---=== Tours-Side-Popup Page ===---*/
+.tickets-wrapper.cart-wrapper {
+    display: block;
+}
+.tickets-wrapper.cart-wrapper .tickets-top-side {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-height: 700px;
+    overflow: auto;
+}
+.ticket-items-block.cart-block {
+    border: 1px solid #CCEDEB;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+}
+/*---=== end of Tours-Side-Popup Page ===---*/
 
 /*---=== end of Search-Results Section ===---*/

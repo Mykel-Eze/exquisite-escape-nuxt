@@ -1,7 +1,6 @@
 <template>
-    <section id="sort-transfers">
+    <section id="sort-tours">
         <div class="container">
-          SortTours
             <div class="other-tickets-overview-wrapper">
                 <ToursTicketOverviewBlock @view-ticket-clicked="$emit('view-ticket-clicked')" />
 
@@ -13,6 +12,8 @@
                 </div>
             </div>
         </div>
+
+        <ToursSidePopup @view-ticket-clicked="$emit('view-ticket-clicked')" />
     </section>
 </template>
 

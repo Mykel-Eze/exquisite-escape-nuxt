@@ -41,7 +41,7 @@
                         class="filled-in">
                     <span class="w-full">
                         <span class="flex-div justify-between">
-                            <span class="filter-block-item">{{ category.item }}</span>
+                            <span class="filter-block-item truncate">{{ category.item }}</span>
                         </span>
                     </span>
                 </label>
@@ -60,7 +60,7 @@
                         class="filled-in">
                     <span class="w-full">
                         <span class="flex-div justify-between">
-                            <span class="filter-block-item">{{ duration.item }}</span>
+                            <span class="filter-block-item truncate">{{ duration.item }}</span>
                         </span>
                     </span>
                 </label>
@@ -79,7 +79,7 @@
                         class="filled-in">
                     <span class="w-full">
                         <span class="flex-div justify-between">
-                            <span class="filter-block-item">{{ recommend.item }}</span>
+                            <span class="filter-block-item truncate">{{ recommend.item }}</span>
                         </span>
                     </span>
                 </label>
@@ -98,7 +98,7 @@
                         class="filled-in">
                     <span class="w-full">
                         <span class="flex-div justify-between">
-                            <span class="filter-block-item">{{ service.item }}</span>
+                            <span class="filter-block-item truncate">{{ service.item }}</span>
                         </span>
                     </span>
                 </label>
@@ -195,7 +195,7 @@
                         class="filled-in">
                     <span class="w-full">
                         <span class="flex-div justify-between">
-                            <span class="filter-block-item">{{ supplier.item }}</span>
+                            <span class="filter-block-item truncate">{{ supplier.item }}</span>
                         </span>
                     </span>
                 </label>

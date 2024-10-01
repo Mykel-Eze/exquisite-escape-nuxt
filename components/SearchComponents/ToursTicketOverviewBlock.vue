@@ -40,14 +40,14 @@
           <div class="ticket-amount">₦{{ formatNumber(ticket.price) }}</div>
 
           <div class="view-ticket-btn-wrapper vtbw-vertical w-full">
-            <button class="view-ticket-btn flex-div" @click="emitViewTicketClicked(ticket)">
+            <button class="view-ticket-btn flex-div" @click="$emit('view-tours-ticket-clicked')">
               <span>View tours</span>
               <img src="@/assets/images/chevy-right.svg" alt="right arrow">
             </button>
-            <button class="view-ticket-btn flex-div sec-btn">
+            <!-- <button class="view-ticket-btn flex-div sec-btn">
               <span>More options available (4)</span>
               <img src="@/assets/images/direction-down-black.svg" alt="down arrow">
-            </button>
+            </button> -->
           </div>
         </div>
         <div class="cup-curves up-curve"></div>
