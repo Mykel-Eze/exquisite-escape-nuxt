@@ -19,101 +19,96 @@
                 <div class="review-content-side">
                     <div class="ticket-summary-side flex flex-col gap-[20px]">
                         <div class="ticket-summary-block">
+                            <div class="text-[14px]">
+                                <div class="text-[24px]">Palace and Gardens of Versailles</div>
+                                <div class="flex-div gap-[10px] my-2">
+                                    <img src="@/assets/images/location.svg" alt="location" class="w-[24px]">
+                                    <span>1 Rue de la legion d’Honneur Paris</span>
+                                </div>
+                                <div class="flex gap-[10px]">
+                                    <div class="ticket-labels flex-div">
+                                        <span>Art & Culture</span>
+                                    </div>
+                                    <div class="ticket-labels flex-div">
+                                        <img src="@/assets/images/round.svg" alt="ticket-label-icon" class="ticket-label-icon">
+                                        <span>Free Cancellation until 19/03/2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ticket-summary-block">
                             <div class="flex items-start gap-[10px]">
                                 <img src="@/assets/images/calendar.svg" alt="calendar-icon">
                                 <div class="flex flex-col gap-[5px]">
-                                    <div class="bold-txt text-[15px]">
-                                        Stay flexible with no charge fees
-                                    </div>
-                                    <div class="text-[14px]">
-                                        We recommend booking a flight with no change fees in case your plans change.
+                                    <div class="bold-txt text-[15px]"> Sun, Mar 10, 2024 </div>
+                                    <div class="flex-div gap-[10px] mb-3 mt-1">
+                                        <div class="flex-div gap-[10px]">
+                                            <img src="@/assets/images/check-3.svg" alt="check-icon" class="check-icon">
+                                            <span>
+                                                <span class="pry-color">2</span> Adults
+                                            </span>
+                                        </div>
+                                        <div class="flex-div gap-[10px]">
+                                            <img src="@/assets/images/check-3.svg" alt="check-icon" class="check-icon">
+                                            <span>Language: English</span>
+                                        </div>
                                     </div>
                                     <nuxt-link to="/search-results/flights" class="pry-color underline text-[14px]">
-                                        Change flights
+                                        Change date
                                     </nuxt-link>
                                 </div>
                             </div>
                         </div>
 
                         <div class="ticket-summary-block">
-                            <div class="flex items-start gap-[10px]">
-                                <img src="@/assets/images/check-2.svg" alt="check-2">
-                                <div class="flex flex-col gap-[5px]">
-                                    <div class="bold-txt text-[15px]">
-                                        No change fees for all flights
-                                    </div>
-                                    <div class="text-[14px]">
-                                        You can change these flights without paying a fee if plans change. Because
-                                        flexibility matters.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ticket-summary-block">
                             <div class="tsb-top-side text-[14px]">
-                                <div class="text-[24px]">Lagos to London</div>
-                                <div class="mt-2">1:00pm - 10:23am (26h 23m ∙ 1 stop)</div>
+                                <div class="text-[24px]">Cancellation fee</div>
                                 <div class="flex-div gap-[10px] my-2">
-                                    <img src="/icons/qatar.svg" alt="qatar" class="w-[30px]">
-                                    <span>Delta • Fri, Oct 20</span>
+                                    After 23:59 on 19/03/2024: <b class="pry-color">₦13,000.00 </b>
                                 </div>
-                                <div class="flex">
-                                    <TicketLabels label="average-co" />
+                                
+                                <div class="text-[24px] mt-[30px]">Remarks</div>
+                                <div class="remarks-items-wrapper flex-div gap-[10px] my-3">
+                                    <div class="remarks-item flex-div gap-[10px]">
+                                        <img src="@/assets/images/time1.svg" alt="time">
+                                        <span>45 min. Estimated activity time</span>
+                                        <img src="@/assets/images/remove.svg" alt="remove">
+                                    </div>
+                                    <div class="remarks-item flex-div gap-[10px]">
+                                        <img src="@/assets/images/bag-2.svg" alt="bag">
+                                        <span>1 bag allowed</span>
+                                        <img src="@/assets/images/remove.svg" alt="remove">
+                                    </div>
+                                    <div class="remarks-item flex-div gap-[10px]">
+                                        <img src="@/assets/images/user.svg" alt="user">
+                                        <span>Ticket valid for one traveller</span>
+                                        <img src="@/assets/images/remove.svg" alt="remove">
+                                    </div>
                                 </div>
-
-                                <div class="show-more-wrapper-2 flex-div gap-[6px] pry-color mt-[30px]">
-                                    <span>Show more</span>
-                                    <img src="@/assets/images/caret-down-green.svg" alt="caret-down-green">
+                                <div class="text-[#848484] text-[14px]">
+                                    If the incorrect details are provided, the provider will not be held
+                                    responsible for the correct service provision and you may be subject to
+                                    cancellation / no-show-fees
                                 </div>
                             </div>
                             <div class="tsb-bottom-side">
-                                <div class="text-[18px] mb-1">Your fare: Basic Economy</div>
-                                <div class="flex-div gap-[10px] text-[14px]">
-                                    <img src="@/assets/images/tag.svg" alt="tag" class="w-[24px]">
-                                    <span>Upgrade for $60 to get seat choice and no change fees.</span>
+                                <div class="text-[18px] mt-5">Best Available Rate</div>
+                                <div class="flex-div gap-[10px] my-[10px]">
+                                    <img src="@/assets/images/badge-percent.svg" alt="badge-percent" class="w-[24px]">
+                                    <span class="text-[14px]">
+                                        This rate does not allow any changes. You must cancel the existing booking
+                                        and issue a new one. Cancellation fees may apply according to the rate
+                                        conditions.
+                                    </span>
                                 </div>
-                                <div class="upgarde-btn-wrapper mt-[30px]">
-                                    <button class="upgrade-btn">See upgrade options</button>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!--=== When a Seat is Selected ===-->
-                        <div class="ticket-summary-block">
-                            <div class="text-[18px]">Seats</div>
-                            <div class="flex-div gap-[10px] my-[10px]">
-                                <img src="@/assets/images/check.svg" alt="check" class="w-[20px]">
-                                <span class="text-[14px]">Seat choice Included</span>
-                            </div>
-                            <div class="text-[14px]">
-                                <div class="bold-txt text-[16px] mb-1">Traveler 1: Adult</div>
-                                <div class="flex-div text-[#848484] mb-1">
-                                    <span>LOS to LHR</span>
-                                    <span>Seat 34F</span>
+                                <div class="mt-[30px]">
+                                    <button class="addmore-btn flex-div gap-[6px] text-[14px]">
+                                        <img src="@/assets/images/plus-circle2.svg" alt="plus-circle2" class="">
+                                        <span>Add more</span>
+                                    </button>
                                 </div>
-                                <div class="flex-div text-[#848484] mb-1">
-                                    <span>ATL to YYZ</span>
-                                    <span>Seat 16C</span>
-                                </div>
-                            </div>
-                            <div class="upgarde-btn-wrapper mt-[30px]">
-                                <button class="upgrade-btn" @click="showPopup = true">See upgrade options</button>
-                            </div>
-                        </div>
-
-                        <div class="ticket-summary-block">
-                            <div class="text-[18px]">Bags</div>
-                            <div class="flex-div gap-[10px] text-[14px] my-[5px]">
-                                <img src="@/assets/images/arrow-right-green.svg" alt="arrow-right-green">
-                                <span>Carry-on bag included</span>
-                            </div>
-                            <div class="flex-div gap-[10px] text-[14px] my-[5px]">
-                                <img src="@/assets/images/arrow-right-green.svg" alt="arrow-right-green">
-                                <span>1st checked bag included</span>
-                            </div>
-                            <div class="text-[14px]">
-                                Additional bags for this flight must be purchased through the airline after booking.
                             </div>
                         </div>
                     </div>
@@ -124,22 +119,18 @@
                                 <ul class="price-summary-list text-[14px] text-[#848484]">
                                     <li class="flex-div justify-between">
                                         <span>Traveler 1: Adult</span>
-                                        <span>₦1,000,006.90</span>
-                                    </li>
-                                    <li class="flex-div justify-between">
-                                        <span>Flight</span>
-                                        <span>₦20,740.00</span>
+                                        <span>₦65,000.00</span>
                                     </li>
                                     <li class="flex-div justify-between">
                                         <span>Taxes and fees</span>
-                                        <span>₦10,436.90</span>
+                                        <span>₦10,000.00</span>
                                     </li>
                                 </ul>
                             </div>
                             <div class="px-[20px] py-[10px]">
                                 <div class="flex-div justify-between text-[20px] mb-1">
                                     <span>Traveler 1: Adult</span>
-                                    <span>₦1,200,176.90</span>
+                                    <span>₦75,000.000</span>
                                 </div>
                                 <div class="text-[14px] text-[#848484]">Rates are quoted in NG Naira</div>
                             </div>
@@ -148,16 +139,6 @@
                                 <nuxt-link to="/flight-checkout">
                                     <button class="summary-checkout-btn">Checkout</button>
                                 </nuxt-link>
-                            </div>
-                        </div>
-
-                        <div class="free-cancellation-block flex items-start gap-[10px]">
-                            <img src="@/assets/images/clock-circle.svg" alt="clock-circle">
-                            <div>
-                                <div class="bold-txt text-[16px]">Free cancellation</div>
-                                <div class="text-[14px] leading-[22px]">
-                                    There's no fee to cancel within 24 hours of booking.
-                                </div>
                             </div>
                         </div>
                     </div>

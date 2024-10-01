@@ -797,6 +797,21 @@ button.ticket-details-btn.flex-div {
     border-radius: 10px;
     background-color: white;
 }
+.remarks-item {
+    padding: 8px 16px;
+    color: #848484;
+    background-color: #DAF0E3;
+    font-size: 14px;
+    border-radius: 20px;
+}
+.addmore-btn {
+    font-family: var(--font-smbold);
+    padding: 8px 14px;
+    border-radius: 20px;
+    background-color: white;
+    border: 1px solid #D0D5DD;
+    cursor: pointer;
+}
 /*---=== end of Tours-Side-Popup Page ===---*/
 
 /*---=== end of Search-Results Section ===---*/
