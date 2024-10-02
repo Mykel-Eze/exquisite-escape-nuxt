@@ -108,6 +108,7 @@
               label="Returning on"
               id="return-date"
               v-model="flightObj.returnDate"
+              :min-date="flightObj.departureDate"
             />
           </div>
 

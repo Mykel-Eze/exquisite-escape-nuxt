@@ -4,7 +4,8 @@
     <a-date-picker 
       :value="dateValue" 
       @change="changeHandler" 
-      format="YYYY-MM-DD"  
+      format="YYYY-MM-DD"
+      :disabled-date="disabledDate"
     />
   </div>
 </template>
@@ -36,6 +37,10 @@ export default {
       type: String,
       default: "",
     },
+    minDate: {
+      type: String,
+      default: "",
+    },
   },
   setup(props, { emit }) {
     const dateValue = computed(() => {
@@ -46,9 +51,16 @@ export default {
       emit("update:modelValue", dateString);
     };
 
+    const disabledDate = (current) => {
+      const today = dayjs().startOf('day');
+      const minDate = props.minDate ? dayjs(props.minDate) : today;
+      return current && current < minDate;
+    };
+
     return {
       dateValue,
       changeHandler,
+      disabledDate,
     };
   },
 };
