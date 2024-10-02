@@ -118,7 +118,7 @@ export default {
     });
 
     const viewTicketDetails = (flight) => {
-      console.log('viewTicketDetails called:', flight);
+      // console.log('viewTicketDetails called:', flight);
       selectedFlight.value = flight;
       showPopup.value = true;
     };

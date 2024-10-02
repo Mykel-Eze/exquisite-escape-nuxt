@@ -99,7 +99,7 @@ const getAirlineLogo = (carrierCode) => {
 
 const viewTicket = (flight) => {
   emit('view-ticket-clicked', flight);
-  console.log("Button clicked", flight);
+  // console.log("Button clicked", flight);
 };
 
 const getAirlineName = (carrierCode) => {
