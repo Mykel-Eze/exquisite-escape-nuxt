@@ -46,7 +46,7 @@
 
               <!--=== Note to Dev: When the search is empty, uncomment the below component👇🏽 ===-->
               <div v-if="isLoading" class="loading-spinner-wrapper">
-                <LoadingSpinner />
+                <LoadingSpinner text="Fetching Flights..." />
               </div>
               <div v-else-if="!flightList || flightList.length === 0" class="mt-[100px] mb-[40px]">
                 <EmptySearch
