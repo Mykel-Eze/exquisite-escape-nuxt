@@ -10,7 +10,7 @@
       <div class="tourist-type">
         <div class="tourist">
           <span>Adults</span>
-          <small>Age 12 or above</small>
+          <small>Age 5 or above</small>
         </div>
         <div class="counter">
           <button type="button" @click="decrement('adults')" :disabled="tourists.adults <= 1">
@@ -25,7 +25,7 @@
       <div class="tourist-type">
         <div class="tourist">
           <span>Children</span>
-          <small>Age 2 - 12</small>
+          <small>Age 0 - 4</small>
         </div>
         <div class="counter">
           <button type="button" @click="decrement('children')" :disabled="tourists.children <= 0">
@@ -37,7 +37,7 @@
           </button>
         </div>
       </div>
-      <div class="tourist-type">
+      <!-- <div class="tourist-type">
         <div class="tourist">
           <span>Infants</span>
           <small>Under 2</small>
@@ -51,7 +51,7 @@
             <span>+</span>
           </button>
         </div>
-      </div>
+      </div> -->
       <div class="right-align">
         <button @click="closeDropdown" class="done-button">Done</button>
       </div>
@@ -61,41 +61,37 @@
 
 <script>
 export default {
-   props: {
+  props: {
     modelValue: {
-      type: Number,
-      default: 1
+      type: String,
+      default: "ADULT"
     }
   },
-  emits: ['update:modelValue'],
+   emits: ['update:modelValue'],
   data() {
     return {
       isOpen: false,
       tourists: {
         adults: 1,
         children: 0,
-        infants: 0
+        // infants: 0
       }
     }
   },
   computed: {
     totalTourists() {
-      return this.tourists.adults + this.tourists.children + this.tourists.infants
+      return this.tourists.adults + this.tourists.children
+    },
+    paxType() {
+      // if (this.tourists.infants > 0) return "INFANT";
+      if (this.tourists.children > 0) return "CHILD";
+      return "ADULT";
     }
   },
   watch: {
-    totalTourists(newValue) {
-      this.$emit('update:modelValue', newValue)
-    },
-    modelValue: {
-      immediate: true,
+    paxType: {
       handler(newValue) {
-        if (newValue !== this.totalTourists) {
-          // Adjust passengers to match the new total
-          this.tourists.adults = newValue
-          this.tourists.children = 0
-          this.tourists.infants = 0
-        }
+        this.$emit('update:modelValue', newValue);
       }
     }
   },

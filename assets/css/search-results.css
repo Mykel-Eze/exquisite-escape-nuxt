@@ -6,6 +6,18 @@
     border-radius: 10px;
     width: fit-content;
 }
+.results-section {
+    position: relative;
+}
+.loading-spinner-wrapper {
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    top: 0;
+    left: 0;
+    background: white;
+    z-index: 1;
+}
 .loading-spinner-wrapper .loading-spinner {
     width: 100%;
     margin-top: 100px;

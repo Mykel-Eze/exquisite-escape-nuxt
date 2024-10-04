@@ -1,8 +1,9 @@
 <template>
-  <form action="#" class="search-inputs flex items-end">
+  <form @submit.prevent="searchTourHandler" class="search-inputs flex items-end">
     <div class="input-field-wrapper">
       <div class="select-field-wrapper flex-div gap-[20px] mb-[30px]">
-        <TouristSelector v-model:value="tourObj.noOfTourist" />
+        <!-- <TouristSelector v-model:value="tourObj.noOfTourist" /> -->
+        <TouristSelector v-model="tourObj.paxType" />
       </div>
       <div class="flex-div gap-3 grid-sm-break">
         <div class="relative">
@@ -132,21 +133,23 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter,useRoute } from 'vue-router';
 import { useTours } from '@/composables/useTours';
 import { useToursStore } from '@/store/tours';
 
 const router = useRouter();
+const route = useRoute();
 const toursStore = useToursStore();
 const { countries, destinations, fetchCountries, fetchDestinations } = useTours();
 
 const tourObj = ref({
-  noOfTourist: "1 Tourist",
-  noOfNight: "1 Night",
   countryCode: "",
+  countryName: "",
   stateCode: "",
+  stateName: "",
   departureDate: "",
   destinationDate: "",
+  paxType: "ADULT"
 });
 
 const countrySearch = ref('');
@@ -182,20 +185,39 @@ const handleDestinationInput = (value) => {
   destinationSearch.value = value;
 };
 
-const selectCountry = (country) => {
+const selectCountry = async (country) => {
   tourObj.value.countryCode = country.code;
+  tourObj.value.countryName = country.name;
   countrySearch.value = country.name;
   showCountryDropdown.value = false;
-  fetchDestinations(country.code);
+  await fetchDestinations(country.code);
   addToRecentSearches(country);
+  saveToSessionStorage();
 };
 
 const selectDestination = (destination) => {
   tourObj.value.stateCode = destination.code;
+  tourObj.value.stateName = destination.name;
   destinationSearch.value = destination.name;
   showDestinationDropdown.value = false;
   addToRecentSearches(destination);
+  saveToSessionStorage();
 };
+
+const saveToSessionStorage = () => {
+  sessionStorage.setItem('tourSearch', JSON.stringify(tourObj.value));
+};
+
+const loadFromSessionStorage = () => {
+  const savedSearch = sessionStorage.getItem('tourSearch');
+  if (savedSearch) {
+    const parsedSearch = JSON.parse(savedSearch);
+    tourObj.value = { ...tourObj.value, ...parsedSearch };
+    countrySearch.value = parsedSearch.countryName;
+    destinationSearch.value = parsedSearch.stateName;
+  }
+};
+
 
 const handleBlur = (type) => {
   setTimeout(() => {
@@ -223,24 +245,41 @@ const addToRecentSearches = (item) => {
   if (recentSearches.value.length > 5) {
     recentSearches.value.pop();
   }
-  localStorage.setItem('recentTourSearches', JSON.stringify(recentSearches.value));
+  sessionStorage.setItem('recentTourSearches', JSON.stringify(recentSearches.value));
 };
 
 const searchTourHandler = async () => {
-  await toursStore.searchTours(tourObj.value);
-  router.push({ name: 'search-results-tours' });
+  try {
+    await toursStore.searchTours(tourObj.value);
+    router.push({
+      path: '/search-results/tours',
+      query: {
+        ...tourObj.value
+      }
+    });
+  } catch (error) {
+    console.error("Error searching tours:", error);
+  }
 };
 
 onMounted(async () => {
   await fetchCountries();
-  const savedSearches = localStorage.getItem('recentTourSearches');
-  if (savedSearches) {
-    try {
-      recentSearches.value = JSON.parse(savedSearches);
-    } catch (error) {
-      console.error('Error parsing recent searches:', error);
-      recentSearches.value = [];
-    }
+  loadFromSessionStorage();
+  if (tourObj.value.countryCode) {
+    await fetchDestinations(tourObj.value.countryCode);
+  }
+});
+
+onMounted(() => {
+  const query = route.query;
+  if (Object.keys(query).length > 0) {
+    tourObj.value = {
+      countryCode: query.countryCode || "",
+      stateCode: query.stateCode || "",
+      departureDate: query.departureDate || "",
+      destinationDate: query.destinationDate || "",
+      paxType: query.paxType || "ADULT"
+    };
   }
 });
 

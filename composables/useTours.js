@@ -1,4 +1,3 @@
-// composables/useTours.js
 import { ref } from 'vue'
 import { useApi } from '@/utils/api'
 
@@ -11,9 +10,11 @@ export function useTours() {
     try {
       const response = await api.get('/api/activities/countries/en')
       countries.value = response.data.countries
-      console.log(countries.value)
+      // console.log(countries.value)
+      return countries.value
     } catch (error) {
       console.error('Error fetching countries:', error)
+      return []
     }
   }
 
@@ -21,9 +22,11 @@ export function useTours() {
     try {
       const response = await api.get(`/api/activities/destination/en/${countryCode}`)
       destinations.value = response.data.country.destinations
-      console.log(destinations.value)
+      // console.log(destinations.value)
+      return destinations.value
     } catch (error) {
       console.error('Error fetching destinations:', error)
+      return []
     }
   }
 
