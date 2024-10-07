@@ -12,7 +12,7 @@
             </div>
                 
             <div class="flex justify-end">
-                <button @click="openCart" class="open-cart-btn flex-div justify-center gap-3 w-[176px] mt-6 modal-close">
+                <button @click="openCart" class="open-cart-btn flex-div justify-center gap-3 w-[176px] mt-6">
                     <span>Open Cart</span>
                     <img src="@/assets/images/cart-check.svg" alt="cart-check">
                 </button>
@@ -22,7 +22,26 @@
 </template>
 
 <script setup>
+import { defineProps, onMounted } from 'vue';
 
+const props = defineProps({
+  isVisible: Boolean
+});
+
+const emit = defineEmits(['open-cart']);
+
+const openCart = () => {
+  emit('open-cart');
+  // Close the modal using Materialize
+  const modal = M.Modal.getInstance(document.getElementById('tours-success-modal'));
+  modal.close();
+};
+
+onMounted(() => {
+  // Initialize the modal
+  const modalElement = document.getElementById('tours-success-modal');
+  M.Modal.init(modalElement);
+});
 </script>
 
 <style scoped src="@/assets/css/tours-modal.css"></style>

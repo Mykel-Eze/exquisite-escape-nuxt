@@ -62,8 +62,8 @@
                     :tours="filteredTourList" 
                     :activeTab="activeTab"
                     @update:activeTab="updateActiveTab"
-                    @view-ticket-clicked="viewTicketDetails"
-                    @show-availability-modal="showAvailabilityModal = true"
+                    @view-ticket-details="showSidePopup"
+                    @show-availability-modal="showAvailabilityModal"
                 />
               </div>
             </div>
@@ -72,25 +72,32 @@
       </div>
     </section>
 
-    <ToursAvailabilityModal 
-      v-if="showAvailabilityModal" 
-      :tour="selectedTour"
-      @close="closeAvailabilityModal"
+    <ToursTicketOverviewBlock
+        :tours="filteredTourList"
+        @show-availability-modal="showAvailabilityModal"
+        @view-ticket-details="showSidePopup"
     />
-    <ToursSuccessModal 
-      v-if="showSuccessModal"
-      @close="closeSuccessModal"
+    <ToursAvailabilityModal
+        :tour="selectedTour"
+        @add-to-cart="addToCart"
     />
-    <ToursSidePopup 
-      v-if="showSidePopup" 
-      :tour="selectedTour"
-      @close="closeSidePopup"
+    <ToursSuccessModal
+        :isVisible="isSuccessModalVisible"
+        @open-cart="showSidePopup"
+    />
+    <ToursSidePopup
+        :isVisible="isSidePopupVisible"
+        :cartItems="cartItems"
+        @close="closeSidePopup"
+        @remove-from-cart="removeFromCart"
+        @empty-cart="emptyCart"
+        @add-more="addMore"
     />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useToursStore } from '@/store/tours';
 import { useTours } from '@/composables/useTours';
@@ -106,10 +113,10 @@ const activeTab = ref('all');
 const destinationName = ref('');
 const countryName = ref('');
 
-const showAvailabilityModal = ref(false);
-const showSuccessModal = ref(false);
-const showSidePopup = ref(false);
+const isSidePopupVisible = ref(false);
 const selectedTour = ref(null);
+const cartItems = ref([]);
+const isSuccessModalVisible = ref(false);
 
 const numberOfActivities = computed(() => filteredTourList.value.length);
 
@@ -159,25 +166,57 @@ const fetchTourData = async () => {
   }
 };
 
+onMounted(fetchTourData);
+
 const viewTicketDetails = (tour) => {
   selectedTour.value = tour;
   showSidePopup.value = true;
 };
 
-const closeAvailabilityModal = () => {
-  showAvailabilityModal.value = false;
+// const closeAvailabilityModal = () => {
+//   showAvailabilityModal.value = false;
+// };
+
+// const closeSuccessModal = () => {
+//   showSuccessModal.value = false;
+// };
+
+const showAvailabilityModal = (tour) => {
+  selectedTour.value = JSON.parse(JSON.stringify(tour)); // Create a deep copy
+  const modal = M.Modal.getInstance(document.getElementById('tours-availability-modal'));
+  modal.open();
+  console.log(selectedTour.value)
 };
 
-const closeSuccessModal = () => {
-  showSuccessModal.value = false;
+const addToCart = (item) => {
+  cartItems.value.push(item);
+  const availabilityModal = M.Modal.getInstance(document.getElementById('tours-availability-modal'));
+  availabilityModal.close();
+  const successModal = M.Modal.getInstance(document.getElementById('tours-success-modal'));
+  successModal.open();
+};
+
+const showSidePopup = () => {
+  isSidePopupVisible.value = true;
+  const successModal = M.Modal.getInstance(document.getElementById('tours-success-modal'));
+  successModal.close();
 };
 
 const closeSidePopup = () => {
-  showSidePopup.value = false;
-  selectedTour.value = null;
+  isSidePopupVisible.value = false;
 };
 
-onMounted(fetchTourData);
+const removeFromCart = (index) => {
+  cartItems.value.splice(index, 1);
+};
+
+const emptyCart = () => {
+  cartItems.value = [];
+};
+
+const addMore = () => {
+  closeSidePopup();
+};
 
 watch(() => route.query, (newQuery, oldQuery) => {
   if (JSON.stringify(newQuery) !== JSON.stringify(oldQuery)) {

@@ -88,7 +88,7 @@ button.modify-availability-btn {
   color: white;
   border-radius: 8px;
 }
-.num-of-travellers-block {
+.num-of-travellers-block > div {
   padding: 8px;
   border: 1px solid var(--pry-color);
   border-radius: 10px;

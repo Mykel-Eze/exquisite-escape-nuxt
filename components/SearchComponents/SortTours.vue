@@ -24,7 +24,7 @@
     <div class="container">
       <ToursTicketOverviewBlock 
         :tours="sortedTours"
-        @view-ticket-clicked="viewTicketDetails"
+        @view-ticket-details="viewTicketDetails"
         @show-availability-modal="showAvailabilityModal"
       />
 
@@ -56,7 +56,7 @@ export default {
       required: true
     }
   },
-  emits: ['update:activeTab', 'view-ticket-clicked', 'show-availability-modal'],
+  emits: ['update:activeTab', 'view-ticket-details', 'show-availability-modal'],
   setup(props, { emit }) {
     const showSuccessModal = ref(false);
     const showSidePopup = ref(false);
@@ -89,8 +89,8 @@ export default {
       return props.activeTab === 'all' && props.tours && visibleTours.value < props.tours.length;
     });
 
-    const viewTicketDetails = (tour) => {
-      emit('view-ticket-clicked', tour);
+    const viewTicketDetails = () => {
+      emit('view-ticket-details');
     };
 
     const showAvailabilityModal = (tour) => {

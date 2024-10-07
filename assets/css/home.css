@@ -173,6 +173,7 @@ img.transfer-arrow {
 .search-dropdown-wrapper {
     background-color: transparent;
     width: 100%;
+    z-index: 1;
 }
 .search-dropdown-wrapper ul {
     box-shadow: 0px 24px 20px 0px rgba(16, 24, 40, 0.08);

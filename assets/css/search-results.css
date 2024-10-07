@@ -316,6 +316,9 @@ button.view-ticket-btn {
 img.close-popup-icon {
     cursor: pointer;
 }
+.tbs-btn {
+    background-color: transparent !important;
+}
 .ticket-items-wrapper {
     display: flex;
     flex-direction: column;
@@ -716,6 +719,7 @@ button.complete-booking-btn {
     height: 100%;
     object-fit: cover;
     object-position: center;
+    background-color: #5a5a5a;
 }
 .ticket-name {
     color: #606161;
