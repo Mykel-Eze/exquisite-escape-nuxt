@@ -17,10 +17,7 @@
           <div class="result-main-wrapper">
             <div class="result-filter-side">
               <div class="rfs">
-                <ToursFilter 
-                  :tours="tourList || []" 
-                  @update:filteredTours="updateFilteredTours" 
-                />
+                <ToursFilter :tours="tourList" @update:filteredTours="updateFilteredTours" />
               </div>
             </div>
             <div class="result-contents-side py-10">
