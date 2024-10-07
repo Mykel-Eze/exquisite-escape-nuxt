@@ -49,20 +49,23 @@
 
     <!-- Duration Filter -->
     <div class="filter-block">
-      <div class="filter-block-header">
+        <div class="filter-block-header">
         <span>Duration</span>
         <small class="pry-color clear-btn" @click="resetDurationFilter">Clear</small>
-      </div>
-      <div class="filter-list-items">
-        <label v-for="duration in uniqueDurations" :key="duration">
-          <input type="checkbox" v-model="selectedDurations" :value="duration" class="filled-in">
-          <span class="w-full">
+        </div>
+        <div class="filter-list-items">
+        <label v-for="duration in displayedDurations" :key="duration">
+            <input type="checkbox" v-model="selectedDurations" :value="duration" class="filled-in">
+            <span class="w-full">
             <span class="flex-div justify-between">
-              <span class="filter-block-item truncate">{{ duration }}</span>
+                <span class="filter-block-item truncate">{{ duration }}</span>
             </span>
-          </span>
+            </span>
         </label>
-      </div>
+        </div>
+        <small v-if="showMoreDurations" @click="toggleShowAllDurations" class="show-more-btn clear-btn pry-color">
+        {{ showAllDurations ? 'Show less' : 'Show more' }}
+        </small>
     </div>
 
     <!-- Recommended Filter -->
@@ -126,6 +129,7 @@ const selectedCategories = ref([]);
 const selectedDurations = ref([]);
 const selectedRatings = ref([]);
 const selectedRecommendations = ref([]);
+const showAllDurations = ref(false);
 
 const uniqueCategories = computed(() => {
   const categories = new Set();
@@ -139,14 +143,30 @@ const uniqueCategories = computed(() => {
   return Array.from(categories);
 });
 
-const uniqueDurations = computed(() => {
+const sortedUniqueDurations = computed(() => {
   const durations = new Set();
   props.tours.forEach(tour => {
     const duration = getDuration(tour);
     if (duration) durations.add(duration);
   });
-  return Array.from(durations);
+  return Array.from(durations).sort((a, b) => {
+    const aHours = parseFloat(a.split(' ')[0]);
+    const bHours = parseFloat(b.split(' ')[0]);
+    return aHours - bHours;
+  });
 });
+
+const displayedDurations = computed(() => {
+  return showAllDurations.value ? sortedUniqueDurations.value : sortedUniqueDurations.value.slice(0, 6);
+});
+
+const showMoreDurations = computed(() => {
+  return sortedUniqueDurations.value.length > 6;
+});
+
+const toggleShowAllDurations = () => {
+  showAllDurations.value = !showAllDurations.value;
+};
 
 const uniqueRecommendations = computed(() => {
   const recommendations = new Set();
@@ -218,6 +238,7 @@ const resetCategoryFilter = () => {
 
 const resetDurationFilter = () => {
   selectedDurations.value = [];
+  showAllDurations.value = false;
 };
 
 const resetReviewFilter = () => {
