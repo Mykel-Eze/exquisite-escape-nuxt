@@ -1,0 +1,106 @@
+#tours-availability-modal, #tours-success-modal {
+    border-radius: 10px;
+    width: 68%;
+    color: #606061;
+}
+#tours-success-modal {
+  width: 64%;
+}
+.modal-header {
+    background: #E5F6F5;
+    color: #848484;
+    padding: 12px 0;
+}
+.modal-header h2.modal-title {
+    font-size: 28px;
+    font-family: var(--font-smbold);
+    letter-spacing: -1px;
+}
+.counter {
+  display: flex;
+  align-items: center;
+}
+.counter button {
+  width: 20px;
+  height: 20px;
+  line-height: 1;
+  background-color: white;
+  border: 1px solid var(--pry-color);
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0;
+  color: var(--pry-color);
+  position: relative;
+}
+.counter > span {
+  margin: 0 10px;
+  font-size: 18px;
+}
+.counter .counter-add-btn {
+  background-color: rgba(0, 167, 157, 0.2);
+}
+.counter button span {
+  position: absolute;
+  top: -5%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+button.availability-btn {
+  min-width: 120px;
+  border: 1px solid #B2E5E2;
+  background-color: white;
+  border-radius: 10px;
+  font-size: 18px;
+  color: #606061;
+  padding: 5px 12px;
+}
+button.availability-btn span {
+  font-size: 12px;
+}
+button.modify-availability-btn {
+  border: 1px solid #66CAC4;
+  background-color: var(--pry-color);
+  min-width: 120px;
+  font-size: 16px;
+  height: 56px;
+  border-radius: 10px;
+  color: white;
+  font-family: var(--font-smbold);
+}
+.tours-details-wrappper {
+  display: grid;
+  grid-template-columns: 1fr 490px;
+  gap: 50px;
+  margin: 16px 0;
+}
+.tours-detail-title {
+  font-size: 24px;
+}
+.tours-detail-tag {
+  border: 1px solid;
+}
+.add-to-cart-btn, .open-cart-btn {
+  padding: 12px 10px;
+  background-color: black;
+  color: white;
+  border-radius: 8px;
+}
+.num-of-travellers-block > div {
+  padding: 8px;
+  border: 1px solid var(--pry-color);
+  border-radius: 10px;
+}
+.notb-title {
+  color: #9D9D9D;
+  font-size: 18px;
+}
+.tours-success-title {
+  padding: 20px 15px;
+  border: 1px solid var(--pry-color);
+  font-family: var(--font-smbold);
+  letter-spacing: -1px;
+  border-radius: 8px;
+}

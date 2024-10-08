@@ -108,6 +108,7 @@
               label="Returning on"
               id="return-date"
               v-model="flightObj.returnDate"
+              :min-date="flightObj.departureDate"
             />
           </div>
 
@@ -263,12 +264,12 @@ export default {
       if (recentSearches.value.length > 5) {
         recentSearches.value.pop()
       }
-      localStorage.setItem('recentSearches', JSON.stringify(recentSearches.value))
+      sessionStorage.setItem('recentSearches', JSON.stringify(recentSearches.value))
     }
 
-    // Load saved search data from localStorage on component mount
+    // Load saved search data from sessionStorage on component mount
     onMounted(() => {
-      const savedSearch = localStorage.getItem('lastFlightSearch')
+      const savedSearch = sessionStorage.getItem('lastFlightSearch')
       if (savedSearch) {
         const parsedSearch = JSON.parse(savedSearch)
         flightObj.value = { ...flightObj.value, ...parsedSearch }
@@ -277,9 +278,9 @@ export default {
       }
     })
 
-    // Watch for changes in flightObj and save to localStorage
+    // Watch for changes in flightObj and save to sessionStorage
     watch(flightObj, (newVal) => {
-      localStorage.setItem('lastFlightSearch', JSON.stringify(newVal))
+      sessionStorage.setItem('lastFlightSearch', JSON.stringify(newVal))
     }, { deep: true })
 
     watch(() => flightObj.value.tripType, (newType) => {
@@ -323,8 +324,8 @@ export default {
       }
 
       try {
-        // Save the current search to localStorage
-        localStorage.setItem('lastFlightSearch', JSON.stringify(flightObj.value))
+        // Save the current search to sessionStorage
+        sessionStorage.setItem('lastFlightSearch', JSON.stringify(flightObj.value))
 
         // Redirect to the search results page with query parameters
         router.push({

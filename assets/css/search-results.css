@@ -6,6 +6,18 @@
     border-radius: 10px;
     width: fit-content;
 }
+.results-section {
+    position: relative;
+}
+.loading-spinner-wrapper {
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    top: 0;
+    left: 0;
+    background: white;
+    z-index: 1;
+}
 .loading-spinner-wrapper .loading-spinner {
     width: 100%;
     margin-top: 100px;
@@ -296,13 +308,16 @@ button.view-ticket-btn {
     width: 100%;
     height: 100%;
     z-index: 99;
-    display: none;
+    /* display: none; */
 }
 .open .side-popup, .open .side-popup-overlay {
     display: block;
 }
 img.close-popup-icon {
     cursor: pointer;
+}
+.tbs-btn {
+    background-color: transparent !important;
 }
 .ticket-items-wrapper {
     display: flex;
@@ -375,6 +390,11 @@ button.select-ticket-btn {
     background: var(--pry-color);
     font-size: 18px;
     border-radius: 10px;
+}
+button.select-ticket-btn.stb-2 {
+    background-color: #E5F6F5;
+    color: var(--pry-color);
+    border: 1px solid var(--pry-color);
 }
 .tickets-block .cup-curves {
     background: white;
@@ -699,6 +719,7 @@ button.complete-booking-btn {
     height: 100%;
     object-fit: cover;
     object-position: center;
+    background-color: #5a5a5a;
 }
 .ticket-name {
     color: #606161;
@@ -773,5 +794,40 @@ button.ticket-details-btn.flex-div {
     bottom: 10%;
 }
 /*---=== end of Transfers-Ticket-Overview Page ===---*/
+
+/*---=== Tours-Side-Popup Page ===---*/
+.tickets-wrapper.cart-wrapper {
+    display: block;
+}
+.tickets-wrapper.cart-wrapper .tickets-top-side {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-height: 700px;
+    overflow: auto;
+}
+.ticket-items-block.cart-block {
+    border: 1px solid #CCEDEB;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+}
+.remarks-item {
+    padding: 8px 16px;
+    color: #848484;
+    background-color: #DAF0E3;
+    font-size: 14px;
+    border-radius: 20px;
+}
+.addmore-btn {
+    font-family: var(--font-smbold);
+    padding: 8px 14px;
+    border-radius: 20px;
+    background-color: white;
+    border: 1px solid #D0D5DD;
+    cursor: pointer;
+}
+/*---=== end of Tours-Side-Popup Page ===---*/
 
 /*---=== end of Search-Results Section ===---*/

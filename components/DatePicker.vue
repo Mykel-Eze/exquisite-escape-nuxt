@@ -2,15 +2,21 @@
   <div class="input-field-div" :class="divClass">
     <label :for="id">{{ label }}</label>
     <a-date-picker 
-      :value="dateValue" 
+      :value="displayValue" 
       @change="changeHandler" 
-      format="YYYY-MM-DD"  
+      :format="displayFormat"
+      :disabled-date="disabledDate"
+    />
+    <input 
+      type="hidden" 
+      :name="id" 
+      :value="hiddenValue"
     />
   </div>
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import dayjs from "dayjs";
 
 export default {
@@ -36,19 +42,40 @@ export default {
       type: String,
       default: "",
     },
+    minDate: {
+      type: String,
+      default: "",
+    },
   },
   setup(props, { emit }) {
-    const dateValue = computed(() => {
-      return props.modelValue ? dayjs(props.modelValue) : null;
+    const displayFormat = "DD-MMM-YYYY";
+    const hiddenFormat = "YYYY-MM-DD";
+
+    const displayValue = computed(() => {
+      return props.modelValue ? dayjs(props.modelValue, hiddenFormat) : null;
+    });
+
+    const hiddenValue = computed(() => {
+      return props.modelValue || '';
     });
 
     const changeHandler = (date, dateString) => {
-      emit("update:modelValue", dateString);
+      const formattedDate = date ? date.format(hiddenFormat) : '';
+      emit("update:modelValue", formattedDate);
+    };
+
+    const disabledDate = (current) => {
+      const today = dayjs().startOf('day');
+      const minDate = props.minDate ? dayjs(props.minDate, hiddenFormat) : today;
+      return current && current < minDate;
     };
 
     return {
-      dateValue,
+      displayValue,
+      hiddenValue,
       changeHandler,
+      disabledDate,
+      displayFormat,
     };
   },
 };

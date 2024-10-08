@@ -46,7 +46,7 @@
 
               <!--=== Note to Dev: When the search is empty, uncomment the below component👇🏽 ===-->
               <div v-if="isLoading" class="loading-spinner-wrapper">
-                <LoadingSpinner />
+                <LoadingSpinner text="Fetching Flights..." />
               </div>
               <div v-else-if="!flightList || flightList.length === 0" class="mt-[100px] mb-[40px]">
                 <EmptySearch
@@ -165,20 +165,20 @@ export default {
       originCity.value = await getCityName(searchObject.value.originLocationCode);
       destinationCity.value = await getCityName(searchObject.value.destinationLocationCode);
 
-      console.log("Search object:", searchObject.value);
+      // console.log("Search object:", searchObject.value);
       try {
         const apiResponse = await api.post(
           "/api/flight/get/search-offer",
           searchObject.value
         );
-        console.log("API Response:", apiResponse);
+        // console.log("API Response:", apiResponse);
 
         if (apiResponse && apiResponse.data && Array.isArray(apiResponse.data)) {
           flightList.value = apiResponse.data;
           filteredFlightList.value = apiResponse.data; // Initialize filtered list with all flights
           dictionaries.value = apiResponse.dictionaries;
-          console.log("Flight list updated:", flightList.value);
-          console.log("Dictionaries:", dictionaries.value);
+          // console.log("Flight list updated:", flightList.value);
+          // console.log("Dictionaries:", dictionaries.value);
         } else {
           console.error("Unexpected API response structure:", apiResponse);
           flightList.value = [];

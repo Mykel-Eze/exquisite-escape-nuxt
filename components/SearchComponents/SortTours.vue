@@ -1,55 +1,122 @@
+<!-- SortTours.vue -->
 <template>
-    <section id="sort-transfers">
-        <div class="container">
-            <div class="other-tickets-overview-wrapper">
-                <div v-for="tour in tours" :key="tour.id">
-                    <ToursTicketOverviewBlock :tour="tour" @view-ticket-clicked="viewTicketDetails(tour)" />
-                </div>
+  <section id="sort-tours">
+    <!-- <div class="sort-bar">
+      <div class="container flex-div">
+        <span class="text-[18px]">Sort By</span>
+        <ul class="flex-div sort-tabs-wrapper">
+          <li :class="{ active: activeTab === 'all' }" @click="setActiveTab('all')">
+            <span>All Tours</span>
+          </li>
+          <li :class="{ active: activeTab === 'cheapest' }" @click="setActiveTab('cheapest')">
+            <span>Cheapest</span>
+          </li>
+          <li :class="{ active: activeTab === 'popular' }" @click="setActiveTab('popular')">
+            <span>Most Popular</span>
+          </li>
+          <li :class="{ active: activeTab === 'recommended' }" @click="setActiveTab('recommended')">
+            <span>Recommended</span>
+          </li>
+        </ul>
+      </div>
+    </div> -->
 
-                <SidePopup 
-                    :tour="selectedTour" 
-                    :isVisible="isPopupVisible" 
-                    @close-popup="isPopupVisible = false" 
-                />
+    <div class="container">
+      <ToursTicketOverviewBlock 
+        :tours="sortedTours"
+        @view-ticket-details="viewTicketDetails"
+        @show-availability-modal="showAvailabilityModal"
+      />
 
-                <div class="show-more-wrapper mt-[50px]">
-                    <button class="show-more-btn flex-div gap-2">
-                        <span>Show More</span>
-                        <img src="@/assets/images/caret-down-white.svg" alt="caret">
-                    </button>
-                </div>
-            </div>
+      <div class="other-tickets-overview-wrapper">
+        <div class="show-more-wrapper mt-[50px]" v-if="hasMoreTours">
+          <button class="show-more-btn flex-div gap-2" @click="showMoreTours">
+            <span>Show More</span> 
+            <img src="@/assets/images/caret-down-white.svg" alt="caret">
+          </button>
         </div>
-    </section>
+      </div>
+    </div>
+    
+  </section>
 </template>
 
 <script>
-import { useToursStore } from '~/store/tours';
+import { ref, computed, watch } from 'vue';
 
 export default {
   name: "SortTours",
-  setup() {
-    const store = useToursStore();
-    const tours = computed(() => store.filteredTours); // Assuming 'filteredTours' holds the filtered results
-
+  props: {
+    tours: {
+      type: Array,
+      default: () => []
+    },
+    activeTab: {
+      type: String,
+      required: true
+    }
+  },
+  emits: ['update:activeTab', 'view-ticket-details', 'show-availability-modal'],
+  setup(props, { emit }) {
+    const showSuccessModal = ref(false);
+    const showSidePopup = ref(false);
     const selectedTour = ref(null);
-    const isPopupVisible = ref(false);
+    const visibleTours = ref(5);
 
-    const viewTicketDetails = (tour) => {
-      selectedTour.value = tour;
-      isPopupVisible.value = true;
+    const sortedTours = computed(() => {
+      if (!props.tours || props.tours.length === 0) {
+        return [];
+      }
+
+      let filteredTours = [...props.tours];
+
+      switch (props.activeTab) {
+        case 'cheapest':
+          filteredTours.sort((a, b) => a.amountsFrom[0].amount - b.amountsFrom[0].amount);
+          return filteredTours.slice(0, 3);
+        case 'popular':
+          // You might need to add a popularity field to your tour data
+          return filteredTours.slice(0, 3);
+        case 'recommended':
+          // You might need to add a rating field to your tour data
+          return filteredTours.slice(0, 3);
+        default:
+          return filteredTours.slice(0, visibleTours.value);
+      }
+    });
+
+    const hasMoreTours = computed(() => {
+      return props.activeTab === 'all' && props.tours && visibleTours.value < props.tours.length;
+    });
+
+    const viewTicketDetails = () => {
+      emit('view-ticket-details');
     };
 
+    const showAvailabilityModal = (tour) => {
+      emit('show-availability-modal', tour);
+    };
+
+    const showMoreTours = () => {
+      visibleTours.value += 5;
+    };
+
+    const setActiveTab = (tab) => {
+      emit('update:activeTab', tab);
+      visibleTours.value = 5;
+    };
 
     return {
-      tours,
+      sortedTours,
+      hasMoreTours,
+      showAvailabilityModal,
+      showSuccessModal,
+      showSidePopup,
       selectedTour,
-      isPopupVisible,
       viewTicketDetails,
+      showMoreTours,
+      setActiveTab,
     };
   }
 }
-
 </script>
-
-<style></style>
