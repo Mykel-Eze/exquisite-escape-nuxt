@@ -55,7 +55,9 @@
       <div class="right-side rel min-h-[200px]">
         <div class="ticket-amount-wrapper">
           <div class="ticket-amount">
-            <small class="text-[14px] tracking-[-1px]">{{ tour.currency }}</small> {{ formatNumber(getTourPrice(tour)) }}
+            <!-- <small class="text-[14px] tracking-[-1px]">{{ tour.currency }}</small> 
+             {{ formatNumber(getTourPrice(tour)) }} -->
+            {{ formatCurrency(getTourPrice(tour), tour.currency) }}
           </div>
 
           <div class="view-ticket-btn-wrapper vtbw-vertical w-full">
@@ -84,9 +86,18 @@ const props = defineProps({
 
 const emit = defineEmits(['show-availability-modal', 'view-ticket-details']);
 
-const formatNumber = (num) => {
-  return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const formatCurrency = (amount, currency) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(amount);
 };
+
+// const formatNumber = (num) => {
+//   return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// };
 
 const getTourImage = (tour) => {
   return tour.content.media.images[0].urls.find(url => url.sizeType === 'LARGE').resource;

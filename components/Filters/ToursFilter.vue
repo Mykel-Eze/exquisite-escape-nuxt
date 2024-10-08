@@ -249,27 +249,63 @@ const resetRecommendedFilter = () => {
   selectedRecommendations.value = [];
 };
 
-onMounted(() => {
-  const prices = props.tours.map(tour => tour.amountsFrom[0].amount);
-  minPrice.value = Math.min(...prices);
-  maxPrice.value = Math.max(...prices);
-
-  slider.value = document.querySelector("#slider");
-  noUiSlider.create(slider.value, {
-    start: [minPrice.value, maxPrice.value],
-    connect: true,
-    step: 1,
-    range: {
-      'min': minPrice.value,
-      'max': maxPrice.value
-    }
-  });
-
-  slider.value.noUiSlider.on('update', (values) => {
-    minPrice.value = Number(values[0]);
-    maxPrice.value = Number(values[1]);
-  });
+const prices = computed(() => {
+  return props.tours.flatMap(tour => 
+    tour.modalities.flatMap(modality => 
+      modality.amountsFrom.map(amount => amount.amount)
+    )
+  ).filter(price => typeof price === 'number' && price > 0);
 });
+
+const updateSlider = () => {
+  if (prices.value.length > 0) {
+    minPrice.value = Math.min(...prices.value);
+    maxPrice.value = Math.max(...prices.value);
+  } else {
+    // Default values if no valid prices are found
+    minPrice.value = 0;
+    maxPrice.value = 1000;
+  }
+
+  // Ensure we have valid numeric values
+  const sliderMin = Number.isFinite(minPrice.value) ? minPrice.value : 0;
+  const sliderMax = Number.isFinite(maxPrice.value) ? maxPrice.value : 1000;
+
+  if (slider.value && slider.value.noUiSlider) {
+    slider.value.noUiSlider.updateOptions({
+      range: {
+        'min': sliderMin,
+        'max': sliderMax
+      }
+    });
+    slider.value.noUiSlider.set([sliderMin, sliderMax]);
+  } else if (slider.value) {
+    noUiSlider.create(slider.value, {
+      start: [sliderMin, sliderMax],
+      connect: true,
+      step: 1,
+      range: {
+        'min': sliderMin,
+        'max': sliderMax
+      }
+    });
+
+    slider.value.noUiSlider.on('update', (values) => {
+      minPrice.value = Number(values[0]);
+      maxPrice.value = Number(values[1]);
+    });
+  }
+};
+
+onMounted(() => {
+  slider.value = document.getElementById("slider");
+  updateSlider();
+});
+
+watch(() => props.tours, () => {
+  updateSlider();
+}, { deep: true });
+
 
 watch([activityName, selectedCategories, selectedDurations, selectedRatings, selectedRecommendations, minPrice, maxPrice], () => {
   emit('update:filteredTours', filteredTours.value);

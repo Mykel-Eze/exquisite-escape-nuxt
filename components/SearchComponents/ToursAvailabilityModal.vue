@@ -50,7 +50,8 @@
                                 <div class="mb-1 flex-div gap-4 text-[16px]">
                                     <span>Adults</span> 
                                     <span class="pry-color">
-                                        (<small class="text-[10px]">{{ currency }}</small> {{ formatNumber(totalAdultAmount) }})
+                                        <!-- (<small class="text-[10px]">{{ currency }}</small> {{ formatNumber(totalAdultAmount) }}) -->
+                                         ({{ formatCurrency(totalAdultAmount, currency) }})
                                     </span>
                                 </div>
                                 <small class="text-[12px] text-[#9D9D9D]">Age 12 or above</small>
@@ -65,7 +66,10 @@
                             <div class="">
                                 <div class="mb-1 flex-div gap-4 text-[16px]">
                                     <span>Child</span> 
-                                    <span class="pry-color">(<small class="text-[10px]">{{ currency }}</small> {{ formatNumber(totalChildAmount) }})</span>
+                                    <span class="pry-color">
+                                        <!-- (<small class="text-[10px]">{{ currency }}</small> {{ formatNumber(totalChildAmount) }}) -->
+                                         ({{ formatCurrency(totalChildAmount, currency) }})
+                                    </span>
                                 </div>
                                 <small class="text-[12px] text-[#9D9D9D]">Age 2 - 11</small>
                             </div>
@@ -186,9 +190,18 @@ watch(() => props.tour, () => {
   children.value = 0;
 });
 
-const formatNumber = (num) => {
-    return num.toLocaleString('en-US');
+const formatCurrency = (amount, currency) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(amount);
 };
+
+// const formatNumber = (num) => {
+//     return num.toLocaleString('en-US');
+// };
 </script>
 
 <style scoped src="@/assets/css/tours-modal.css"></style>

@@ -29,9 +29,12 @@
                         <div v-else v-for="(item, index) in cartItems" :key="index" class="ticket-items-block cart-block">
                             <div class="ticket-amount-div">
                                 <div class="flex-div justify-between">
-                                    <h2 class="m-0">
+                                    <!-- <h2 class="m-0">
                                         <small class="text-[14px]">{{ item.tour.currency }}</small> 
                                         {{ formatNumber(getTotalPrice(item)) }}
+                                    </h2> -->
+                                    <h2 class="m-0">
+                                        {{ formatCurrency(getTotalPrice(item), item.tour.currency) }}
                                     </h2>
                                     <button class="delete-cart-btn" @click="removeFromCart(index)">
                                     <img src="@/assets/images/trash.svg" alt="delete">
@@ -73,7 +76,7 @@
                                 <img src="@/assets/images/trash.svg" alt="" class="empty-icon w-[16px]">
                                 <span>Empty clear selection</span>
                             </button>
-                            <span><small class="text-[10px]">{{ cartCurrency }}</small> {{ totalPrice }}</span>
+                            <span>{{ formatCurrency(totalPrice, cartCurrency) }}</span>
                         </div>
 
                         <div class="select-ticket-btn-wrapper mt-5">
@@ -122,9 +125,26 @@ const cartCurrency = computed(() => {
   return props.cartItems.length > 0 ? props.cartItems[0].tour.currency : '';
 });
 
-const formatNumber = (num) => {
-  return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const formatCurrency = (amount, currency) => {
+  if (!currency) {
+    return 'N/A'; // or any other placeholder you prefer
+  }
+  try {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(amount);
+  } catch (error) {
+    console.error('Error formatting currency:', error);
+    return `${amount} ${currency}`; // Fallback format
+  }
 };
+
+// const formatNumber = (num) => {
+//   return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// };
 
 const getTourLocation = (tour) => {
   const country = tour.content.countries[0];
