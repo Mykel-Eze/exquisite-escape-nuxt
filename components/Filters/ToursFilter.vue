@@ -16,8 +16,8 @@
       </div>
       <div id="slider"></div>
       <div class="slider-values flex-div justify-between">
-        <span>{{ formatCurrency(minPrice) }}</span>
-        <span>{{ formatCurrency(maxPrice) }}</span>
+        <span>{{ formatCurrency(minPrice, currency) }}</span>
+        <span>{{ formatCurrency(maxPrice, currency) }}</span>
       </div>
     </div>
 
@@ -111,6 +111,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
+import { formatCurrency } from '@/utils/currency';
 
 const props = defineProps({
   tours: {
@@ -210,9 +211,13 @@ const getDuration = (tour) => {
   return null;
 };
 
-const formatCurrency = (value) => {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: props.tours[0]?.currency || 'USD' }).format(value);
-};
+const currency = computed(() => {
+  return props.tours[0]?.currency || 'USD';
+});
+
+// const formatCurrency = (value) => {
+//   return new Intl.NumberFormat('en-US', { style: 'currency', currency: props.tours[0]?.currency || 'USD' }).format(value);
+// };
 
 const resetAllFilters = () => {
   activityName.value = '';

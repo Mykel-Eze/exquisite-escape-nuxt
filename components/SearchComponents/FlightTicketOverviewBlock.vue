@@ -53,7 +53,7 @@
         </div>
         
         <div class="ticket-amount-wrapper">
-          <div class="ticket-amount">₦{{ formatPrice(flight.price.total) }}</div>
+          <div class="ticket-amount">{{ formatCurrency(flight.price.total, flight.price.currency) }}</div>
 
           <div class="view-ticket-btn-wrapper w-full">
             <button class="view-ticket-btn flex-div" @click="viewTicket(flight)">
@@ -72,6 +72,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useApi } from '@/utils/api';
+import { formatCurrency } from '@/utils/currency';
 
 const props = defineProps({
   flights: {
@@ -180,10 +181,6 @@ const hasCheckedBags = (flight) => {
   return flight.travelerPricings.some(traveler => 
     traveler.fareDetailsBySegment.some(segment => segment.includedCheckedBags?.quantity > 0)
   );
-};
-
-const formatPrice = (price) => {
-  return parseFloat(price).toLocaleString('en-US');
 };
 
 const sortedByPrice = computed(() => {

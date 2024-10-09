@@ -77,8 +77,8 @@
         <div v-for="(pricing, index) in flight.travelerPricings" :key="index" class="tickets-block">
           <div class="tickets-top-side">
             <div class="ticket-amount-div">
-              <h2 class="m-0">₦{{ formatPrice(pricing.price.total) }}</h2>
-              <span>₦{{ formatPrice(flight.price.total) }} for {{ flight.travelerPricings.length }} traveler(s)</span>
+              <h2 class="m-0">{{ formatPrice(pricing.price.total, flight.price.currency) }}</h2>
+              <span>₦{{ formatPrice(flight.price.total, flight.price.currency) }} for {{ flight.travelerPricings.length }} traveler(s)</span>
             </div>
             <div class="ticket-items-wrapper">
               <div class="ticket-item">
@@ -193,6 +193,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useApi } from '@/utils/api';
 import { useFlightStore } from '~/store/flightStore';
+import { formatCurrency } from '@/utils/currency';
 
 const props = defineProps({
   flight: {
@@ -301,8 +302,8 @@ onMounted(() => {
   uniqueIataCodes.forEach(fetchCityAndAirportData);
 });
 
-const formatPrice = (price) => {
-  return parseFloat(price).toLocaleString('en-US');
+const formatPrice = (price, currency) => {
+  return formatCurrency(parseFloat(price), currency);
 };
 
 const formatTime = (dateString) => {

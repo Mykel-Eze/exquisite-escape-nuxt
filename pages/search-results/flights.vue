@@ -108,8 +108,9 @@ export default {
       const flightsByDate = filteredFlightList.value.reduce((acc, flight) => {
         const date = flight.itineraries[0].segments[0].departure.at.split('T')[0];
         const price = parseFloat(flight.price.total);
+        const currency  = flight.price.currency;
         if (!acc[date] || price < acc[date].minPrice) {
-          acc[date] = { date, minPrice: price };
+          acc[date] = { date, minPrice: price, currency };
         }
         return acc;
       }, {});

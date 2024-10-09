@@ -99,6 +99,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { formatCurrency } from '@/utils/currency';
 
 const props = defineProps({
   isVisible: Boolean,
@@ -124,23 +125,6 @@ const totalPrice = computed(() => {
 const cartCurrency = computed(() => {
   return props.cartItems.length > 0 ? props.cartItems[0].tour.currency : '';
 });
-
-const formatCurrency = (amount, currency) => {
-  if (!currency) {
-    return 'N/A'; // or any other placeholder you prefer
-  }
-  try {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(amount);
-  } catch (error) {
-    console.error('Error formatting currency:', error);
-    return `${amount} ${currency}`; // Fallback format
-  }
-};
 
 // const formatNumber = (num) => {
 //   return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });

@@ -32,9 +32,9 @@
                 <div class="capitalize">{{ carrier.name }}</div>
               </div>
               <ul class="sb-contents">
-                <li class="">{{ formatNumber(carrier.prices.nonStop) }}</li>
-                <li class="">{{ formatNumber(carrier.prices.oneStop) }}</li>
-                <li class="">{{ formatNumber(carrier.prices.multiStop) }}</li>
+                <li class="">{{ formatCurrency(carrier.prices.nonStop, carrier.currency) }}</li>
+                <li class="">{{ formatCurrency(carrier.prices.oneStop, carrier.currency) }}</li>
+                <li class="">{{ formatCurrency(carrier.prices.multiStop, carrier.currency) }}</li>
               </ul>
             </div>
           </swiper-slide>
@@ -58,6 +58,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { computed } from 'vue';
+import { formatCurrency } from '@/utils/currency';
 
 export default {
   name: "FlightsStops",
@@ -80,6 +81,7 @@ export default {
       const carriers = {};
       props.flights.forEach(flight => {
         const carrierCode = flight.itineraries[0].segments[0].carrierCode;
+        const currency = flight.price.currency;
         if (!carriers[carrierCode]) {
           carriers[carrierCode] = {
             code: carrierCode,
@@ -89,6 +91,7 @@ export default {
               oneStop: Infinity,
               multiStop: Infinity,
             },
+            currency
           };
         }
         const stops = flight.itineraries[0].segments.length - 1;
@@ -104,22 +107,16 @@ export default {
       return Object.values(carriers);
     });
 
+    const getCarrierLogo = (carrierCode) => {
+      //   return `/images/carriers/${carrierCode.toLowerCase()}.png`;
+      return `https://pics.avs.io/200/200/${carrierCode}.png`
+    }
+
     return {
       modules: [Navigation],
       flightsByCarrier,
+      getCarrierLogo,
     };
-  },
-  methods: {
-    formatNumber(num) {
-      if (num === Infinity) {
-        return '-';
-      }
-      return `₦${num.toLocaleString()}`;
-    },
-    getCarrierLogo(carrierCode) {
-    //   return `/images/carriers/${carrierCode.toLowerCase()}.png`;
-    return `https://pics.avs.io/200/200/${carrierCode}.png`
-    },
   },
 };
 </script>

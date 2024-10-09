@@ -16,8 +16,8 @@
       </div>
       <div id="slider" ref="slider"></div>
       <div class="slider-values flex-div justify-between">
-        <span>₦{{formatNumber(currentMinPrice)}}</span>
-        <span>₦{{formatNumber(currentMaxPrice)}}</span>
+        <span>{{formatNumber(currentMinPrice)}}</span>
+        <span>{{formatNumber(currentMaxPrice)}}</span>
       </div>
     </div>
 
@@ -129,6 +129,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
+import { formatCurrency } from '@/utils/currency';
 
 export default {
     name: 'FlightsFilter',
@@ -339,7 +340,7 @@ export default {
         };
 
         const formatNumber = (num) => {
-            return num.toLocaleString('en-US');
+          return formatCurrency(num, props.flights[0]?.price?.currency || 'USD');
         };
 
         onMounted(() => {
