@@ -92,7 +92,7 @@ export default {
     const flightList = ref([]);
     const filteredFlightList = ref([]);
     const isLoading = ref(true);
-    const dictionaries = ref(null);
+    const dictionaries = ref({});
     const router = useRouter();
     const route = useRoute();
     const api = useApi();
