@@ -3,11 +3,11 @@
         <div v-if="isLoading" class="loading-spinner-wrapper">
             <LoadingSpinner text="" />
         </div>
-        <div v-else-if="cartItem" class="row">
+        <div v-else-if="cartItems.length > 0" class="row">
             <div class="container">
-                <div class="review-top-side">
+                <div v-if="cartItems.length <= 1" class="review-top-side">
                     <div class="top-snack-bar flex-div gap-2 mb-[30px]">
-                        <span class="text-white">{{ cartItem?.tour.name }}</span>
+                        <span class="text-white">{{ cartItems[0]?.tour.name }}</span>
                         <img src="@/assets/images/chevron-right.svg" alt="chevron-right" class="right-arr">
                         <span class="text-[#9d9d9d]">Review your trip</span>
                     </div>
@@ -19,9 +19,24 @@
                     </div>
                 </div>
 
+                <div v-else class="review-top-side">
+                    <div class="top-snack-bar flex-div gap-2 mb-[30px]">
+                        <span class="text-white">Review your selected trip activities</span>
+                        <!-- <img src="@/assets/images/chevron-right.svg" alt="chevron-right" class="right-arr">
+                        <span class="text-[#9d9d9d]">Review your trip</span> -->
+                    </div>
+                    <div class="text-[18px] text-[#606161] leading-[26px] flex-div gap-[10px]">
+                        <img src="@/assets/images/check-circle.svg" alt="check-circle">
+                        <span>
+                            Nice job! You picked some of our best value tours. Book now so you don't miss out on these prices.
+                        </span>
+                    </div>
+                </div>
+
                 <div class="review-content-side">
                     <div class="ticket-summary-side flex flex-col gap-[20px]">
-                        <div class="ticket-1">
+                        <!--=== Ticket Cart Items ===-->
+                        <div v-for="cartItem in cartItems" :key="cartItem.id" class="ticket-1">
                             <div class="ticket-summary-block">
                                 <div class="text-[14px]">
                                     <div class="text-[24px]">{{ cartItem?.tour.name }}</div>
@@ -33,7 +48,7 @@
                                         <div class="ticket-labels flex-div">
                                             <span>{{ getTourCategory(cartItem?.tour) }}</span>
                                         </div>
-                                        <div v-if="cartItem?.tour.freeCancellationDate" class="ticket-labels flex-div">
+                                        <div v-if="cartItem?.freeCancellationDate" class="ticket-labels flex-div">
                                             <img src="@/assets/images/round.svg" alt="ticket-label-icon" class="ticket-label-icon">
                                             <span>Free Cancellation until {{ formatDate(cartItem.tour.freeCancellationDate) }}</span>
                                         </div>
@@ -59,7 +74,7 @@
                                             </div>
                                             <div class="flex-div gap-[10px]">
                                                 <img src="@/assets/images/check-3.svg" alt="check-icon" class="check-icon">
-                                                <span>Language: {{ getLanguageName(cartItem?.tour.content.language) || 'English' }}</span>
+                                                <span>Language: {{ getLanguageName(cartItem?.tour?.content.language) || 'English' }}</span>
                                             </div>
                                         </div>
                                         <nuxt-link to="/search-results/tours" class="pry-color underline text-[14px]">
@@ -73,14 +88,14 @@
                                 <div class="tsb-top-side text-[14px]">
                                     <div class="text-[24px]">Cancellation fee</div>
                                     <div class="flex-div gap-[10px] my-2">
-                                        Before 23:59 on {{ formatDate(getCancellationDate()) }}:
-                                        <b class="pry-color">{{ formatCurrency(getCancellationFee(), cartItem?.tour.currency) }}</b>
+                                        Before 23:59 on {{ formatDate(getCancellationDate(cartItem)) }}:
+                                        <b class="pry-color">{{ formatCurrency(getCancellationFee(cartItem), cartItem?.tour.currency) }}</b>
                                     </div>
                                     
                                     <div class="text-[24px] mt-[30px]">Remarks</div>
                                     <div class="remarks-items-wrapper flex-div gap-[10px] my-3">
                                         <div class="remarks-items-wrapper flex-div gap-[10px] my-3">
-                                            <div v-for="(remark, index) in getRemarks()" :key="index" class="remarks-item flex-div gap-[10px]">
+                                            <div v-for="(remark, index) in getRemarks(cartItem)" :key="index" class="remarks-item flex-div gap-[10px]">
                                                 <img :src="getRemarkIcon(remark)" alt="remark-icon">
                                                 <span v-html="remark"></span>
                                                 <img src="@/assets/images/remove.svg" alt="remove">
@@ -114,24 +129,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ticket-price-summary-side">
+                    <div class="ticket-price-summary-side sticky">
                         <div class="price-summary-block">
                             <div class="psb px-[20px] py-[10px]">
                                 <div class="price-summary-block-title text-[22px]">Price summary</div>
-                                <div class="price-summary-block-1 mt-3">
-                                    <div class="font-bold text-[16px] pry-color mb-2">{{ cartItem?.tour.name }}</div>
+                                <!--=== Ticket Cart Items Price Block ===-->
+                                <div v-for="cartItem in cartItems" :key="cartItem.id" class="price-summary-block-1 mt-3">
+                                    <div class="font-bold text-[16px] pry-color mb-2">{{ cartItem.tour.name }}</div>
                                     <ul class="price-summary-list text-[14px] text-[#848484]">
                                         <li class="flex-div justify-between">
-                                            <span>Traveler {{ cartItem?.adults }}: {{ cartItem?.adults > 1 ? "Adults": "Adult"}}</span>
-                                            <span>{{ formatCurrency(getAdultsPrice(), cartItem?.tour.currency) }}</span>
+                                            <span>Traveler {{ cartItem.adults }}: {{ cartItem.adults > 1 ? "Adults": "Adult"}}</span>
+                                            <span>{{ formatCurrency(getAdultsPrice(cartItem), cartItem.tour.currency) }}</span>
                                         </li>
-                                        <li class="flex-div justify-between">
-                                            <span>Traveler {{ cartItem?.children }}: {{ cartItem?.children > 1 ? "Children": "Child"}}</span>
-                                            <span>{{ formatCurrency(getChildrenPrice(), cartItem?.tour.currency) }}</span>
+                                        <li v-if="cartItem.children > 0" class="flex-div justify-between">
+                                            <span>Traveler {{ cartItem.children }}: {{ cartItem.children > 1 ? "Children": "Child"}}</span>
+                                            <span>{{ formatCurrency(getChildrenPrice(cartItem), cartItem.tour.currency) }}</span>
                                         </li>
                                         <li class="flex-div justify-between">
                                             <span>Taxes and fees</span>
-                                            <span>{{ formatCurrency(getTaxesAndFees(), cartItem?.tour.currency) }}</span>
+                                            <span>{{ formatCurrency(getTaxesAndFees(cartItem), cartItem.tour.currency) }}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -139,7 +155,7 @@
                             <div class="px-[20px] py-[10px]">
                                 <div class="flex-div justify-between text-[20px] mb-1">
                                     <span>Total</span>
-                                    <span>{{ formatCurrency(getTotalPrice(), cartItem?.tour.currency) }}</span>
+                                    <span>{{ formatCurrency(getTotalPrice(), getCommonCurrency) }}</span>
                                 </div>
                                 <div class="text-[14px] text-[#848484]">Rates are quoted in {{ getCurrencyName() }}</div>
                             </div>
@@ -177,7 +193,7 @@ const router = useRouter();
 const cartStore = useCartStore();
 const toast = useToast();
 
-const cartItem = ref(null);
+const cartItems = ref([]);
 const isLoading = ref(true);
 
 definePageMeta({
@@ -186,22 +202,21 @@ definePageMeta({
 
 onMounted(() => {
   cartStore.initializeStore();
-  loadCartItem();
+  loadCartItems();
 });
 
-const loadCartItem = () => {
-  const id = route.params.id;
-  cartItem.value = cartStore.getCartItemById(id);
-  console.log('Loaded cart item:', cartItem.value);
-  if (!cartItem.value) {
-    toast.error("Tour not found in cart");
+const loadCartItems = () => {
+  cartItems.value = cartStore.items;
+  console.log('Loaded cart items:', cartItems.value);
+  if (cartItems.value.length === 0) {
+    toast.error("Your cart is empty");
     router.push('/search-results/tours');
   }
   isLoading.value = false;
 };
 
 watch(() => cartStore.items, () => {
-  loadCartItem();
+  loadCartItems();
 }, { deep: true });
 
 
@@ -228,16 +243,17 @@ const formatDate = (dateString) => {
   return date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
 };
 
-const getCancellationDate = () => {
-  return cartItem.value?.tour.modalities[0]?.cancellationPolicies[0]?.dateFrom || '';
+const getCancellationDate = (cartItem) => {
+    console.log('Cancellation: ',  cartItem);
+  return cartItem.tour?.modalities[0]?.cancellationPolicies[0]?.dateFrom || '';
 };
 
-const getCancellationFee = () => {
-  return cartItem.value?.tour.modalities[0]?.cancellationPolicies[0]?.amount || 0;
+const getCancellationFee = (cartItem) => {
+  return cartItem.tour?.modalities[0]?.cancellationPolicies[0]?.amount || 0;
 };
 
-const getRemarks = () => {
-  return cartItem.value?.tour.content.importantInfo || [];
+const getRemarks = (cartItem) => {
+  return cartItem.tour?.content.importantInfo || [];
 };
 
 const getLanguageName = (code) => {
@@ -255,29 +271,34 @@ const getRemarkIcon = (remark) => {
   return '/information.svg';
 };
 
-const getAdultsPrice = () => {
-  if (!cartItem.value) return 0;
-  const adultPrice = cartItem.value.tour.amountsFrom.find(amount => amount.paxType === 'ADULT')?.amount || 0;
-  return adultPrice * cartItem.value.adults;
-};
-const getChildrenPrice = () => {
-  if (!cartItem.value) return 0;
-  const childrenPrice = cartItem.value.tour.amountsFrom.find(amount => amount.paxType === 'CHILD')?.amount || 0;
-  return childrenPrice * cartItem.value.children;
+const getAdultsPrice = (cartItem) => {
+  const adultPrice = cartItem.tour.amountsFrom.find(amount => amount.paxType === 'ADULT')?.amount || 0;
+  return adultPrice * cartItem.adults;
 };
 
-const getTaxesAndFees = () => {
-  // Assuming taxes and fees are 10% of the adult price
-  return (getAdultsPrice() + getChildrenPrice()) * 0.1;
+const getChildrenPrice = (cartItem) => {
+  const childrenPrice = cartItem.tour.amountsFrom.find(amount => amount.paxType === 'CHILD')?.amount || 0;
+  return childrenPrice * cartItem.children;
+};
+
+const getTaxesAndFees = (cartItem) => {
+  return (getAdultsPrice(cartItem) + getChildrenPrice(cartItem)) * 0.1;
 };
 
 const getTotalPrice = () => {
-  return getAdultsPrice() + getChildrenPrice() + getTaxesAndFees();
+  return cartItems.value.reduce((total, item) => {
+    return total + getAdultsPrice(item) + getChildrenPrice(item) + getTaxesAndFees(item);
+  }, 0);
 };
 
+const getCommonCurrency = computed(() => {
+  return cartItems.value[0]?.tour.currency || 'NGN';
+});
+
 const getCurrencyName = () => {
-  return cartItem.value?.tour.currencyName || 'NG Naira';
+  return cartItems.value[0]?.tour.currencyName || 'NG Naira';
 };
+
 
 const addMore = () => {
   router.push('/search-results/tours');
