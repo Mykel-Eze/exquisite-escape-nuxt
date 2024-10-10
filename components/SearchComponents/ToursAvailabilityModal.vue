@@ -136,7 +136,9 @@ const addToCart = () => {
   emit('add-to-cart', {
     tour: props.tour,
     adults: adults.value,
-    children: children.value
+    children: children.value,
+    departureDate: props.tour.departureDate,
+    destinationDate: props.tour.destinationDate
   });
   // Close the modal using Materialize
   const modal = M.Modal.getInstance(document.getElementById('tours-availability-modal'));

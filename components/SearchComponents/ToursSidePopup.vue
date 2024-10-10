@@ -29,14 +29,10 @@
                         <div v-else v-for="(item, index) in cartItems" :key="index" class="ticket-items-block cart-block">
                             <div class="ticket-amount-div">
                                 <div class="flex-div justify-between">
-                                    <!-- <h2 class="m-0">
-                                        <small class="text-[14px]">{{ item.tour.currency }}</small> 
-                                        {{ formatNumber(getTotalPrice(item)) }}
-                                    </h2> -->
                                     <h2 class="m-0">
                                         {{ formatCurrency(getTotalPrice(item), item.tour.currency) }}
                                     </h2>
-                                    <button class="delete-cart-btn" @click="removeFromCart(index)">
+                                    <button class="delete-cart-btn" @click="removeFromCart(item.id)">
                                     <img src="@/assets/images/trash.svg" alt="delete">
                                     </button>
                                 </div>
@@ -97,64 +93,71 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { formatCurrency } from '@/utils/currency';
+  import { computed } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { formatCurrency } from '@/utils/currency';
+  import { useCartStore } from '@/store/cart';
+  import { useToast } from 'vue-toastification';
 
-const props = defineProps({
-  isVisible: Boolean,
-  cartItems: Array
-});
+  const props = defineProps({
+    isVisible: Boolean
+  });
 
-const emit = defineEmits(['close', 'remove-from-cart', 'empty-cart', 'add-more']);
+  const emit = defineEmits(['close', 'add-more']);
 
-const router = useRouter();
+  const router = useRouter();
+  const toast = useToast();
+  const cartStore = useCartStore();
 
-const getTotalPrice = (item) => {
-  const adultPrice = item.tour.amountsFrom.find(amount => amount.paxType === 'ADULT')?.amount || 0;
-  const childPrice = item.tour.amountsFrom.find(amount => amount.paxType === 'CHILD')?.amount || 0;
-  return (adultPrice * item.adults) + (childPrice * item.children);
-};
+  const cartItems = computed(() => cartStore.items);
 
-const totalPrice = computed(() => {
-  return props.cartItems.reduce((total, item) => {
-    return total + getTotalPrice(item);
-  }, 0);
-});
+  const getTotalPrice = (item) => {
+    const adultPrice = item.tour.amountsFrom.find(amount => amount.paxType === 'ADULT')?.amount || 0;
+    const childPrice = item.tour.amountsFrom.find(amount => amount.paxType === 'CHILD')?.amount || 0;
+    return (adultPrice * item.adults) + (childPrice * item.children);
+  };
 
-const cartCurrency = computed(() => {
-  return props.cartItems.length > 0 ? props.cartItems[0].tour.currency : '';
-});
+  const totalPrice = computed(() => {
+    return cartItems.value.reduce((total, item) => {
+      return total + getTotalPrice(item);
+    }, 0);
+  });
 
-// const formatNumber = (num) => {
-//   return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-// };
+  const cartCurrency = computed(() => {
+    return cartItems.value.length > 0 ? cartItems.value[0].tour.currency : '';
+  });
 
-const getTourLocation = (tour) => {
-  const country = tour.content.countries[0];
-  const destination = country.destinations[0];
-  return `${destination.name}, ${country.name}`;
-};
+  const getTourLocation = (tour) => {
+    const country = tour.content.countries[0];
+    const destination = country.destinations[0];
+    return `${destination.name}, ${country.name}`;
+  };
 
-const getTourCategory = (tour) => {
-  return tour.content.segmentationGroups.find(group => group.code === 1)?.segments[0]?.name || '';
-};
+  const getTourCategory = (tour) => {
+    return tour.content.segmentationGroups.find(group => group.code === 1)?.segments[0]?.name || '';
+  };
 
-const removeFromCart = (index) => {
-  emit('remove-from-cart', index);
-};
+  const removeFromCart = (id) => {
+    cartStore.removeItem(id);
+  };
 
-const emptyCart = () => {
-  emit('empty-cart');
-};
+  const emptyCart = () => {
+    cartStore.clearCart();
+  };
 
-const goToCheckout = () => {
-  router.push('/tour-ticket-review');
-};
+  const goToCheckout = () => {
+    if (cartItems.value.length > 0) {
+      const firstItemId = cartItems.value[0].id;
+      router.push(`/tours-ticket-review/${firstItemId}`);
+    } else {
+      toast.error("Your cart is empty");
+    }
+  };
 
-const addMore = () => {
-  emit('add-more');
-};
+  const addMore = () => {
+    emit('add-more');
+  };
 </script>
+
 
 <style scoped src="@/assets/css/tours-modal.css"></style>

@@ -34,6 +34,11 @@ export const formatCurrency = (amount, currencyCode) => {
     return '-';
   }
 
+  // Handle if currency is NaN
+  if (isNaN(amount)) {
+    return 'N/A';
+  }
+
   // Handle undefined or null currency
   if (!currencyCode) {
     return 'N/A';

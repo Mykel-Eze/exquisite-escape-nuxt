@@ -4,14 +4,14 @@
             <div class="container">
                 <div class="review-top-side">
                     <div class="top-snack-bar flex-div gap-2 mb-[30px]">
-                        <span class="text-white">Palace and Gardens of Versailles </span>
+                        <span class="text-white">{{ cartItem?.tour.name }}</span>
                         <img src="@/assets/images/chevron-right.svg" alt="chevron-right" class="right-arr">
                         <span class="text-[#9d9d9d]">Review your trip</span>
                     </div>
                     <div class="text-[18px] text-[#606161] leading-[26px] flex-div gap-[10px]">
                         <img src="@/assets/images/check-circle.svg" alt="check-circle">
                         <span>
-                            Nice job! You picked one of our best value tour. Book now so you don’t miss out on this price.
+                            Nice job! You picked one of our best value tour. Book now so you don't miss out on this price.
                         </span>
                     </div>
                 </div>
@@ -20,41 +20,45 @@
                     <div class="ticket-summary-side flex flex-col gap-[20px]">
                         <div class="ticket-summary-block">
                             <div class="text-[14px]">
-                                <div class="text-[24px]">Palace and Gardens of Versailles</div>
+                                <div class="text-[24px]">{{ cartItem?.tour.name }}</div>
                                 <div class="flex-div gap-[10px] my-2">
                                     <img src="@/assets/images/location.svg" alt="location" class="w-[24px]">
-                                    <span>1 Rue de la legion d’Honneur Paris</span>
+                                    <span>{{ getTourLocation(cartItem?.tour) }}</span>
                                 </div>
                                 <div class="flex gap-[10px]">
                                     <div class="ticket-labels flex-div">
-                                        <span>Art & Culture</span>
+                                        <span>{{ getTourCategory(cartItem?.tour) }}</span>
                                     </div>
-                                    <div class="ticket-labels flex-div">
+                                    <div v-if="cartItem?.tour.freeCancellationDate" class="ticket-labels flex-div">
                                         <img src="@/assets/images/round.svg" alt="ticket-label-icon" class="ticket-label-icon">
-                                        <span>Free Cancellation until 19/03/2024</span>
+                                        <span>Free Cancellation until {{ formatDate(cartItem.tour.freeCancellationDate) }}</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="ticket-summary-block">
-                            <div class="flex items-start gap-[10px]">
+                            <div class="flex items-start gap-[10px] mt-[40px]">
                                 <img src="@/assets/images/calendar.svg" alt="calendar-icon">
                                 <div class="flex flex-col gap-[5px]">
-                                    <div class="bold-txt text-[15px]"> Sun, Mar 10, 2024 </div>
+                                    <div class="bold-txt text-[15px]">{{ formatDate(cartItem?.date) }}</div>
                                     <div class="flex-div gap-[10px] mb-3 mt-1">
                                         <div class="flex-div gap-[10px]">
                                             <img src="@/assets/images/check-3.svg" alt="check-icon" class="check-icon">
                                             <span>
-                                                <span class="pry-color">2</span> Adults
+                                                <span class="pry-color">{{ cartItem?.adults }}</span> {{ cartItem?.adults > 1 ? "Adults": "Adult"}}
+                                            </span>
+                                        </div>
+                                        <div v-if="cartItem?.children" class="flex-div gap-[10px]">
+                                            <img src="@/assets/images/check-3.svg" alt="check-icon" class="check-icon">
+                                            <span>
+                                                <span class="pry-color">{{ cartItem?.children }}</span> {{ cartItem?.children > 1 ? "Children": "Child"}}
                                             </span>
                                         </div>
                                         <div class="flex-div gap-[10px]">
                                             <img src="@/assets/images/check-3.svg" alt="check-icon" class="check-icon">
-                                            <span>Language: English</span>
+                                            <span>Language: {{ getLanguageName(cartItem?.tour.content.language) || 'English' }}</span>
                                         </div>
                                     </div>
-                                    <nuxt-link to="/search-results/flights" class="pry-color underline text-[14px]">
+                                    <nuxt-link to="/search-results/tours" class="pry-color underline text-[14px]">
                                         Change date
                                     </nuxt-link>
                                 </div>
@@ -65,25 +69,18 @@
                             <div class="tsb-top-side text-[14px]">
                                 <div class="text-[24px]">Cancellation fee</div>
                                 <div class="flex-div gap-[10px] my-2">
-                                    After 23:59 on 19/03/2024: <b class="pry-color">₦13,000.00 </b>
+                                    Before 23:59 on {{ formatDate(getCancellationDate()) }}:
+                                    <b class="pry-color">{{ formatCurrency(getCancellationFee(), cartItem?.tour.currency) }}</b>
                                 </div>
                                 
                                 <div class="text-[24px] mt-[30px]">Remarks</div>
                                 <div class="remarks-items-wrapper flex-div gap-[10px] my-3">
-                                    <div class="remarks-item flex-div gap-[10px]">
-                                        <img src="@/assets/images/time1.svg" alt="time">
-                                        <span>45 min. Estimated activity time</span>
-                                        <img src="@/assets/images/remove.svg" alt="remove">
-                                    </div>
-                                    <div class="remarks-item flex-div gap-[10px]">
-                                        <img src="@/assets/images/bag-2.svg" alt="bag">
-                                        <span>1 bag allowed</span>
-                                        <img src="@/assets/images/remove.svg" alt="remove">
-                                    </div>
-                                    <div class="remarks-item flex-div gap-[10px]">
-                                        <img src="@/assets/images/user.svg" alt="user">
-                                        <span>Ticket valid for one traveller</span>
-                                        <img src="@/assets/images/remove.svg" alt="remove">
+                                     <div class="remarks-items-wrapper flex-div gap-[10px] my-3">
+                                        <div v-for="(remark, index) in getRemarks()" :key="index" class="remarks-item flex-div gap-[10px]">
+                                            <img :src="getRemarkIcon(remark)" alt="remark-icon">
+                                            <span v-html="remark"></span>
+                                            <img src="@/assets/images/remove.svg" alt="remove">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="text-[#848484] text-[14px]">
@@ -104,7 +101,7 @@
                                 </div>
 
                                 <div class="mt-[30px]">
-                                    <button class="addmore-btn flex-div gap-[6px] text-[14px]">
+                                    <button @click="addMore" class="addmore-btn flex-div gap-[6px] text-[14px]">
                                         <img src="@/assets/images/plus-circle2.svg" alt="plus-circle2" class="">
                                         <span>Add more</span>
                                     </button>
@@ -119,24 +116,24 @@
                                 <ul class="price-summary-list text-[14px] text-[#848484]">
                                     <li class="flex-div justify-between">
                                         <span>Traveler 1: Adult</span>
-                                        <span>₦65,000.00</span>
+                                        <span>{{ formatCurrency(getAdultPrice(), cartItem?.tour.currency) }}</span>
                                     </li>
                                     <li class="flex-div justify-between">
                                         <span>Taxes and fees</span>
-                                        <span>₦10,500.00</span>
+                                        <span>{{ formatCurrency(getTaxesAndFees(), cartItem?.tour.currency) }}</span>
                                     </li>
                                 </ul>
                             </div>
                             <div class="px-[20px] py-[10px]">
                                 <div class="flex-div justify-between text-[20px] mb-1">
-                                    <span>Traveler 1: Adult</span>
-                                    <span>₦75,500.000</span>
+                                    <span>Total</span>
+                                    <span>{{ formatCurrency(getTotalPrice(), cartItem?.tour.currency) }}</span>
                                 </div>
-                                <div class="text-[14px] text-[#848484]">Rates are quoted in NG Naira</div>
+                                <div class="text-[14px] text-[#848484]">Rates are quoted in {{ getCurrencyName() }}</div>
                             </div>
 
                             <div class="summary-checkout-btn-wrapper px-[20px] py-[14px]">
-                                <nuxt-link to="/flight-checkout">
+                                <nuxt-link to="/tours-checkout">
                                     <button class="summary-checkout-btn">Checkout</button>
                                 </nuxt-link>
                             </div>
@@ -148,14 +145,104 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: "ToursTIcketReview",
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useCartStore } from '@/store/cart';
+import { formatCurrency } from '@/utils/currency';
+import { useToast } from 'vue-toastification';
 
-    setup(){}
-}
+const route = useRoute();
+const router = useRouter();
+const cartStore = useCartStore();
+const toast = useToast();
+
+const cartItem = ref(null);
+
+definePageMeta({
+  middleware: 'tour-review-auth'
+});
+
+onMounted(() => {
+  const id = route.params.id;
+  cartItem.value = cartStore.getCartItemById(id);
+  console.log('Loaded cart item:', cartItem.value); // Add this line for debugging
+  if (!cartItem.value) {
+    toast.error("Tour not found in cart");
+    router.push('/search-results/tours');
+  }
+});
+
+const getTourLocation = (tour) => {
+  if (!tour || !tour.content || !tour.content.countries) return '';
+  const country = tour.content.countries[0];
+  const destination = country.destinations[0];
+  return `${destination.name}, ${country.name}`;
+};
+
+const getTourCategory = (tour) => {
+  if (!tour || !tour.content || !tour.content.segmentationGroups) return '';
+  return tour.content.segmentationGroups.find(group => group.code === 1)?.segments[0]?.name || '';
+};
+
+const formatDate = (dateString) => {
+  console.log('Formatting date:', dateString);
+  if (!dateString) return 'Date not available';
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    console.error('Invalid date:', dateString);
+    return 'Invalid date';
+  }
+  return date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+};
+
+const getCancellationDate = () => {
+  return cartItem.value?.tour.modalities[0]?.cancellationPolicies[0]?.dateFrom || '';
+};
+
+const getCancellationFee = () => {
+  return cartItem.value?.tour.modalities[0]?.cancellationPolicies[0]?.amount || 0;
+};
+
+const getRemarks = () => {
+  return cartItem.value?.tour.content.importantInfo || [];
+};
+
+const getLanguageName = (code) => {
+  const languageNames = {
+    'en': 'English',
+    'fr': 'French',
+    'es': 'Spanish',
+    // Add more languages as needed
+  };
+  return languageNames[code] || code;
+};
+
+const getRemarkIcon = (remark) => {
+  // You can implement logic here to return appropriate icons based on the remark content
+  return '/information.svg';
+};
+
+const getAdultPrice = () => {
+  if (!cartItem.value) return 0;
+  const adultPrice = cartItem.value.tour.amountsFrom.find(amount => amount.paxType === 'ADULT')?.amount || 0;
+  return adultPrice * cartItem.value.adults;
+};
+
+const getTaxesAndFees = () => {
+  // Assuming taxes and fees are 10% of the adult price
+  return getAdultPrice() * 0.1;
+};
+
+const getTotalPrice = () => {
+  return getAdultPrice() + getTaxesAndFees();
+};
+
+const getCurrencyName = () => {
+  return cartItem.value?.tour.currencyName || 'NG Naira';
+};
+
+const addMore = () => {
+  router.push('/search-results/tours');
+};
 </script>
-
-<style>
-
-</style>
