@@ -17,6 +17,14 @@ export const useCartStore = defineStore('cart', {
     }
   },
   actions: {
+    initializeStore() {
+      if (process.client) {
+        const stored = localStorage.getItem('cartItems');
+        if (stored) {
+          this.items = JSON.parse(stored);
+        }
+      }
+    },
     addItem(item) {
       const newItem = {
         ...item,
@@ -24,17 +32,19 @@ export const useCartStore = defineStore('cart', {
         date: item.departureDate || item.date,
         destinationDate: item.destinationDate
       };
-      console.log('Adding item to cart store:', newItem); // Add this line for debugging
       this.items.push(newItem);
+      this.saveToLocalStorage();
     },
     removeItem(id) {
       const index = this.items.findIndex(item => item.id === id);
       if (index !== -1) {
         this.items.splice(index, 1);
+        this.saveToLocalStorage();
       }
     },
     clearCart() {
       this.items = [];
+      this.saveToLocalStorage();
     },
     getCartItemById(id) {
       return this.items.find(item => item.id === id);
@@ -44,6 +54,12 @@ export const useCartStore = defineStore('cart', {
       if (item) {
         item.date = departureDate;
         item.destinationDate = destinationDate;
+        this.saveToLocalStorage();
+      }
+    },
+    saveToLocalStorage() {
+      if (process.client) {
+        localStorage.setItem('cartItems', JSON.stringify(this.items));
       }
     }
   }

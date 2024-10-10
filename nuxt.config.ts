@@ -46,7 +46,8 @@ export default defineNuxtConfig({
   plugins: [
     "@/plugins/vue-plugins/antd-ui.js",
     "@/plugins/components/global-components",
-    "@/plugins/toast.client.ts"
+    "@/plugins/toast.client.ts",
+    '@/plugins/init-cart.js'
   ],
 
   css: [
