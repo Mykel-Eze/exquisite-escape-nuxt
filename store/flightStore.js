@@ -9,22 +9,22 @@ export const useFlightStore = defineStore('flight', {
     setSelectedFlight(flight) {
       this.selectedFlight = flight;
       if (process.client) {
-        sessionStorage.setItem('selectedFlight', JSON.stringify(flight));
+        localStorage.setItem('selectedFlight', JSON.stringify(flight));
       }
     },
     setDictionaries(dictionaries) {
       this.dictionaries = dictionaries;
       if (process.client) {
-        sessionStorage.setItem('flightDictionaries', JSON.stringify(dictionaries));
+        localStorage.setItem('flightDictionaries', JSON.stringify(dictionaries));
       }
     },
     loadSelectedFlight() {
       if (process.client) {
-        const storedFlight = sessionStorage.getItem('selectedFlight');
+        const storedFlight = localStorage.getItem('selectedFlight');
         if (storedFlight) {
           this.selectedFlight = JSON.parse(storedFlight);
         }
-        const storedDictionaries = sessionStorage.getItem('flightDictionaries');
+        const storedDictionaries = localStorage.getItem('flightDictionaries');
         if (storedDictionaries) {
           this.dictionaries = JSON.parse(storedDictionaries);
         }

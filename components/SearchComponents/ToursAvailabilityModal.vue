@@ -92,6 +92,7 @@
 
 <script setup>
 import { ref, onMounted, defineProps, defineEmits, computed, watch } from 'vue';
+import { formatCurrency } from '@/utils/currency';
 
 const props = defineProps({
   tour: Object
@@ -135,7 +136,9 @@ const addToCart = () => {
   emit('add-to-cart', {
     tour: props.tour,
     adults: adults.value,
-    children: children.value
+    children: children.value,
+    departureDate: props.tour.departureDate,
+    destinationDate: props.tour.destinationDate
   });
   // Close the modal using Materialize
   const modal = M.Modal.getInstance(document.getElementById('tours-availability-modal'));
@@ -189,15 +192,6 @@ watch(() => props.tour, () => {
   adults.value = 1;
   children.value = 0;
 });
-
-const formatCurrency = (amount, currency) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(amount);
-};
 
 // const formatNumber = (num) => {
 //     return num.toLocaleString('en-US');

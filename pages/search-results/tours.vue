@@ -98,6 +98,7 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useToursStore } from '@/store/tours';
 import { useTours } from '@/composables/useTours';
+import { useCartStore } from '@/store/cart';
 
 const route = useRoute();
 const toursStore = useToursStore();
@@ -116,6 +117,8 @@ const cartItems = ref([]);
 const isSuccessModalVisible = ref(false);
 
 const numberOfActivities = computed(() => filteredTourList.value.length);
+
+const cartStore = useCartStore();
 
 const updateFilteredTours = (newFilteredTours) => {
   filteredTourList.value = newFilteredTours;
@@ -151,9 +154,14 @@ const fetchTourData = async () => {
     }
 
     const response = await toursStore.searchTours(payload);
-    tourList.value = response.data.activities || [];
+    // tourList.value = response.data.activities || [];
+    tourList.value = response.data.activities.map(activity => ({
+      ...activity,
+      departureDate: payload.departureDate,
+      destinationDate: payload.destinationDate
+    })) || [];
     filteredTourList.value = response.data.activities || [];
-    console.log("Tour data fetched:", tourList.value); // Add this line for debugging
+    console.log("Tour data fetched:", tourList.value); // Added this line for debugging
   } catch (error) {
     console.error("Error fetching tour data:", error);
     tourList.value = [];
@@ -186,7 +194,15 @@ const showAvailabilityModal = (tour) => {
 };
 
 const addToCart = (item) => {
-  cartItems.value.push(item);
+  const cartItem = {
+    ...item,
+    id: Date.now().toString(),
+    date: item.departureDate,
+    destinationDate: item.destinationDate
+  };
+  console.log('Adding to cart:', cartItem); // Add this line for debugging
+  cartItems.value.push(cartItem);
+  cartStore.addItem(cartItem);
   const availabilityModal = M.Modal.getInstance(document.getElementById('tours-availability-modal'));
   availabilityModal.close();
   const successModal = M.Modal.getInstance(document.getElementById('tours-success-modal'));

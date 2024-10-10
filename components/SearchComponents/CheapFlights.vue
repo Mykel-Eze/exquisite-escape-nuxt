@@ -21,7 +21,7 @@
               </div>
               <div class="flex-div justify-between">
                 <span class="text-black">Min. Price </span>
-                <span class="text-[#848484]">₦{{ formatNumber(flight.minPrice) }}</span>
+                 <span class="text-[#848484]">{{ formatCurrency(flight.minPrice, flight.currency) }}</span>
               </div>
             </div>
           </swiper-slide>
@@ -44,6 +44,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
+import { formatCurrency } from '@/utils/currency';
 
 export default {
   name: "CheapFlights",
@@ -58,18 +59,15 @@ export default {
     },
   },
   setup() {
-    return {
-      modules: [Navigation],
-    };
-  },
-  methods: {
-    formatNumber(num) {
-      return num.toLocaleString();
-    },
-    formatDate(dateString) {
+    const formatDate = (dateString) => {
       const date = new Date(dateString);
       return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    },
+    };
+
+    return {
+      modules: [Navigation],
+      formatDate,
+    };
   },
 };
 </script>

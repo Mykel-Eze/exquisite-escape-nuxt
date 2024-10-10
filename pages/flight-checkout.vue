@@ -214,7 +214,7 @@
 
                             <div class="tpss-block-footer">
                                 <div class="tpss-title">Your price summary</div>
-                                <div class="text-right">Total: $1,234.70</div>
+                                <div class="text-right">Total: ₦1,234.70</div>
 
                                 <div class="tpss-footer-total flex-div justify-between">
                                     <div class="flex-div gap-[10px]">
@@ -232,11 +232,8 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: "FlightCheckoutPage",
-    
-}
+<script setup>
+    name: "FlightCheckoutPage"
 </script>
 
 <style>

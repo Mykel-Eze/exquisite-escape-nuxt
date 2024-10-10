@@ -76,6 +76,7 @@
 
 <script setup>
 import { defineProps, defineEmits } from 'vue';
+import { formatCurrency } from '@/utils/currency';
 
 const props = defineProps({
   tours: {
@@ -85,15 +86,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['show-availability-modal', 'view-ticket-details']);
-
-const formatCurrency = (amount, currency) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(amount);
-};
 
 // const formatNumber = (num) => {
 //   return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });

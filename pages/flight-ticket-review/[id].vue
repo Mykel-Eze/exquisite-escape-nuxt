@@ -131,20 +131,20 @@
                   </li> -->
                   <li class="flex-div justify-between">
                     <span>Flight</span>
-                    <span>₦{{ formatPrice(selectedFlight?.price?.base) }}</span>
+                    <span>{{ formatCurrency(selectedFlight?.price?.base, selectedFlight?.price?.currency) }}</span>
                   </li>
                   <li class="flex-div justify-between">
                     <span>Taxes and fees</span>
-                    <span>₦{{ calculateTaxesAndFees() }}</span>
+                    <span>{{ formatCurrency(calculateTaxesAndFees(), selectedFlight?.price?.currency) }}</span>
                   </li>
                 </ul>
               </div>
               <div class="px-[20px] py-[10px]">
                 <div class="flex-div justify-between text-[20px] mb-1">
                   <span>Total</span>
-                  <span>₦{{ formatPrice(selectedFlight?.price?.total) }}</span>
+                  <span>{{ formatCurrency(selectedFlight?.price?.total, selectedFlight?.price?.currency) }}</span>
                 </div>
-                <div class="text-[14px] text-[#848484]">Rates are quoted in NG Naira</div>
+                <div class="text-[14px] text-[#848484]">Rates are quoted in {{ getCurrencyName(selectedFlight?.price?.currency) }}</div>
               </div>
 
               <div class="summary-checkout-btn-wrapper px-[20px] py-[14px]">
@@ -183,6 +183,7 @@ import { useFlightStore } from '~/store/flightStore';
 import { useFlightApi } from '~/composables/useFlightApi';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from "vue-toastification";
+import { formatCurrency } from '@/utils/currency';
 
 const flightStore = useFlightStore();
 const flightApi = useFlightApi();
@@ -300,16 +301,25 @@ const onSeatSelected = (seat) => {
   showSeatsPopup.value = false;
 };
 
-const formatPrice = (price) => {
-  return parseFloat(price || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-};
+// const formatPrice = (price, currency) => {
+//   return new Intl.NumberFormat('en-US', { 
+//     style: 'currency', 
+//     currency: currency || 'USD',
+//     currencyDisplay: 'symbol'
+//   }).format(parseFloat(price || 0));
+// };
 
 const calculateTaxesAndFees = () => {
-  if (!selectedFlight.value?.price) return '0.00';
+  if (!selectedFlight.value?.price) return 0;
   const total = parseFloat(selectedFlight.value.price.total || 0);
   const base = parseFloat(selectedFlight.value.price.base || 0);
-  return formatPrice(total - base);
+  return total - base;
 };
+
+const getCurrencyName = (currencyCode) => {
+  return new Intl.DisplayNames(['en'], { type: 'currency' }).of(currencyCode || 'USD');
+};
+
 </script>
 
 <style scoped>
