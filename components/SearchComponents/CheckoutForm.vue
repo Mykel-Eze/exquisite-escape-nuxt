@@ -83,7 +83,17 @@
       </div>
 
       <div class="complete-booking-btn-wrapper mt-[15px]">
-        <button type="submit" class="complete-booking-btn" :disabled="!isFormValid || !formData.agreeToTerms">Complete Booking</button>
+        <button 
+          type="submit" 
+          class="complete-booking-btn" 
+          :disabled="!isFormValid || !formData.agreeToTerms || isFormLoading"
+          :class="{ 'opacity-50 cursor-not-allowed': !isFormValid || !formData.agreeToTerms || isFormLoading }"
+        >
+          <span v-if="!isFormLoading">Complete Booking</span>
+          <span v-else class="btn-loading-spinner">
+            <LoadingSpinner />
+          </span>
+        </button>
         <!-- <button type="button" class="mt-3" @click="console.log(formData)">Test</button> -->
       </div>
     </div>
@@ -96,6 +106,13 @@ import { useApi } from '~/utils/api';
 import dayjs from 'dayjs';
 
 const api = useApi();
+
+const props = defineProps({
+  isFormLoading: {
+    type: Boolean,
+    default: false
+  }
+});
 
 const emit = defineEmits(['form-submitted']);
 
@@ -117,6 +134,7 @@ const formData = ref({
 });
 
 const nationalityOptions = ref([]);
+const isLoading = ref(false);
 
 const requiredFields = [
   'firstName',
@@ -154,11 +172,17 @@ const today = computed(() => {
     return dayjs().format('YYYY-MM-DD');
 });
 
-const submitForm = () => {
+const submitForm = async () => {
   if (validateForm()) {
     emit('form-submitted', formData.value);
   }
 };
+
+// const submitForm = async () => {
+//   if (isFormValid.value && formData.value.agreeToTerms && !props.isLoading) {
+//     emit('form-submitted', formData.value);
+//   }
+// };
 
 const validateForm = () => {
   let isValid = true;

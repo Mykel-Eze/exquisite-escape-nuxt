@@ -54,9 +54,6 @@ export default {
         });
 
         const updateValue = (formattedNumber, phoneObject) => {
-            console.log('Formatted Number:', formattedNumber);
-            console.log('Phone Object:', phoneObject);
-
             if (typeof formattedNumber === 'string') {
                 emit('update:modelValue', formattedNumber);
             } else if (formattedNumber && formattedNumber.number) {

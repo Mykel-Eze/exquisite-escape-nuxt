@@ -19,13 +19,12 @@ export const useFlightStore = defineStore('flight', {
       }
     },
     loadSelectedFlight() {
-      console.log("Loading flight from local storage");
       if (process.client) {
         const storedFlight = localStorage.getItem('selectedFlight');
-        console.log("Stored flight:", storedFlight);
+        // console.log("Stored flight:", storedFlight);
         if (storedFlight) {
           this.selectedFlight = JSON.parse(storedFlight);
-          console.log("Parsed stored flight:", this.selectedFlight);
+          // console.log("Parsed stored flight:", this.selectedFlight);
         } else {
           console.log("No stored flight found");
           this.selectedFlight = null;

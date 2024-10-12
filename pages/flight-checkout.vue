@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="review-content-side">
-                <CheckoutForm @form-submitted="handleFormSubmit" ref="checkoutForm">
+                <CheckoutForm @form-submitted="handleFormSubmit" :is-form-loading="isFormLoading" ref="checkoutForm">
                     <template v-slot:ticket-detail>
                         <div class="tsb-seats-wrapper text-[14px] text-[#848484]">
                             <div class="tsb-seats-title text-[18px] text-[#606161]">Your selected seats</div>
@@ -110,27 +110,23 @@ const selectedFlight = ref(null);
 const selectedSeat = ref(null);
 const checkoutForm = ref(null);
 const isLoading = ref(true);
+const isFormLoading = ref(false);
 
 onMounted(() => {
-  console.log("Component mounted");
   loadSelectedFlight();
 });
 
 const loadSelectedFlight = async () => {
   isLoading.value = true;
   try {
-    console.log("Before loading flight from store");
     flightStore.loadSelectedFlight();
-    console.log("After loading flight from store", flightStore.selectedFlight);
     
     selectedFlight.value = flightStore.selectedFlight;
-    console.log("Selected flight set:", selectedFlight.value);
     
     if (!selectedFlight.value) {
       throw new Error("No flight selected");
     }
   } catch (error) {
-    console.error("Error loading flight:", error);
     toast.error("No flight selected. Redirecting to search page.");
     router.push('/search-results/flights');
   } finally {
@@ -139,7 +135,6 @@ const loadSelectedFlight = async () => {
 };
 
 watch(() => flightStore.selectedFlight, (newValue) => {
-  console.log("Flight store updated:", newValue);
   selectedFlight.value = newValue;
 }, { immediate: true });
 
@@ -149,7 +144,6 @@ watch(() => flightStore.selectedFlight, (newValue) => {
 //   return selectedFlight.value?.itineraries?.length > 1 ? 'Roundtrip' : 'One-way';
 // });
 const flightType = computed(() => {
-  console.log("Computing flightType, selectedFlight:", selectedFlight.value);
   return selectedFlight.value?.itineraries?.length > 1 ? 'Roundtrip' : 'One-way';
 });
 
@@ -203,13 +197,20 @@ const handleFormSubmit = async (formData) => {
     toast.error("No flight selected. Please try again.");
     return;
   }
-  const orderCreated = await createOrder(formData, selectedFlight.value);
-  if (orderCreated) {
-    // Clear flight data from store and localStorage
-    flightStore.clearSelectedFlight();
-  } else {
-    // Handle the case where order creation failed or user was redirected to signin
-    console.log('Order creation failed or user needs to sign in');
+  isFormLoading.value = true;
+  try {
+    const orderCreated = await createOrder(formData, selectedFlight.value);
+    if (orderCreated) {
+        // Clear flight data from store and localStorage
+        flightStore.clearSelectedFlight();
+    } else {
+        // Handle the case where order creation failed or user was redirected to signin
+        console.log('Order creation failed or user needs to sign in');
+    }
+  } catch (error) {
+    console.error('Error creating order:', error);
+  } finally {
+    isFormLoading.value = false;
   }
 };
 </script>

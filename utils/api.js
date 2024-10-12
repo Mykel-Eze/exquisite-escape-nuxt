@@ -1,3 +1,4 @@
+// utils/api.js
 import { useRuntimeConfig } from '#app'
 
 export const useApi = () => {
@@ -7,39 +8,42 @@ export const useApi = () => {
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.indexOf("application/json") !== -1) {
       const data = await response.json();
-      // console.log("API Response Data:", data); // Debugging log
       if (!response.ok) {
-        if (Array.isArray(data.error)) {
-          const errorMessages = data.error.map(err => err.message.replace('feild', 'field')).join(', ');
-          throw new Error(errorMessages);
-        } else {
-          throw new Error(data.message || response.statusText || 'API call failed');
-        }
+        throw new Error(data.message || response.statusText);
       }
       return data;
     } else {
       const text = await response.text();
-      // console.log("API Response Text:", text); // Debugging log
       if (!response.ok) {
-        throw new Error(text || response.statusText || 'API call failed');
+        throw new Error(text || response.statusText);
       }
       return text;
     }
   }
 
-  const get = async (endpoint) => {
-    const response = await fetch(`${config.public.apiBase}${endpoint}`);
+  const get = async (endpoint, options = {}) => {
+    const url = `${config.public.apiBase}${endpoint}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      ...options,
+    });
     return handleResponse(response);
   }
 
-  const post = async (endpoint, data) => {
-    // console.log("API Request:", endpoint, data); // Debugging log
-    const response = await fetch(`${config.public.apiBase}${endpoint}`, {
+  const post = async (endpoint, data, options = {}) => {
+    const url = `${config.public.apiBase}${endpoint}`;
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...options.headers,
       },
       body: JSON.stringify(data),
+      ...options,
     });
     return handleResponse(response);
   }

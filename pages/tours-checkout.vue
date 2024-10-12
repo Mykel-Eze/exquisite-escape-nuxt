@@ -16,7 +16,7 @@
         </div>
 
         <div class="review-content-side">
-          <checkout-form @form-submitted="handleFormSubmit">
+          <checkout-form @form-submitted="handleFormSubmit" :is-form-loading="isFormLoading">
             <template v-slot:ticket-detail>
               <div v-for="cartItem in cartItems" :key="cartItem.id" class="tsb-seats-wrapper text-[14px] text-[#848484] mb-4">
                 <div class="tsb-seats-title text-[18px] text-[#606161]">{{ cartItem.tour.name }}</div>
@@ -103,6 +103,7 @@ const toast = useToast();
 const { createOrder } = useOrder();
 
 const cartItems = ref([]);
+const isFormLoading = ref(false);
 
 onMounted(() => {
   cartStore.initializeStore();
@@ -152,6 +153,7 @@ const getCommonCurrency = computed(() => {
 });
 
 const handleFormSubmit = async (formData) => {
+  isFormLoading.value = true;
   try {
     const orderDetails = {
       tours: cartItems.value.map(item => ({
@@ -168,12 +170,12 @@ const handleFormSubmit = async (formData) => {
     if (orderCreated) {
       // Clear cart data from store and localStorage
       cartStore.clearCart();
-      toast.success("Booking Successful... Check your emails for more details");
-      router.push('/');
     }
   } catch (error) {
     console.error('Error during checkout:', error);
     toast.error(error.message || 'An error occurred during checkout. Please try again.');
+  } finally {
+    isFormLoading.value = false;
   }
 };
 </script>

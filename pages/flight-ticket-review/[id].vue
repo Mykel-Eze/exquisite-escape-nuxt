@@ -1,7 +1,10 @@
 <template>
   <div class="ticket-review-page pt-[100px] pb-[80px]">
     <div class="row">
-      <div class="container">
+      <div v-if="isLoading" class="loading-spinner-wrapper">
+        <LoadingSpinner text="Fetching Flights..." />
+      </div>
+      <div v-else class="container">
         <div class="review-top-side">
           <div class="top-snack-bar flex-div gap-2 mb-[30px]">
             <span class="text-white">Choose flight from {{ originCity }} to {{ destinationCity }}</span>
@@ -340,5 +343,12 @@ const getCurrencyName = (currencyCode) => {
   margin-right: 0;
   padding: 10px;
   border-radius: 8px;
+}
+.loading-spinner-wrapper {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 </style>

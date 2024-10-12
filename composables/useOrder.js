@@ -46,27 +46,58 @@ export function useOrder() {
 
       // Create order
       const orderResponse = await api.post('/api/order/create-order', {
-        travellersInfo,
-        membershipDetails,
-        ...orderDetails,
-      });
+            travellersInfo,
+            membershipDetails,
+            ...orderDetails,
+        },
+        {
+          headers: {
+            'Authorization': `${authStore.token}`,  // Include the token in the Authorization header
+          }
+        }
+      );
+
+      console.log('Order Response:', orderResponse);
+
+        console.log('Transaction details:', {
+          email: formData.email,
+          amount: '5000',
+          currency: 'NGN',
+          ref: formData.middleName
+        });
 
       if (orderResponse.success) {
         // Initialize Paystack payment
         const paymentResponse = await initializePayment({
           email: formData.email,
-          amount: parseFloat(orderDetails.totalPrice) * 100, // Convert to kobo
-          currency: orderDetails.currency,
+          amount: '5000', // Convert to kobo
+          currency: 'NGN',
           ref: orderResponse.data.orderReference,
         });
 
+        console.log('Paystack payment response:', paymentResponse);
+
         if (paymentResponse.status === 'success') {
-          // Payment successful
-          toast.success("Booking Successful... Check your emails for more details");
-          router.push('/');
-          return true;
+          // Verify the transaction server-side
+          const verificationResponse = await api.post('/api/verify-transaction', 
+            { reference: paymentResponse.reference },
+            {
+              headers: {
+                'Authorization': `${authStore.token}`,  // Include the token here as well
+              }
+            }
+          );
+
+          if (verificationResponse.data.status === 'success') {
+            // Payment verified successfully
+            toast.success("Booking Successful... Check your emails for more details");
+            router.push('/');
+            return true;
+          } else {
+            throw new Error('Payment verification failed');
+          }
         } else {
-          throw new Error('Payment failed');
+          throw new Error('Payment failed or was cancelled');
         }
       } else {
         throw new Error('Order creation failed');

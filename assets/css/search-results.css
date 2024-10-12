@@ -27,6 +27,16 @@
     width: 100px;
     height: 100px;
 }
+.btn-loading-spinner .spinner .path {
+    stroke: white !important;
+}
+.ticket-review-page .loading-spinner-wrapper .loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
 
 section#cheap-flights {
     padding: 60px 0 40px;
