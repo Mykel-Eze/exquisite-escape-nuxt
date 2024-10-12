@@ -206,23 +206,31 @@ definePageMeta({
 
 onMounted(async () => {
   const flightId = route.params.id;
+  console.log("Flight ID from route:", flightId);
+  
   flightStore.loadSelectedFlight(); // Load from session storage
+  console.log("Loaded flight from store:", flightStore.selectedFlight);
 
   try {
     if (flightStore.selectedFlight && flightStore.selectedFlight.id === flightId) {
+      console.log("Using flight from store");
       selectedFlight.value = flightStore.selectedFlight;
     } else {
+      console.log("Fetching flight from API");
       // If not in store, try to fetch from API
       const flight = await flightApi.getFlightDetails(flightId);
+      console.log("Fetched flight:", flight);
       if (flight) {
         selectedFlight.value = flight;
         flightStore.setSelectedFlight(flight);
+        console.log("Flight set in store");
       } else {
         throw new Error('Flight not found');
       }
     }
     await fetchCityNames();
   } catch (e) {
+    console.error("Error in flight review page:", e);
     error.value = "Flight not found. Redirecting to flights page.";
     toast.error(error.value);
     setTimeout(() => router.push('/search-results/flights'), 2000);

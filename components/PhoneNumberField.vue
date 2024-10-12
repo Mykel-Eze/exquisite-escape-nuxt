@@ -4,24 +4,30 @@
             {{ label }} <sup v-if="requiredSign" class="required-sign">*</sup>
         </label>
 
-        <vue-tel-input :v-model="v_model" :inputOptions="{
-            id: 'phone-field',
-            showDialCode: true,
-        }" />
+        <vue-tel-input 
+            v-model="phoneNumber"
+            @input="updateValue"
+            @country-changed="onCountryChange" 
+            :inputOptions="{
+                id: 'phone-field',
+                showDialCode: true,
+            }" 
+        />
     </div>
 </template>
 
 <script>
+import { ref, watch } from 'vue';
 import { VueTelInput } from 'vue3-tel-input'
 import 'vue3-tel-input/dist/vue3-tel-input.css'
 
 export default {
-    name: 'InputField',
+    name: 'PhoneNumberField',
     components: {
         VueTelInput,
     },
     props: {
-        v_model: {
+        modelValue: {
             type: String,
             default: ""
         },
@@ -38,7 +44,35 @@ export default {
             default: false
         },
     },
+    emits: ['update:modelValue'],
+    setup(props, { emit }) {
+        const phoneNumber = ref(props.modelValue);
+        const countryCode = ref('');
+
+        watch(() => props.modelValue, (newValue) => {
+            phoneNumber.value = newValue;
+        });
+
+        const updateValue = (formattedNumber, phoneObject) => {
+            console.log('Formatted Number:', formattedNumber);
+            console.log('Phone Object:', phoneObject);
+
+            if (typeof formattedNumber === 'string') {
+                emit('update:modelValue', formattedNumber);
+            } else if (formattedNumber && formattedNumber.number) {
+                emit('update:modelValue', formattedNumber.number);
+            }
+        };
+
+        const onCountryChange = (country) => {
+            countryCode.value = country.dialCode;
+        };
+
+        return {
+            phoneNumber,
+            updateValue,
+            onCountryChange
+        };
+    }
 }
 </script>
-
-<style></style>
