@@ -69,7 +69,7 @@ export function useOrder() {
           }
         );
 
-        console.log('Order Response:', orderResponse);
+        // console.log('Order Response:', orderResponse);
 
         if (orderResponse.success) {
           toast.success("Booking Successful... Check your emails for more details");

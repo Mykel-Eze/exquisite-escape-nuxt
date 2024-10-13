@@ -96,18 +96,28 @@ import { useCartStore } from '@/store/cart';
 import { formatCurrency } from '@/utils/currency';
 import { useToast } from 'vue-toastification';
 import { useOrder } from '~/composables/useOrder';
+import { useAuthStore } from '~/store/auth';
 
 const router = useRouter();
 const cartStore = useCartStore();
 const toast = useToast();
 const { createOrder } = useOrder();
+const authStore = useAuthStore();
 
 const cartItems = ref([]);
 const isFormLoading = ref(false);
 
+const checkAuth = () => {
+  if (!authStore.isAuthenticated) {
+    localStorage.setItem('authRedirectPath', router.currentRoute.value.fullPath);
+    router.push('/signin');
+  }
+};
+
 onMounted(() => {
   cartStore.initializeStore();
   loadCartItems();
+  checkAuth();
 });
 
 const loadCartItems = () => {

@@ -31,6 +31,16 @@ const router = useRouter();
 const auth = useAuth();
 const toast = useToast();
 
+const handleSuccessfulAuth = () => {
+  const redirectPath = localStorage.getItem('authRedirectPath');
+  if (redirectPath) {
+    localStorage.removeItem('authRedirectPath');
+    router.push(redirectPath);
+  } else {
+    router.push('/dashboard/account');
+  }
+};
+
 onMounted(async () => {
   const token = route.query.token;
   if (token) {

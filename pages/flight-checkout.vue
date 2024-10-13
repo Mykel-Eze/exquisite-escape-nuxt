@@ -98,6 +98,7 @@ import { formatCurrency } from '~/utils/currency';
 import { usePaystack } from '~/composables/usePaystack';
 import { useApi } from '~/utils/api';
 import { useOrder } from '~/composables/useOrder';
+import { useAuthStore } from '~/store/auth';
 
 const router = useRouter();
 const flightStore = useFlightStore();
@@ -111,9 +112,19 @@ const selectedSeat = ref(null);
 const checkoutForm = ref(null);
 const isLoading = ref(true);
 const isFormLoading = ref(false);
+const authStore = useAuthStore();
+
+const checkAuth = () => {
+  if (!authStore.isAuthenticated) {
+    localStorage.setItem('authRedirectPath', router.currentRoute.value.fullPath);
+    toast.info("You need to be signed in first.");
+    router.push('/signin');
+  }
+};
 
 onMounted(() => {
   loadSelectedFlight();
+  checkAuth();
 });
 
 const loadSelectedFlight = async () => {

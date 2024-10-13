@@ -49,8 +49,20 @@ const router = useRouter();
 const email = ref('');
 const password = ref('');
 
+// const handleSuccessfulAuth = () => {
+//   const redirectPath = localStorage.getItem('authRedirectPath');
+//   if (redirectPath) {
+//     localStorage.removeItem('authRedirectPath');
+//     router.push(redirectPath);
+//   } else {
+//     router.push('/dashboard/account');
+//   }
+// };
+
 const signInWithEmail = async () => {
   try {
+    const redirectPath = localStorage.getItem('authRedirectPath');
+    
     const credentials = {
       email: email.value,
       password: password.value,
@@ -59,7 +71,15 @@ const signInWithEmail = async () => {
     await auth.login(credentials);
     $toast.success('Login successful');
     closeModal('email-signin-modal');
-    router.push('/dashboard/account');
+
+    if (redirectPath) {
+      localStorage.removeItem('authRedirectPath');
+      router.push(redirectPath);
+    } else {
+      router.push('/dashboard/account');
+    }
+    
+    // router.push('/dashboard/account');
   } catch (error) {
     let errorMessage = 'An error occurred during sign in. Please try again.';
     
