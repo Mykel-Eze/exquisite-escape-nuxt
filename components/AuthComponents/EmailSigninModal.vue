@@ -89,10 +89,11 @@ const signInWithEmail = async () => {
       } else if (typeof error.response._data.error === 'string') {
         errorMessage = error.response._data.error;
       }
-    }
 
-    // console.error('Signin error:', error.response._data.error[0].message);
-    $toast.error(errorMessage);
+      // console.error('Signin error:', error.response._data.error[0].message);
+      $toast.error(errorMessage);
+      console.error('Signin error:', error);
+    }
   }
 };
 
