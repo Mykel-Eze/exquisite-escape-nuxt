@@ -1,10 +1,12 @@
 import { useAuthStore } from '~/store/auth';
 import { useToast } from "vue-toastification";
+import { useRouter } from 'vue-router';
 
 export function useAuth() {
   const authStore = useAuthStore();
   const toast = useToast();
   const config = useRuntimeConfig();
+  const router = useRouter();
 
   const register = async (userData) => {
     authStore.setIsRegistering(true);
@@ -29,20 +31,21 @@ export function useAuth() {
         body: credentials,
       });
 
-      // Log the response to ensure it contains the expected structure
-      // console.log('Login Response:', response);
+      const token = response.jwt;
+      authStore.setToken(token);
 
-      const token = response.jwt;  // Extract the JWT
-      authStore.setToken(token);  // Save the token
-
-      // Optionally decode the JWT here if it contains user info
-      // If it doesn't contain user info, you'll need to fetch the current user
-      await getCurrentUser();  // Fetch user details with the new token
+      await getCurrentUser();
 
       authStore.setIsAuthenticated(true);
       
-      // Redirect after successful login
-      navigateTo('/dashboard/account');
+      // Check if there's a redirect path stored
+      const redirectPath = localStorage.getItem('authRedirectPath');
+      if (redirectPath) {
+        localStorage.removeItem('authRedirectPath');
+        router.push(redirectPath);
+      } else {
+        router.push('/dashboard/account');
+      }
       return response;
     } catch (error) {
       throw error;

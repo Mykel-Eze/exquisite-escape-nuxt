@@ -5,12 +5,14 @@
                 <div class="account-overview-content container">
                     <div class="account-page-header">
                         <h1 class="account-page-title">Account</h1>
-                        <p v-if="authStore.user" class="account-page-title-desc">
-                            Welcome {{ authStore.user.firstName }}, {{ authStore.user.email }} · <NuxtLink to="#" class="underline">Go to profile
-                            </NuxtLink>
+                        <p v-if="authStore.user && authStore.user.firstName" class="account-page-title-desc">
+                            Welcome {{ authStore.user.firstName }}, {{ authStore.user.email }} · <NuxtLink to="#" class="underline">Go to profile</NuxtLink>
+                        </p>
+                        <p v-else-if="authStore.isAuthenticated" class="account-page-title-desc">
+                            Loading user information...
                         </p>
                         <p v-else class="account-page-title-desc">
-                            Loading user information...
+                            Please sign in to view your account.
                         </p>
                     </div>
 
@@ -107,20 +109,17 @@ const authStore = useAuthStore();
 const auth = useAuth();
 
 onMounted(async () => {
-  // Check if user is authenticated but user details are missing
-  if (authStore.isAuthenticated && !authStore.user) {
+  if (authStore.isAuthenticated && (!authStore.user || !authStore.user.firstName)) {
     try {
-      // Fetch current user details from the API
-      await auth.getCurrentUser(); 
+      await auth.getCurrentUser();
     } catch (error) {
-    //   console.error('Error fetching user data:', error);
+      console.error('Error fetching user data:', error);
       if (error.response && error.response.status === 401) {
-        authStore.logout();  // Logout if token is invalid
+        authStore.logout();
         navigateTo('/signin');
       }
     }
   } else if (!authStore.isAuthenticated) {
-    // Redirect to signin if not authenticated
     navigateTo('/signin');
   }
 });

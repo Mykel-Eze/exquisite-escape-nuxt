@@ -27,6 +27,16 @@
     width: 100px;
     height: 100px;
 }
+.btn-loading-spinner .spinner .path {
+    stroke: white !important;
+}
+.ticket-review-page .loading-spinner-wrapper .loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
 
 section#cheap-flights {
     padding: 60px 0 40px;
@@ -669,6 +679,10 @@ button.complete-booking-btn {
     font-family: var(--font-smbold);
     font-size: 16px;
 }
+button.complete-booking-btn[disabled] {
+    opacity: 0.4;
+    cursor: default;
+}
 [type="checkbox"]#agree-to-terms+span:not(.lever) {
     font-size: 14px;
 }
@@ -680,6 +694,8 @@ button.complete-booking-btn {
     border-radius: 20px;
     font-size: 14px;
     word-spacing: -1px;
+    width: 100%;
+    max-width: 350px;
 }
 .tpss-block-header {
     border-bottom: 1px solid rgba(29, 18, 90, 0.2);
@@ -692,6 +708,9 @@ button.complete-booking-btn {
 .tpss-block-header, .tpss-block-body, .tpss-block-footer {
     padding: 10px 0;
 }
+/* .tpss-block-footer {
+    border-top: 1px solid rgba(29, 18, 90, 0.2);
+} */
 .tpss-title {
     font-size: 24px;
     color: #606161;

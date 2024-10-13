@@ -1,7 +1,10 @@
 <template>
   <div class="ticket-review-page pt-[100px] pb-[80px]">
     <div class="row">
-      <div class="container">
+      <div v-if="isLoading" class="loading-spinner-wrapper">
+        <LoadingSpinner text="Fetching Flights..." />
+      </div>
+      <div v-else class="container">
         <div class="review-top-side">
           <div class="top-snack-bar flex-div gap-2 mb-[30px]">
             <span class="text-white">Choose flight from {{ originCity }} to {{ destinationCity }}</span>
@@ -206,23 +209,31 @@ definePageMeta({
 
 onMounted(async () => {
   const flightId = route.params.id;
+  console.log("Flight ID from route:", flightId);
+  
   flightStore.loadSelectedFlight(); // Load from session storage
+  console.log("Loaded flight from store:", flightStore.selectedFlight);
 
   try {
     if (flightStore.selectedFlight && flightStore.selectedFlight.id === flightId) {
+      console.log("Using flight from store");
       selectedFlight.value = flightStore.selectedFlight;
     } else {
+      console.log("Fetching flight from API");
       // If not in store, try to fetch from API
       const flight = await flightApi.getFlightDetails(flightId);
+      console.log("Fetched flight:", flight);
       if (flight) {
         selectedFlight.value = flight;
         flightStore.setSelectedFlight(flight);
+        console.log("Flight set in store");
       } else {
         throw new Error('Flight not found');
       }
     }
     await fetchCityNames();
   } catch (e) {
+    console.error("Error in flight review page:", e);
     error.value = "Flight not found. Redirecting to flights page.";
     toast.error(error.value);
     setTimeout(() => router.push('/search-results/flights'), 2000);
@@ -332,5 +343,12 @@ const getCurrencyName = (currencyCode) => {
   margin-right: 0;
   padding: 10px;
   border-radius: 8px;
+}
+.loading-spinner-wrapper {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 </style>

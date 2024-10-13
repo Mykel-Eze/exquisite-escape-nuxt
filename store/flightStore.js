@@ -21,12 +21,13 @@ export const useFlightStore = defineStore('flight', {
     loadSelectedFlight() {
       if (process.client) {
         const storedFlight = localStorage.getItem('selectedFlight');
+        // console.log("Stored flight:", storedFlight);
         if (storedFlight) {
           this.selectedFlight = JSON.parse(storedFlight);
-        }
-        const storedDictionaries = localStorage.getItem('flightDictionaries');
-        if (storedDictionaries) {
-          this.dictionaries = JSON.parse(storedDictionaries);
+          // console.log("Parsed stored flight:", this.selectedFlight);
+        } else {
+          console.log("No stored flight found");
+          this.selectedFlight = null;
         }
       }
     },

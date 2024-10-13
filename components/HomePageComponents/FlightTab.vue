@@ -10,7 +10,7 @@
           :options="[
             { value: 'one-way', name: 'One-way' },
             { value: 'round-trip', name: 'Round-trip' },
-            { value: 'multi-city', name: 'Multi-city' },
+            // { value: 'multi-city', name: 'Multi-city' },
           ]"
           label=""
           selectKey="value"

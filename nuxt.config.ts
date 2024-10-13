@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
 export default defineNuxtConfig({
   ssr: false,
 
@@ -67,9 +66,11 @@ export default defineNuxtConfig({
   ],
 
   runtimeConfig: {
+    paystackSecretKey: process.env.PAYSTACK_SECRET_KEY,
     public: {
       BASE_URL: process.env.BASE_URL,
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.exquisiteescape.com'
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.exquisiteescape.com',
+      paystackPublicKey: process.env.PAYSTACK_PUBLIC_KEY,
     },
   },
 
