@@ -238,17 +238,28 @@ export default {
     const router = useRouter();
     const isLoggedIn = ref(authStore.isAuthenticated);
 
-    const initDropdowns = () => {
+    const initAllDropdowns = () => {
       const elemsDropdown1 = document.querySelector('.company-dropdown-trigger');
-      M.Dropdown.init(elemsDropdown1, {
-        coverTrigger: false,
-        constrainWidth: false
-      });
+      if (elemsDropdown1) {
+        M.Dropdown.init(elemsDropdown1, {
+          coverTrigger: false,
+          constrainWidth: false
+        });
+      }
+      
       const elemsDropdown2 = document.querySelectorAll('.menu-dropdown-trigger');
-      M.Dropdown.init(elemsDropdown2, {
-        coverTrigger: false,
-        constrainWidth: false
+      elemsDropdown2.forEach(el => {
+        M.Dropdown.init(el, {
+          coverTrigger: false,
+          constrainWidth: false
+        });
       });
+    };
+
+    const initDropdownsWithDelay = () => {
+      setTimeout(() => {
+        initAllDropdowns();
+      }, 100); // 100ms delay
     };
 
     const logout = async () => {
@@ -263,13 +274,14 @@ export default {
     onMounted(() => {
       const elemsSidenav = document.querySelectorAll(".sidenav");
       M.Sidenav.init(elemsSidenav);
-      initDropdowns();
+      initAllDropdowns();
     });
 
     watch(() => authStore.isAuthenticated, (newValue) => {
       isLoggedIn.value = newValue;
-      // Re-initialize dropdowns when auth state changes
-      initDropdowns();
+      nextTick(() => {
+        initDropdownsWithDelay();
+      });
     });
 
     return {
