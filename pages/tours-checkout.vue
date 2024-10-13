@@ -168,8 +168,8 @@ const handleFormSubmit = async (formData) => {
 
     const orderCreated = await createOrder(formData, orderDetails);
     if (orderCreated) {
-      // Clear cart data from store and localStorage
       cartStore.clearCart();
+      // Additional actions after successful order creation
     }
   } catch (error) {
     console.error('Error during checkout:', error);

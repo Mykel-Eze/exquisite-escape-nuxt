@@ -199,16 +199,20 @@ const handleFormSubmit = async (formData) => {
   }
   isFormLoading.value = true;
   try {
-    const orderCreated = await createOrder(formData, selectedFlight.value);
+    const orderDetails = {
+      totalPrice: selectedFlight.value.price.total,
+      currency: selectedFlight.value.price.currency,
+      flightDetails: selectedFlight.value,
+    };
+
+    const orderCreated = await createOrder(formData, orderDetails);
     if (orderCreated) {
-        // Clear flight data from store and localStorage
-        flightStore.clearSelectedFlight();
-    } else {
-        // Handle the case where order creation failed or user was redirected to signin
-        console.log('Order creation failed or user needs to sign in');
+      flightStore.clearSelectedFlight();
+      // Additional actions after successful order creation
     }
   } catch (error) {
     console.error('Error creating order:', error);
+    toast.error(error.message || 'An error occurred during checkout. Please try again.');
   } finally {
     isFormLoading.value = false;
   }

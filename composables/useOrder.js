@@ -14,9 +14,29 @@ export function useOrder() {
 
   const createOrder = async (formData, orderDetails) => {
     try {
-      // Create travellersInfo array with formData
-      const travellersInfo = [
-        {
+      // Check if user is authenticated
+      if (!authStore.isAuthenticated) {
+        toast.error("Please login or register to continue");
+        router.push('/signin');
+        return false;
+      }
+
+      //   console.log('Order Details:', orderDetails);
+
+      // Initialize Paystack payment first
+      const paymentResponse = await initializePayment({
+        email: formData.email,
+        amount: Math.round(parseFloat(orderDetails.totalPrice) * 100), // Convert to kobo and ensure it's an integer
+        currency: orderDetails.currency,
+        currency: `NGN`,
+        ref: `order_${Date.now()}`, // Generate a unique reference
+      });
+
+      console.log('Paystack payment response:', paymentResponse);
+
+      if (paymentResponse.status === 'success') {
+        // Payment successful, now create the order
+        const travellersInfo = [{
           firstName: formData.firstName,
           middleName: formData.middleName,
           lastName: formData.lastName,
@@ -28,79 +48,38 @@ export function useOrder() {
           passportNumber: formData.passportNumber,
           passportExpiryDate: formData.passportExpiryDate,
           nationality: formData.nationality,
-        }
-      ];
-      const membershipDetails = [
-        {
-            promoCode: formData.promoCode,
-            corporateCode: formData.corporateCode,
-        }
-      ]
+        }];
 
-      // Check if user is authenticated
-      if (!authStore.isAuthenticated) {
-        toast.error("Please login or register to continue");
-        router.push('/signin');  // Redirect to signin page
-        return false;
-      }
+        const membershipDetails = [{
+          promoCode: formData.promoCode,
+          corporateCode: formData.corporateCode,
+        }];
 
-      // Create order
-      const orderResponse = await api.post('/api/order/create-order', {
+        const orderResponse = await api.post('/api/order/create-order', 
+          {
             travellersInfo,
             membershipDetails,
             ...orderDetails,
-        },
-        {
-          headers: {
-            'Authorization': `${authStore.token}`,  // Include the token in the Authorization header
-          }
-        }
-      );
-
-      console.log('Order Response:', orderResponse);
-
-        console.log('Transaction details:', {
-          email: formData.email,
-          amount: '5000',
-          currency: 'NGN',
-          ref: formData.middleName
-        });
-
-      if (orderResponse.success) {
-        // Initialize Paystack payment
-        const paymentResponse = await initializePayment({
-          email: formData.email,
-          amount: '5000', // Convert to kobo
-          currency: 'NGN',
-          ref: orderResponse.data.orderReference,
-        });
-
-        console.log('Paystack payment response:', paymentResponse);
-
-        if (paymentResponse.status === 'success') {
-          // Verify the transaction server-side
-          const verificationResponse = await api.post('/api/verify-transaction', 
-            { reference: paymentResponse.reference },
-            {
-              headers: {
-                'Authorization': `${authStore.token}`,  // Include the token here as well
-              }
+            paymentReference: paymentResponse.reference,
+          },
+          {
+            headers: {
+              'Authorization': `${authStore.token}`,
             }
-          );
-
-          if (verificationResponse.data.status === 'success') {
-            // Payment verified successfully
-            toast.success("Booking Successful... Check your emails for more details");
-            router.push('/');
-            return true;
-          } else {
-            throw new Error('Payment verification failed');
           }
+        );
+
+        console.log('Order Response:', orderResponse);
+
+        if (orderResponse.success) {
+          toast.success("Booking Successful... Check your emails for more details");
+          router.push('/');
+          return true;
         } else {
-          throw new Error('Payment failed or was cancelled');
+          throw new Error('Order creation failed');
         }
       } else {
-        throw new Error('Order creation failed');
+        throw new Error('Payment failed or was cancelled');
       }
     } catch (error) {
       console.error('Error during checkout:', error);
