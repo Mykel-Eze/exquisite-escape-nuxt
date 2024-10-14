@@ -27,8 +27,8 @@ export function usePaystack() {
     await loadPaystackScript();
     
     const config = useRuntimeConfig();
-    console.log('Runtime Config:', config);
-    console.log('Paystack Public Key:', config.public.paystackPublicKey);
+    // console.log('Runtime Config:', config);
+    // console.log('Paystack Public Key:', config.public.paystackPublicKey);
 
     if (!config.public.paystackPublicKey) {
       throw new Error('Paystack public key is not defined');
