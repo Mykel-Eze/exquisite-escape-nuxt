@@ -168,9 +168,11 @@ const handleFormSubmit = async (formData) => {
     const orderDetails = {
       tours: cartItems.value.map(item => ({
         tourId: item.tour.code,
+        tourName: item.tour.name,
         adults: item.adults,
         children: item.children,
         date: item.date,
+        moreTourDetails: item.tour
       })),
       totalPrice: getTotalCartPrice(),
       currency: getCommonCurrency.value,

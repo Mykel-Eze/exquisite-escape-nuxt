@@ -65,6 +65,7 @@ export function useOrder() {
           {
             headers: {
               'Authorization': `${authStore.token}`,
+              'withCredentials': true
             }
           }
         );
