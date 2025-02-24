@@ -95,7 +95,7 @@ import { useRouter } from 'vue-router';
 import { useFlightStore } from '~/store/flightStore';
 import { useToast } from "vue-toastification";
 import { formatCurrency } from '~/utils/currency';
-import { usePaystack } from '~/composables/usePaystack';
+// import { usePaystack } from '~/composables/usePaystack';
 import { useApi } from '~/utils/api';
 import { useFlightOrder } from '~/composables/useFlightOrder';
 import { useAuthStore } from '~/store/auth';
@@ -105,7 +105,7 @@ const flightStore = useFlightStore();
 const toast = useToast();
 const { initializePayment } = usePaystack();
 const api = useApi();
-const { createOrder } = useOrder();
+const { createFlightOrder } = useFlightOrder();
 
 const selectedFlight = ref(null);
 const selectedSeat = ref(null);
@@ -216,7 +216,9 @@ const handleFormSubmit = async (formData) => {
       flightDetails: selectedFlight.value,
     };
 
-    const orderCreated = await createOrder(formData, orderDetails);
+    // console.log(orderDetails.flightDetails)
+
+    const orderCreated = await createFlightOrder(formData, orderDetails);
     if (orderCreated) {
       flightStore.clearSelectedFlight();
       // Additional actions after successful order creation

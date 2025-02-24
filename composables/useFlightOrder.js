@@ -10,9 +10,8 @@ export function useFlightOrder() {
   const toast = useToast();
   const authStore = useAuthStore();
 
-  const createOrder = async (formData, orderDetails) => {
+  const createFlightOrder = async (formData, orderDetails) => {
     try {
-      // Check if user is authenticated
       if (!authStore.isAuthenticated) {
         toast.error("Please login or register to continue");
         router.push('/signin');
@@ -33,28 +32,29 @@ export function useFlightOrder() {
         nationality: formData.nationality,
       }];
 
-      const membershipDetails = [{
-        promoCode: formData.promoCode,
-        corporateCode: formData.corporateCode,
-      }];
-
       const orderPayload = {
-        settlementPeriod: "during", // Assuming this is a fixed value
-        name: "Exquisite", // Assuming this is a fixed value
-        amount: orderDetails.totalPrice, // Assuming this is the total price
-        details: "Thanks", // Assuming this is a fixed value
-        userInfo: travellersInfo[0], // Assuming only one traveler for simplicity
-        paymentData: {}, // Empty as per the new API structure
-        paymentReference: `order_${Date.now()}`, // Generate a unique reference
+        settlementPeriod: "during",
+        name: "Exquisite",
+        amount: orderDetails.totalPrice,
+        details: "Thanks",
+        userInfo: travellersInfo[0],
+        paymentData: {},
+        paymentReference: `order_${Date.now()}`,
         items: [
           {
             category: "flight",
-            cabin: orderDetails.cabin, // Assuming cabin type is part of orderDetails
-            provider: "Amadeus", // Assuming this is a fixed value
+            cabin: orderDetails.flightDetails.travelerPricings[0].fareDetailsBySegment[0].cabin,
+            provider: "Amadeus",
             body: {
-              flightOffers: orderDetails.flightOffers, // Assuming flightOffers is part of orderDetails
-              travelers: travellersInfo.map(traveller => ({
-                id: traveller.passportNumber, // Assuming passportNumber as ID
+              flightOffers: {
+                ...orderDetails.flightDetails,
+                travelerPricings: orderDetails.flightDetails.travelerPricings.map((pricing, index) => ({
+                  ...pricing,
+                  travelerId: travellersInfo[index].passportNumber // Use passport number as travelerId
+                }))
+              },
+              travelers: travellersInfo.map((traveller, index) => ({
+                id: traveller.passportNumber, // Use passport number as ID
                 dateOfBirth: traveller.dateOfBirth,
                 name: {
                   firstName: traveller.firstName,
@@ -63,63 +63,53 @@ export function useFlightOrder() {
                 gender: traveller.gender.toUpperCase(),
                 contact: {
                   emailAddress: traveller.email,
-                  phones: [
-                    {
-                      deviceType: "MOBILE",
-                      countryCallingCode: "234", // Assuming Nigeria as default
-                      number: traveller.phoneNumber,
-                    },
-                  ],
+                  phones: [{
+                    deviceType: "MOBILE",
+                    countryCallingCode: "234",
+                    number: traveller.phoneNumber.startsWith('+') ? traveller.phoneNumber.slice(4) : traveller.phoneNumber,
+                  }],
                 },
-                documents: [
-                  {
-                    documentType: "PASSPORT",
-                    issuanceLocation: traveller.passportAuthority,
-                    number: traveller.passportNumber,
-                    expiryDate: traveller.passportExpiryDate,
-                    issuanceCountry: traveller.nationality,
-                    validityCountry: traveller.nationality,
-                    nationality: traveller.nationality,
-                    holder: true,
-                  },
-                ],
+                documents: [{
+                  documentType: "PASSPORT",
+                  issuanceLocation: traveller.passportAuthority,
+                  number: traveller.passportNumber,
+                  expiryDate: traveller.passportExpiryDate,
+                  issuanceCountry: traveller.nationality,
+                  validityCountry: traveller.nationality,
+                  nationality: traveller.nationality,
+                  holder: true,
+                }],
               })),
               remarks: {
-                general: [
-                  {
-                    subType: "GENERAL_MISCELLANEOUS",
-                    text: "ONLINE BOOKING FROM EXQUISITE ESCAPE",
-                  },
-                ],
+                general: [{
+                  subType: "GENERAL_MISCELLANEOUS",
+                  text: "ONLINE BOOKING FROM EXQUISITE ESCAPE",
+                }],
               },
               ticketingAgreement: {
                 option: "DELAY_TO_CANCEL",
                 delay: "6D",
               },
-              contacts: [
-                {
-                  addresseeName: {
-                    firstName: formData.firstName,
-                    lastName: formData.lastName,
-                  },
-                  companyName: "Exquisite Escape",
-                  purpose: "STANDARD",
-                  phones: [
-                    {
-                      deviceType: "MOBILE",
-                      countryCallingCode: "234",
-                      number: formData.phoneNumber,
-                    },
-                  ],
-                  emailAddress: formData.email,
-                  address: {
-                    lines: ["Calle Prado, 16"], // Assuming a fixed address
-                    postalCode: "28014", // Assuming a fixed postal code
-                    cityName: "Madrid", // Assuming a fixed city
-                    countryCode: "ES", // Assuming Spain as default
-                  },
+              contacts: [{
+                addresseeName: {
+                  firstName: formData.firstName,
+                  lastName: formData.lastName,
                 },
-              ],
+                companyName: "Exquisite Escape",
+                purpose: "STANDARD",
+                phones: [{
+                  deviceType: "MOBILE",
+                  countryCallingCode: "234",
+                  number: formData.phoneNumber.startsWith('+') ? formData.phoneNumber.slice(4) : formData.phoneNumber,
+                }],
+                emailAddress: formData.email,
+                address: {
+                  lines: ["Calle Prado, 16"],
+                  postalCode: "28014",
+                  cityName: "Madrid",
+                  countryCode: "ES",
+                },
+              }],
             },
           },
         ],
@@ -128,6 +118,7 @@ export function useFlightOrder() {
       const orderResponse = await api.post('/api/order/create-order', orderPayload, {
         headers: {
           'Authorization': `${authStore.token}`,
+          'Content-Type': 'application/json',
           'withCredentials': true,
         },
       });
@@ -146,7 +137,5 @@ export function useFlightOrder() {
     }
   };
 
-  return {
-    createOrder,
-  };
+  return { createFlightOrder };
 }
