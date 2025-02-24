@@ -97,7 +97,7 @@ import { useToast } from "vue-toastification";
 import { formatCurrency } from '~/utils/currency';
 import { usePaystack } from '~/composables/usePaystack';
 import { useApi } from '~/utils/api';
-import { useOrder } from '~/composables/useOrder';
+import { useFlightOrder } from '~/composables/useFlightOrder';
 import { useAuthStore } from '~/store/auth';
 
 const router = useRouter();
