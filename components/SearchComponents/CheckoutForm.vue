@@ -157,32 +157,38 @@ onMounted(async () => {
   try {
     const response = await fetch('https://restcountries.com/v3.1/all');
     const data = await response.json();
-    // console.log(response)
     nationalityOptions.value = data.map(country => ({
       value: country.cca2,
       label: country.name.common
     })).sort((a, b) => a.label.localeCompare(b.label));
-    // console.log(nationalityOptions.value)
   } catch (error) {
     console.error('Error fetching nationalities:', error);
   }
 });
 
 const today = computed(() => {
-    return dayjs().format('YYYY-MM-DD');
+  return dayjs().format('YYYY-MM-DD');
 });
+
+// Helper function to format date from dd/mm/yyyy to YYYY-MM-DD
+const formatDate = (dateString) => {
+  if (!dateString) return ''; // Handle empty dates
+  const [day, month, year] = dateString.split('/');
+  return dayjs(`${year}-${month}-${day}`).format('YYYY-MM-DD');
+};
 
 const submitForm = async () => {
   if (validateForm()) {
-    emit('form-submitted', formData.value);
+    // Format dateOfBirth and passportExpiryDate before emitting
+    const formattedFormData = {
+      ...formData.value,
+      dateOfBirth: formatDate(formData.value.dateOfBirth),
+      passportExpiryDate: formatDate(formData.value.passportExpiryDate),
+    };
+
+    emit('form-submitted', formattedFormData);
   }
 };
-
-// const submitForm = async () => {
-//   if (isFormValid.value && formData.value.agreeToTerms && !props.isLoading) {
-//     emit('form-submitted', formData.value);
-//   }
-// };
 
 const validateForm = () => {
   let isValid = true;

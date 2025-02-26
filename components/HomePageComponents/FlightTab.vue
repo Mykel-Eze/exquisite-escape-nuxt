@@ -193,42 +193,64 @@ export default {
       destinationLocationName: "",
       destinationLocationCode: "",
     });
-    
+
     const handleDepartureInput = async () => {
       if (departureSearch.value.length >= 3) {
         try {
-          const response = await api.post('/api/flight/airport-nearby', { 
+          // First request for cities
+          const cityResponse = await api.post('/api/flight/airport-nearby', { 
+            keyword: departureSearch.value,
+            subType: "CITY",
+          });
+          
+          // Second request for airports
+          const airportResponse = await api.post('/api/flight/airport-nearby', { 
             keyword: departureSearch.value,
             subType: "AIRPORT",
-          })
-          departureResults.value = response.data
-          showDepartureDropdown.value = true
+          });
+
+          // Combine results
+          departureResults.value = [...cityResponse.data, ...airportResponse.data];
+          showDepartureDropdown.value = true;
         } catch (error) {
-          console.error('Error fetching airport data:', error)
+          console.error('Error fetching airport data:', error);
+          departureResults.value = [];
+          showDepartureDropdown.value = false;
         }
       } else {
-        departureResults.value = []
-        showDepartureDropdown.value = false
+        departureResults.value = [];
+        showDepartureDropdown.value = false;
       }
-    }
+    };
 
     const handleDestinationInput = async () => {
       if (destinationSearch.value.length >= 3) {
         try {
-          const response = await api.post('/api/flight/airport-nearby', { 
+          // Request for airports
+          const airportResponse = await api.post('/api/flight/airport-nearby', { 
             keyword: destinationSearch.value,
             subType: "AIRPORT",
-          })
-          destinationResults.value = response.data
-          showDestinationDropdown.value = true
+          });
+
+          // Request for cities
+          const cityResponse = await api.post('/api/flight/airport-nearby', { 
+            keyword: destinationSearch.value,
+            subType: "CITY",
+          });
+
+          // Combine results
+          destinationResults.value = [...airportResponse.data, ...cityResponse.data];
+          showDestinationDropdown.value = true;
         } catch (error) {
-          console.error('Error fetching airport data:', error)
+          console.error('Error fetching airport data:', error);
+          destinationResults.value = [];
+          showDestinationDropdown.value = false;
         }
       } else {
-        destinationResults.value = []
-        showDestinationDropdown.value = false
+        destinationResults.value = [];
+        showDestinationDropdown.value = false;
       }
-    }
+    };
 
     const selectLocation = (location, type) => {
       if (type === 'departure') {
