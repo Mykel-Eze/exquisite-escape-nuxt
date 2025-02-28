@@ -1,4 +1,3 @@
-// composables/useOrder.js
 import { useApi } from '~/utils/api';
 import { useRouter } from 'vue-router';
 import { useToast } from "vue-toastification";
@@ -115,6 +114,7 @@ export function useFlightOrder() {
         ],
       };
 
+    //   console.log('Sending Payload:', JSON.stringify(orderPayload, null, 2)); // Debug
       const orderResponse = await api.post('/api/order/create-order', orderPayload, {
         headers: {
           'Authorization': `${authStore.token}`,
@@ -123,17 +123,29 @@ export function useFlightOrder() {
         },
       });
 
-      if (orderResponse.success) {
-        toast.success("Booking Successful... Check your emails for more details");
-        router.push('/');
-        return true;
+    //   console.log('Order Response:', orderResponse);
+
+      if (orderResponse.success && orderResponse.data.successfulOrders?.length > 0) {
+        // Order creation succeeded
+        const checkoutUrl = orderResponse.data.checkout?.authorization_url;
+        if (checkoutUrl) {
+          toast.info("Redirecting to payment page...");
+          window.location.href = checkoutUrl; // Redirect to Paystack payment
+          return true; // Indicate order creation success
+        } else {
+          throw new Error('No checkout URL provided in response');
+        }
+      } else if (orderResponse.data.failedOrders?.length > 0) {
+        // Order creation failed
+        const errorDetails = orderResponse.data.failedOrders[0]?.description[0].title || 'Unknown error';
+        throw new Error(`Order creation failed: ${JSON.stringify(errorDetails)}`);
       } else {
-        throw new Error('Order creation failed');
+        throw new Error('Order creation failed with no specific error details');
       }
     } catch (error) {
       console.error('Error during checkout:', error);
       toast.error(error.message || 'An error occurred during checkout. Please try again.');
-      return false;
+      return false; // Indicate failure, stay on flight-checkout
     }
   };
 
