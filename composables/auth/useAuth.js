@@ -17,6 +17,18 @@ export function useAuth() {
       });
       return response;
     } catch (error) {
+      // Extract error message from response if available
+      if (error.response && error.response._data && error.response._data.error) {
+        // Handle array of errors or single error object
+        const errorData = error.response._data.error;
+        if (Array.isArray(errorData) && errorData.length > 0) {
+          error.message = errorData[0].message || 'Registration failed';
+        } else if (typeof errorData === 'object') {
+          error.message = errorData.message || 'Registration failed';
+        } else if (typeof errorData === 'string') {
+          error.message = errorData;
+        }
+      }
       throw error;
     } finally {
       authStore.setIsRegistering(false);

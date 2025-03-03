@@ -161,6 +161,7 @@ const signUpWithEmail = async () => {
     router.push('/signin');
   } catch (error) {
     console.error('Signup error:', error);
+    // Display the specific error message from the server if available
     $toast.error(error.message || 'Registration failed. Please try again.');
   }
 };
